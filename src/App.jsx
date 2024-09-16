@@ -1,10 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
+import { supabase } from './utils/supabase';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [products, setProducts] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let { data: Products, error } = await supabase
+          .from('Products') 
+          .select('*');
+        if (error) {
+          console.error('Error fetching data:', error);
+        } else {
+          console.log('Fetched Products:', Products);
+          setProducts(Products);
+        }
+      } catch (error) {
+        console.error('Unexpected error:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    console.log('Products state:', products);
+  }, [products]);
 
   return (
     <>
@@ -28,8 +54,28 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <div>
+      <h2>Fetched Products:</h2>
+      {products ? (
+        products.length > 0 ? (
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>
+                <strong>ID:</strong> {product.id}, 
+                <strong> Type:</strong> {product.Type}, 
+                <strong> Created At:</strong> {new Date(product.created_at).toLocaleString()}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No data found in the Products table.</p>
+        )
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
