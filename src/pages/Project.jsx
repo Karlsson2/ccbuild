@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
+import ExampleImageHandler from "../components/exampleImageHandler";
 
 const Project = () => {
   const { projectId } = useParams();
@@ -8,6 +9,7 @@ const Project = () => {
 
   return (
     <div>
+      <ExampleImageHandler />
       <h1>Project Details</h1>
       {project ? (
         <>
