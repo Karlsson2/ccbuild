@@ -8,14 +8,14 @@ export default function CreateProject ({handleCloseCreateProject}) {
     const [country, setCountry] = useState('Sverige');
     const [region, setRegion] = useState('Göteborg');
     const [image, setImage] = useState(null);
-    const [currency, setCurrency] = useState(null);
-    const [description, setDescription] = useState(null);
-    const [project_number, setProject_Number] = useState(null);
-    const [organization, setOrganization] = useState(null);
-    const [location_1, setLocation1] = useState(null);
-    const [location_2, setLocation2] = useState(null);
-    const [location_3, setLocation3] = useState(null);
-    const [location_4, setLocation4] = useState(null);
+    const [currency, setCurrency] = useState('false');
+    const [description, setDescription] = useState('');
+    const [project_number, setProject_Number] = useState('');
+    const [organization, setOrganization] = useState('');
+    const [location_1, setLocation1] = useState('');
+    const [location_2, setLocation2] = useState('');
+    const [location_3, setLocation3] = useState('');
+    const [location_4, setLocation4] = useState('');
 
     const handleImageUpload = async (event) => {
         const file = event.target.files[0];
@@ -57,7 +57,7 @@ export default function CreateProject ({handleCloseCreateProject}) {
                         <div className="row">
                         <div className="mb-3 col">
                             <label htmlFor="">Projektnamn</label>
-                            <input type="text" className="form-control" id="" placeholder="Projektnamn" value={name}onChange={(e) => setName(e.target.value)}></input>
+                            <input type="text" className="form-control" id="" placeholder="Projektnamn" value={name} onChange={(e) => setName(e.target.value)}></input>
                         </div>
                         <div className="mb-3 col">
                             <label htmlFor="">Land</label>
