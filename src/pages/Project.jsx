@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Project = () => {
   const { projectId } = useParams();
@@ -59,11 +60,17 @@ const Project = () => {
                   {products.map((product) => {
                     const imageUrl = `${baseUrl}${bucketFolder}${product.image_url}`;
                     return (
-                      <li key={product.id}>
-                        <strong>ID:</strong> {product.id},{" "}
-                        <strong>Name:</strong> {product.product_name},{" "}
-                        <img src={imageUrl} alt={product.product_name} />
-                      </li>
+                      <Link
+                        to={`/projects/${project.id}/${product.id}`}
+                        state={{ product }}
+                        key={product.id}
+                      >
+                        <li>
+                          <strong>ID:</strong> {product.id},{" "}
+                          <strong>Name:</strong> {product.product_name},{" "}
+                          <img src={imageUrl} alt={product.product_name} />
+                        </li>
+                      </Link>
                     );
                   })}
                 </ul>

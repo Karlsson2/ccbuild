@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Project from "./pages/Project";
+import Product from "./pages/Product";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/:projectId" element={<Project />} />
+        <Route path="/projects/:projectId/:productId" element={<Product />} />
       </Routes>
     </Router>
   );
