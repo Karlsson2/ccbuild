@@ -3,6 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { supabase } from "./utils/supabase";
+import ExampleImageHandler from "./components/exampleImageHandler";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -24,16 +25,13 @@ function App() {
         console.error("Unexpected error:", error);
       }
     };
-
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log("Products state:", products);
-  }, [products]);
 
   return (
     <>
+    
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
