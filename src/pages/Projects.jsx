@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase";
+import { Link } from "react-router-dom";
 
 const Projects = () => {
   const [projects, setProjects] = useState(null);
@@ -31,17 +32,22 @@ const Projects = () => {
   return (
     <>
       <div>
-        <h1>Projects Page</h1>
-        <h2>Fetched Projects:</h2>
+        <h1>All Projects</h1>
         {projects ? (
           projects.length > 0 ? (
             <ul>
-              {projects.map((projects) => (
-                <li key={projects.id}>
-                  <strong>ID:</strong> {projects.id},<strong> Name: </strong>{" "}
-                  {projects.name},<strong> Created At:</strong>{" "}
-                  {new Date(projects.created_at).toLocaleString()}
-                </li>
+              {projects.map((project) => (
+                <Link
+                  to={`/projects/${project.id}`}
+                  state={{ project }}
+                  key={project.id}
+                >
+                  <li>
+                    <strong>ID:</strong> {project.id}, <strong>Name:</strong>{" "}
+                    {project.name}, <strong>Created At:</strong>{" "}
+                    {new Date(project.created_at).toLocaleString()}
+                  </li>
+                </Link>
               ))}
             </ul>
           ) : (
@@ -50,6 +56,7 @@ const Projects = () => {
         ) : (
           <p>Loading...</p>
         )}
+        <button>Add Project</button>
       </div>
     </>
   );
