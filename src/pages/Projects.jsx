@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
+import CreateProject from "../components/createProject";
 
 const Projects = () => {
   const [projects, setProjects] = useState(null);
+  const [showCreateProject, setShowCreateProject] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,9 +31,21 @@ const Projects = () => {
     console.log("Products state:", projects);
   }, [projects]);
 
+  const handleOpenCreateProject = () => {
+    setShowCreateProject(true);
+  };
+
+  const handleCloseCreateProject = () => {
+    setShowCreateProject(false);
+  };
+
+
   return (
     <>
       <div>
+        <h3>Create new project</h3>
+        <button onClick={handleOpenCreateProject}>Open Create Project</button>
+        {showCreateProject && <CreateProject onClose={handleCloseCreateProject} />}
         <h1>All Projects</h1>
         {projects ? (
           projects.length > 0 ? (
@@ -58,6 +72,7 @@ const Projects = () => {
         )}
         <button>Add Project</button>
       </div>
+      
     </>
   );
 };

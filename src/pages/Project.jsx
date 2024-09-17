@@ -4,6 +4,7 @@ import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+
 const Project = () => {
   const { projectId } = useParams();
   const location = useLocation();

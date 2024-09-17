@@ -28,7 +28,6 @@ export default function ExampleImageHandler () {
 
     return (
         <>
-
         <input type="file" onChange={handleImageUpload} />
         <div className="image-gallery">
             {images.length > 0 ? (
