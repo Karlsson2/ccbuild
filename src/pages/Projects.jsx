@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
-import CreateProject from "../components/createProject";
+import CreateProject from "../components/CreateProject";
 
 const Projects = () => {
   const [projects, setProjects] = useState(null);
@@ -42,10 +42,11 @@ const Projects = () => {
   return (
     <>
       <div>
-      <button onClick={() => setShowCreateProject(true)}>Create Project</button>
-      {showCreateProject && (
-        <CreateProject handleCloseCreateProject={handleCloseCreateProject} />
-      )}
+        <h3>Create new project</h3>
+        <button onClick={handleOpenCreateProject}>Open Create Project</button>
+        {showCreateProject && (
+          <CreateProject onClose={handleCloseCreateProject} />
+        )}
         <h1>All Projects</h1>
         {projects ? (
           projects.length > 0 ? (
