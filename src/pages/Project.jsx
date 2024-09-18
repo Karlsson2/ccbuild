@@ -1,48 +1,84 @@
-import React from "react";
-import { useParams, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import EditProject from "../components/EditProject";
 
 
 const Project = () => {
   const { projectId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const project = location.state?.project;
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PRODUCT_IMAGE_FOLDER;
   const [products, setProducts] = useState(null);
+  const [showEditProject, setShowEditProject] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        let { data: products, error } = await supabase
-          .from("products")
-          .select("*")
-          .eq("project_id", projectId);
-        if (error) {
-          console.error("Error fetching data:", error);
-        } else {
-          console.log("Fetched products:", products);
-          setProducts(products);
-        }
-      } catch (error) {
-        console.error("Unexpected error:", error);
-      }
+      const { data: projectData } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("id", projectId)
+        .single();
+      /* setProject(projectData); */
+
+      const { data: productsData } = await supabase
+        .from("products")
+        .select("*")
+        .eq("project_id", projectId);
+      setProducts(productsData);
     };
 
     fetchData();
-  }, []);
+  }, [projectId]);
 
-  useEffect(() => {
-    console.log("products state:", products);
-  }, [products]);
+  const handleDelete = async () => {
+    const { error } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", projectId);
+
+    if (!error) {
+      navigate("/projects");
+      console.log('Deleted project:', project.name, 'with id:', projectId)
+    } else {
+      console.error("Error deleting project: ", projectId, error)
+    }
+  }
+
+  const handleOpenEditProject = () => {
+    setShowEditProject(true);
+  };
+  
+  const handleCloseEditProject = () => {
+    setShowEditProject(false);
+  };
+
+  const handleSaveProject = () => {
+    Object.assign(project, updatedProject);
+  }
 
   return (
     <div>
       <h1>Project Details</h1>
       {project ? (
         <>
+        <div>
+        <Button onClick={handleOpenEditProject}>Edit</Button>
+            {showEditProject && (
+              <EditProject
+                project={project}
+                onClose={handleCloseEditProject}
+                onSave={handleSaveProject}
+              />
+            )}
+          <Button variant="danger" onClick={handleDelete}>
+            Radera
+          </Button>
+        </div>
           <div>
             <strong>ID:</strong> {project.id}
           </div>
