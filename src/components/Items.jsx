@@ -13,7 +13,7 @@ import {
   accessibilities,
 } from "../utils/constants";
 
-function Items({ itemId }) {
+function Items({ itemId, productId, setShowItems }) {
   const [itemData, setItemData] = useState([]);
   const [itemAmount, setItemAmount] = useState(0);
   const [itemStatus, setItemStatus] = useState("");
@@ -55,6 +55,10 @@ function Items({ itemId }) {
   const handleDesignation3Change = (e) => setItemDesignation3(e.target.value);
   const handleDesignation4Change = (e) => setItemDesignation4(e.target.value);
 
+  const closeItems = () => {
+    setShowItems(null);
+  };
+
   // Fetch item data from Supabase for item with itemId
   const fetchItem = async () => {
     const { data, error } = await supabase
@@ -95,30 +99,59 @@ function Items({ itemId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase
-      .from("items")
-      .update({
-        amount: itemAmount,
-        status: itemStatus,
-        market_place: itemMarketPlace,
-        date_available: itemDateAvailable,
-        date_delivery: itemDateDelivery,
-        demountability: itemDemountability,
-        accessibility: itemAccessibility,
-        demountability_comment: itemDemountabilityComment,
-        accessibility_comment: itemAccessibilityComment,
-        location_1: itemLocation1,
-        location_2: itemLocation2,
-        location_3: itemLocation3,
-        location_4: itemLocation4,
-        designation_1: itemDesignation1,
-        designation_2: itemDesignation2,
-        designation_3: itemDesignation3,
-        designation_4: itemDesignation4,
-      })
-      .eq("id", itemId);
-    if (error) console.log("error", error);
-    else console.log("Item updated successfully");
+    // If itemId is "new", create a new item, else use itemId to update the existing item
+    if (itemId === "new") {
+      const { data, error } = await supabase.from("items").upsert([
+        {
+          product_id: productId,
+          amount: itemAmount,
+          status: itemStatus,
+          market_place: itemMarketPlace,
+          date_available: itemDateAvailable,
+          date_delivery: itemDateDelivery,
+          demountability: itemDemountability,
+          accessibility: itemAccessibility,
+          demountability_comment: itemDemountabilityComment,
+          accessibility_comment: itemAccessibilityComment,
+          location_1: itemLocation1,
+          location_2: itemLocation2,
+          location_3: itemLocation3,
+          location_4: itemLocation4,
+          designation_1: itemDesignation1,
+          designation_2: itemDesignation2,
+          designation_3: itemDesignation3,
+          designation_4: itemDesignation4,
+        },
+      ]);
+      if (error) console.log("error", error);
+      else console.log("Item created successfully");
+    } else {
+      const { data, error } = await supabase
+        .from("items")
+        .update({
+          amount: itemAmount,
+          status: itemStatus,
+          market_place: itemMarketPlace,
+          date_available: itemDateAvailable,
+          date_delivery: itemDateDelivery,
+          demountability: itemDemountability,
+          accessibility: itemAccessibility,
+          demountability_comment: itemDemountabilityComment,
+          accessibility_comment: itemAccessibilityComment,
+          location_1: itemLocation1,
+          location_2: itemLocation2,
+          location_3: itemLocation3,
+          location_4: itemLocation4,
+          designation_1: itemDesignation1,
+          designation_2: itemDesignation2,
+          designation_3: itemDesignation3,
+          designation_4: itemDesignation4,
+        })
+        .eq("id", itemId);
+      if (error) console.log("error", error);
+      else console.log("Item updated successfully");
+    }
+    setShowItems(null);
   };
 
   return (
@@ -288,7 +321,9 @@ function Items({ itemId }) {
           </Form.Group>
         </Row>
 
-        <Button variant="primary">Stäng</Button>
+        <Button variant="primary" onClick={closeItems}>
+          Stäng
+        </Button>
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Spara
         </Button>

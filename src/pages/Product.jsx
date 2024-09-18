@@ -54,42 +54,44 @@ const Product = () => {
             <strong>ID:</strong> {product.id}
           </div>
           <div>
-            <strong>Name:</strong> {product.product_name}
+            <strong>Namn:</strong> {product.product_name}
           </div>
           <div>
-            <strong>Created At:</strong>{" "}
+            <strong>Skapad:</strong>{" "}
             {new Date(product.created_at).toLocaleString()}
           </div>
           <div>
-            <strong>Items:</strong>
+            <strong>Exemplar:</strong>
             {items ? (
               items.length > 0 ? (
-                <ul>
-                  {items.map((item) => {
-                    return (
-                      <li key={item.id}>
-                        <strong>ID:</strong> {item.id}, <strong>Amount:</strong>{" "}
-                        {item.amount}
-                        <Button
-                          variant="primary"
-                          onClick={() => setShowItems(item.id)} // Pass the function here
-                          style={{ marginLeft: "10px" }}
-                        >
-                          Visa
-                        </Button>
-                        <Button
-                          variant="primary"
-                          onClick={() => setShowItems(null)} // Pass the function here
-                          style={{ marginLeft: "10px" }}
-                        >
-                          Stäng
-                        </Button>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <>
+                  <ul>
+                    {items.map((item) => {
+                      return (
+                        <li key={item.id}>
+                          <strong>ID:</strong> {item.id},{" "}
+                          <strong>Antal:</strong> {item.amount}
+                          <Button
+                            variant="primary"
+                            onClick={() => setShowItems(item.id)}
+                            style={{ marginLeft: "10px" }}
+                          >
+                            Visa
+                          </Button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <Button
+                    variant="primary"
+                    onClick={() => setShowItems("new")}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Nytt exemplar
+                  </Button>
+                </>
               ) : (
-                <p>No items found for this product.</p>
+                <p>Den här produkten har inga exemplar.</p>
               )
             ) : (
               <p>Loading items ...</p>
@@ -99,13 +101,18 @@ const Product = () => {
           {/* Conditionally render the <Items> component, passing the itemId as a prop */}
           {showItems && (
             <div>
-              <h2>Item Details</h2>
-              <Items itemId={showItems} /> {/* Pass the selected item.id */}
+              <h2>Antal, status och platsinformation</h2>
+              <Items
+                itemId={showItems}
+                productId={productId}
+                setShowItems={setShowItems}
+              />{" "}
+              {/* Pass the selected item.id */}
             </div>
           )}
         </>
       ) : (
-        <p>No product data found. Please try again.</p>
+        <p>Ingen produktdata. Vänligen försök igen.</p>
       )}
     </div>
   );
