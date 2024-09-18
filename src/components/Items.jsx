@@ -6,48 +6,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Container } from "react-bootstrap";
 import { supabase } from "../utils/supabase";
-
-const statuses = [
-  "Välj",
-  "Inventerad",
-  "Inventerad - i byggnad",
-  "Inventerad - i lager/förråd",
-  "Mängdad",
-  "Mängdad - i byggnad",
-  "Mängdad - i lager/förråd",
-  "På rekonditionering",
-  "I lager",
-  "Bevarad (slutstatus)",
-  "Återbrukad i projektet (slutstatus)",
-  "Återbrukad inom organisationen (slutstatus)",
-  "Återbrukad externt av annan aktör (slutstatus)",
-  "Avfallshanterad (slutstatus)",
-];
-
-const marketPlaces = [
-  "Välj",
-  "Ej publicerad",
-  "Publicerad som intern annons",
-  "Publicerad som extern annons",
-  "Reserverad",
-  "Såld",
-  "Avpublicerad",
-  "Automatiskt publicerad",
-];
-
-const demountabilities = [
-  "Välj",
-  "Enkel att demontera/demontering krävs ej",
-  "Demonteringsbar men specialverktyg kan krävas",
-  "Begränsad demonterbarhet",
-];
-
-const accessibilities = [
-  "Välj",
-  "Lätt åtkomlig",
-  "Åtkomlig men planering och specialverktyg kan krävas",
-  "Begränsad åtkomlighet",
-];
+import {
+  statuses,
+  marketPlaces,
+  demountabilities,
+  accessibilities,
+} from "../utils/constants";
 
 function Items({ itemId }) {
   const [itemData, setItemData] = useState([]);
