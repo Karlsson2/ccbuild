@@ -24,9 +24,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
 }
 
@@ -53,16 +50,92 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+.allproduct-border {
+  margin-top: 2rem;
+  margin-bottom: 0rem;
+}
+.project-container {
+  padding: 1rem;
+  border: unset !important;
+}
+.project-card {
+  border: unset !important;
+  padding: 0px !important;
+}
+.border-radius {
+  border-radius: 5px !important;
+}
+.no-padding {
+  padding: 0px !important;
+}
+.plus-circle {
+  transition: 0.7s;
+  -webkit-transition: 0.7s;
+  -moz-transition: 0.7s;
+  -ms-transition: 0.7s;
+  -o-transition: 0.7s;
+  padding-bottom: 4px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: white;
+  font-size: 34px;
+  font-weight: lighter;
+  cursor: pointer;
+  position: absolute;
+  bottom: 15px;
+  right: 10px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #488ac6;
+}
+.project-text {
+  position: absolute;
+  bottom: 15px;
+  left: 10px;
+  color: white;
+}
+.project-card-image {
+  position: initial;
+  display: inline-block;
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+.project-card-image:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(rgba(17, 47, 95, 0)),
+    to(#112f5f)
+  );
+}
+.accordion-button {
+  background-color: unset !important;
+  box-shadow: none !important;
+  padding: 0px !important;
+}
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.accordion-item {
+  border: unset !important;
+}
+.accordion-body {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
