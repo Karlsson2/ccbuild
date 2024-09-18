@@ -4,6 +4,7 @@ import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
 import Items from "../components/Items";
 import Button from "react-bootstrap/Button";
+import searchCategories from "../utils/searchCategories";
 
 const Product = () => {
   const { productId } = useParams();
