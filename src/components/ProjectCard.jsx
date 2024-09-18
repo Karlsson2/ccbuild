@@ -30,6 +30,7 @@ function ProjectCard({ project }) {
               </Card.Subtitle>
             </div>
             <div className="plus-circle">+</div>
+            {/* Lägg till en onclick som skapar en produkt i projektet, kom ihåg att skicka med projektID :)  */}
           </Card.Body>
         </Card>
       </Link>
