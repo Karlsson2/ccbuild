@@ -71,7 +71,6 @@ const Projects = () => {
         ) : (
           <p>Loading...</p>
         )}
-        <button>Add Project</button>
       </div>
     </>
   );
