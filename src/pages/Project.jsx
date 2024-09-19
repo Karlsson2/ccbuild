@@ -10,7 +10,7 @@ const Project = () => {
   const { projectId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const project = location.state?.project;
+  const [project, setProject] = useState(null);
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PRODUCT_IMAGE_FOLDER;
   const [products, setProducts] = useState(null);
@@ -23,7 +23,7 @@ const Project = () => {
         .select("*")
         .eq("id", projectId)
         .single();
-      /* setProject(projectData); */
+        setProject(projectData);
 
       const { data: productsData } = await supabase
         .from("products")
@@ -57,9 +57,10 @@ const Project = () => {
     setShowEditProject(false);
   };
 
-  const handleSaveProject = () => {
-    Object.assign(project, updatedProject);
-  }
+  const handleSaveProject = (updatedProject) => {
+    setProject(updatedProject); // Update the project state with new data
+    setShowEditProject(false); // Close the edit form after saving
+  };
 
   return (
     <div>

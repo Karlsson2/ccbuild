@@ -82,6 +82,7 @@ export default function EditProject ({ project, onClose, onSave }) {
       };
 
 
+
     return (
         <>
         <h1>Edit project - {project.name}</h1>
