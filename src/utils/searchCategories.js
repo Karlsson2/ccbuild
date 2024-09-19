@@ -2,66 +2,68 @@
 // and return the entire hierarchy with matching terms and their parents
 export default function searchCategories(categories, searchTerm) {
   let result = [];
-  // Start searching from the top level
-  for (let i = 0; i < categories.length; i++) {
-    // check categories[i][0] includes the searchTerm
-    if (categories[i][0].includes(searchTerm)) {
-      result.push(categories[i]);
-    }
 
-    // If the searchTerm is not found in the top level, search the next level
-    if (!categories[i][0].includes(searchTerm)) {
+  for (let i = 0; i < categories.length; i++) {
+    // Start searching from the top level
+    if (categories[i][0].toLowerCase().includes(searchTerm.toLowerCase())) {
+      result.push(categories[i]);
+    } else {
+      searchSubCategories();
+    }
+    // searchSubCategories();
+    // searchSubSubCategories();
+
+    // Search the second level
+    function searchSubCategories() {
       const subCategories = categories[i][1];
       for (let j = 0; j < subCategories.length; j++) {
-        if (subCategories[j][0].includes(searchTerm)) {
-          // If there is a hit, return an array with the parent and the matching term
+        if (
+          subCategories[j][0].toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          // If there is a hit, push the parent and the matching term and its subcategories to result
           result.push([categories[i][0], [subCategories[j]]]);
-        } else if (!subCategories[j][0].includes(searchTerm)) {
-          // If the searchTerm is not found in the current level, search the next level
-          const subSubCategories = subCategories[j][1];
-          for (let k = 0; k < subSubCategories.length; k++) {
-            if (subSubCategories[k].includes(searchTerm)) {
-              // If there is a hit, return an array with the parent and the matching term
-              result.push([
-                categories[i][0],
-                [subCategories[j][0], [subSubCategories[k]]],
-              ]);
-            }
-          }
+        } else {
+          searchSubSubCategories(subCategories, j);
+        }
+      }
+    }
+
+    //Search the third level
+    function searchSubSubCategories(subCategories, j) {
+      const subSubCategories = subCategories[j][1];
+      for (let k = 0; k < subSubCategories.length; k++) {
+        //If subSubCategories[k][0] is empty string "", skip it
+        if (subSubCategories[k][0] === "") {
+          continue;
+        }
+        // If subSubCategories[k][0] includes the searchTerm, add it to the result
+        if (
+          subSubCategories[k][0]
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        ) {
+          // If there is a hit, return an array with the parent and the entire subSubCategory
+          // which will be an array with the matching term AND an id
+          result.push([
+            categories[i][0],
+            [subCategories[j][0], [subSubCategories[k]]],
+          ]);
         }
       }
     }
   }
+
+  // Remove duplicates from results
+  let uniqueIds = [];
+  for (let i = 0; i < result.length; i++) {
+    let lastSubArray = result[i][result[i].length - 1];
+    let id = lastSubArray[lastSubArray.length - 1];
+    if (uniqueIds.includes(id)) {
+      result.splice(i, 1);
+    } else {
+      uniqueIds.push(id);
+    }
+  }
+
   return result;
 }
-
-const categories = [
-  [
-    "belysning",
-    [
-      [
-        "interiörarmatur",
-        ["takarmatur", "väggarmatur", "spotlight", "kristallkrona"],
-      ],
-      ["exteriörarmatur", ["fasadbelysning", "markbelysning"]],
-    ],
-  ],
-  [
-    "möbler",
-    [
-      ["bord", ["köksbord", "matbord", "bord"]],
-      ["väggmöbler", ["köksstol", "matstol", "kontorsstol"]],
-    ],
-  ],
-  [
-    "vägg",
-    [
-      ["färg", ["vit", "grå", "svart"]],
-      ["material", ["gips", "betong", "tegel"]],
-    ],
-  ],
-];
-
-// Example usage
-const result = searchCategories(categories, "kök");
-console.log("searchCategories result", result);
