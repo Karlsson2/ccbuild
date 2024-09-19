@@ -33,8 +33,8 @@ const Product = () => {
           console.log("Fetched categories:", categories);
           const nestedArrays = createCategoriesArray(categories);
           setCategoriesArr(nestedArrays);
-          // Test the searchCategories function with search term "plast"
-          const searchResult = searchCategories(nestedArrays, "plast");
+          // Test the searchCategories function
+          const searchResult = searchCategories(nestedArrays, "inred");
           console.log("searchResult:", searchResult);
         }
       } catch (error) {
