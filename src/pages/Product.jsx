@@ -35,8 +35,8 @@ const Product = () => {
           const nestedArrays = createCategoriesArray(categories);
           setCategoriesArr(nestedArrays);
           // Test the searchCategories function
-          const searchResult = searchCategories(nestedArrays, "tavel");
-          console.log("searchResult:", searchResult);
+          // const searchResult = searchCategories(nestedArrays, "tavel");
+          //console.log("searchResult:", searchResult);
         }
       } catch (error) {
         console.error("Unexpected error:", error);
@@ -72,10 +72,10 @@ const Product = () => {
 
   return (
     <div>
-      <Categories categoriesArr={categoriesArr} />
       <h1>Product Details</h1>
       {product ? (
         <>
+          {categoriesArr && <Categories categoriesArr={categoriesArr} />}
           <div>
             <img src={imageUrl} alt="" />
           </div>

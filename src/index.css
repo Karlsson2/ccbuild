@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,6 +13,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Custom properties (css variables) */
+  --category-bg-gray: #f9f9f9;
+  --category-border-gray: #c5c5c5;
+  --category-text-black: #000000;
+  --status-green: #44a036;
 }
 
 a {
@@ -38,7 +46,6 @@ button {
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
@@ -138,4 +145,44 @@ button:focus-visible {
 .accordion-body {
   padding-left: 0px !important;
   padding-right: 0px !important;
+}
+
+/* Categories status bar */
+.cat.sibling {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: fit-content;
+  vertical-align: bottom;
+}
+
+.cat.sibling > .colored-box {
+  background-color: var(--category-border-gray);
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  min-width: 40px;
+  height: 8px;
+}
+
+.cat.sibling.selected > .colored-box {
+  background-color: var(--status-green);
+  border-top: 2px solid var(--status-green);
+  border-bottom: 2px solid var(--status-green);
+  height: 8px;
+}
+.cat.sibling.selected > div.status-header {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.cat.siblings-row {
+  display: inline-block;
+}
+
+div.status-header {
+  height: 32px;
+  margin-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-family: "Inter";
 }
