@@ -10,18 +10,21 @@ export default function searchCategories(categories, searchTerm) {
     } else {
       searchSubCategories();
     }
-    // searchSubCategories();
-    // searchSubSubCategories();
 
     // Search the second level
     function searchSubCategories() {
-      const subCategories = categories[i][1];
+      const subCategories = categories[i][3];
       for (let j = 0; j < subCategories.length; j++) {
         if (
           subCategories[j][0].toLowerCase().includes(searchTerm.toLowerCase())
         ) {
           // If there is a hit, push the parent and the matching term and its subcategories to result
-          result.push([categories[i][0], [subCategories[j]]]);
+          result.push([
+            categories[i][0],
+            categories[i][1],
+            categories[i][2],
+            [subCategories[j]],
+          ]);
         } else {
           searchSubSubCategories(subCategories, j);
         }
@@ -46,6 +49,8 @@ export default function searchCategories(categories, searchTerm) {
           // which will be an array with the matching term AND an id
           result.push([
             categories[i][0],
+            categories[i][1],
+            categories[i][2],
             [subCategories[j][0], [subSubCategories[k]]],
           ]);
         }

@@ -6,6 +6,7 @@ import Items from "../components/Items";
 import Button from "react-bootstrap/Button";
 import searchCategories from "../utils/searchCategories";
 import createCategoriesArray from "../utils/createCategoriesArray";
+import Categories from "../components/Categories";
 
 const Product = () => {
   const { productId } = useParams();
@@ -34,7 +35,7 @@ const Product = () => {
           const nestedArrays = createCategoriesArray(categories);
           setCategoriesArr(nestedArrays);
           // Test the searchCategories function
-          const searchResult = searchCategories(nestedArrays, "inred");
+          const searchResult = searchCategories(nestedArrays, "tavel");
           console.log("searchResult:", searchResult);
         }
       } catch (error) {
@@ -71,6 +72,7 @@ const Product = () => {
 
   return (
     <div>
+      <Categories categoriesArr={categoriesArr} />
       <h1>Product Details</h1>
       {product ? (
         <>
