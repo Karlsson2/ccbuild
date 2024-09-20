@@ -102,7 +102,7 @@ function Categories() {
   return (
     <>
       {/* Status bar container */}
-      <Container
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -150,15 +150,19 @@ function Categories() {
             </Col>
           </Row>
         </Container>
-      </Container>
+      </div>
 
       {/* Category buttons container */}
-      <Container
+
+      <div
         style={{
+          height: "204px",
+          overflowY: "scroll",
           display: "flex",
-          flexDirection: "row",
           flexWrap: "wrap",
           gap: "4px",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
         }}
       >
         {/* If categoryStep = 0, then display */}
@@ -167,23 +171,10 @@ function Categories() {
             {categoriesArr.map((category) => (
               //   index 2 is the id, index 1 is the image, index 0 is the category name
               <Button
+                className="category-btn"
                 variant="primary"
                 key={category[2]}
                 onClick={handleCategory1Click}
-                style={{
-                  backgroundColor: "var(--category-bg-gray)",
-                  borderColor: "var(--category-border-gray)",
-                  borderRadius: "32px",
-                  color: "var(--category-text-black)",
-                  padding: "8px, 16px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "16px",
-                  fontFamily: "Poppins",
-                  fontSize: "16px",
-                  fonWeight: "regular",
-                }}
               >
                 <Image
                   src={`${baseUrl}${bucketFolder}${category[1]}`}
@@ -208,23 +199,10 @@ function Categories() {
               if (category[0] === selectedCategory1) {
                 return category[3].map((subcategory) => (
                   <Button
+                    className="category-btn"
                     variant="primary"
                     key={subcategory[1]}
                     onClick={handleCategory2Click}
-                    style={{
-                      backgroundColor: "var(--category-bg-gray)",
-                      borderColor: "var(--category-border-gray)",
-                      borderRadius: "32px",
-                      color: "var(--category-text-black)",
-                      padding: "8px, 16px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: "16px",
-                      fontFamily: "Poppins",
-                      fontSize: "16px",
-                      fonWeight: "regular",
-                    }}
                   >
                     {subcategory[0]}
                     <Image
@@ -249,23 +227,9 @@ function Categories() {
                     if (subcategory[1][0][0] === "") {
                       return (
                         <Button
-                          variant="primary"
+                          className="selected-category-btn"
                           key={subcategory[1]}
                           onClick={null}
-                          style={{
-                            backgroundColor: "var(--status-green)",
-                            borderColor: "var(--status-green)",
-                            borderRadius: "32px",
-                            color: "white",
-                            padding: "8px, 16px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            gap: "16px",
-                            fontFamily: "Poppins",
-                            fontSize: "16px",
-                            fonWeight: "regular",
-                          }}
                         >
                           {selectedCategory2}
                         </Button>
@@ -273,23 +237,10 @@ function Categories() {
                     }
                     return subcategory[1].map((subsubcategory) => (
                       <Button
+                        className="category-btn"
                         variant="primary"
                         key={subsubcategory[1]}
                         onClick={handleCategory3Click}
-                        style={{
-                          backgroundColor: "var(--category-bg-gray)",
-                          borderColor: "var(--category-border-gray)",
-                          borderRadius: "32px",
-                          color: "var(--category-text-black)",
-                          padding: "8px, 16px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          gap: "16px",
-                          fontFamily: "Poppins",
-                          fontSize: "16px",
-                          fonWeight: "regular",
-                        }}
                       >
                         {subsubcategory[0]}
                       </Button>
@@ -305,29 +256,12 @@ function Categories() {
         {/* If categoryStep = 3, then display a single button with selectedCategory3 as content */}
         {categoryStep === 3 && (
           <>
-            <Button
-              variant="primary"
-              onClick={null}
-              style={{
-                backgroundColor: "var(--status-green)",
-                borderColor: "var(--status-green)",
-                borderRadius: "32px",
-                color: "white",
-                padding: "8px, 16px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: "16px",
-                fontFamily: "Poppins",
-                fontSize: "16px",
-                fonWeight: "regular",
-              }}
-            >
+            <Button className="selected-category-btn" onClick={null}>
               {selectedCategory3}
             </Button>
           </>
         )}
-      </Container>
+      </div>
     </>
   );
 }

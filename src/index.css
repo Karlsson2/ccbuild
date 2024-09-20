@@ -19,6 +19,7 @@
   --category-border-gray: #c5c5c5;
   --category-text-black: #000000;
   --status-green: #44a036;
+  --blue: #488ac6;
 }
 
 a {
@@ -147,7 +148,7 @@ button:focus-visible {
   padding-right: 0px !important;
 }
 
-/* Categories status bar */
+/* Categories component */
 .cat.sibling {
   display: inline-block;
   margin: 0;
@@ -172,7 +173,7 @@ button:focus-visible {
 }
 .cat.sibling.selected > div.status-header {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .cat.siblings-row {
@@ -185,6 +186,54 @@ div.status-header {
   padding-left: 8px;
   padding-right: 8px;
   font-family: "Inter";
+  font-size: 18px;
   width: 100%;
   text-align: center;
+}
+
+.category-btn,
+.selected-category-btn {
+  background-color: var(--category-bg-gray);
+  border-color: var(--category-border-gray);
+  border-radius: 32px;
+  color: var(--category-text-black);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: regular;
+  height: 48px;
+}
+
+.selected-category-btn,
+.selected-category-btn:hover,
+.category-btn:hover {
+  background-color: var(--status-green);
+  border-color: var(--status-green);
+  color: white;
+}
+
+/* Create Product */
+label.create-prod {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+button.cp {
+  border-radius: 32px;
+  border: 1px solid var(--blue);
+  background-color: var(--blue);
+  color: white;
+  padding: 8px 32px;
+  font-size: 18px;
+  font-weight: normal;
+  transition: all 0.25s;
+}
+
+button.cp.cancel {
+  color: var(--blue);
+  background-color: transparent;
 }
