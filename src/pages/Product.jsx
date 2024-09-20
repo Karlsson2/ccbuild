@@ -4,8 +4,6 @@ import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
 import Items from "../components/Items";
 import Button from "react-bootstrap/Button";
-import searchCategories from "../utils/searchCategories";
-import createCategoriesArray from "../utils/createCategoriesArray";
 import Categories from "../components/Categories";
 
 const Product = () => {
@@ -17,33 +15,8 @@ const Product = () => {
   const imageUrl = `${baseUrl}${bucketFolder}${product.image_url}`;
   const [items, setItems] = useState(null);
   const [showItems, setShowItems] = useState(null); // Show specific item.id for <Items> component
-  const [categoriesArr, setCategoriesArr] = useState(null);
 
   console.log(product);
-
-  // use effect for fetching categories from categories table
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        let { data: categories, error } = await supabase
-          .from("categories")
-          .select("*");
-        if (error) {
-          console.error("Error fetching data:", error);
-        } else {
-          console.log("Fetched categories:", categories);
-          const nestedArrays = createCategoriesArray(categories);
-          setCategoriesArr(nestedArrays);
-          // Test the searchCategories function
-          // const searchResult = searchCategories(nestedArrays, "tavel");
-          //console.log("searchResult:", searchResult);
-        }
-      } catch (error) {
-        console.error("Unexpected error:", error);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +48,6 @@ const Product = () => {
       <h1>Product Details</h1>
       {product ? (
         <>
-          {categoriesArr && <Categories categoriesArr={categoriesArr} />}
           <div>
             <img src={imageUrl} alt="" />
           </div>

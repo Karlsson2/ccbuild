@@ -1,14 +1,42 @@
 import { useState, useEffect } from "react";
+import createCategoriesArray from "../utils/createCategoriesArray";
+import { supabase } from "../utils/supabase";
 import searchCategories from "../utils/searchCategories";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 
-function Categories({ categoriesArr }) {
+function Categories() {
+  const [categoriesArr, setCategoriesArr] = useState(null);
   const [categoryStep, setCategoryStep] = useState(0);
   const [selectedCategory1, setSelectedCategory1] = useState(null);
   const [selectedCategory2, setSelectedCategory2] = useState(null);
   const [selectedCategory3, setSelectedCategory3] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_CATEGORY_FOLDER;
+
+  // use effect for fetching categories from categories table
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        let { data: categories, error } = await supabase
+          .from("categories")
+          .select("*");
+        if (error) {
+          console.error("Error fetching data:", error);
+        } else {
+          console.log("Fetched categories:", categories);
+          const nestedArrays = createCategoriesArray(categories);
+          setCategoriesArr(nestedArrays);
+          // Test the searchCategories function
+          // const searchResult = searchCategories(nestedArrays, "tavel");
+          //console.log("searchResult:", searchResult);
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleCategory1Click = (e) => {
     const category1 = e.target.innerText;
@@ -27,6 +55,49 @@ function Categories({ categoriesArr }) {
     setSelectedCategory3(category3);
     setCategoryStep(3);
   };
+
+  // Use effect to set selectedCategoryId when necessary
+  useEffect(() => {
+    if (categoryStep === 2 && selectedCategory2) {
+      categoriesArr.map((category) => {
+        if (category[0] === selectedCategory1) {
+          category[3].map((subcategory) => {
+            if (subcategory[0] === selectedCategory2) {
+              if (subcategory[1][0][0] === "") {
+                setSelectedCategoryId(subcategory[1]);
+              }
+              return subcategory[1].map((subsubcategory) => {
+                if (subsubcategory[0] === selectedCategory3) {
+                  setSelectedCategoryId(subsubcategory[1]);
+                }
+                return null;
+              });
+            }
+            return null;
+          });
+        }
+        return null;
+      });
+    }
+    if (categoryStep === 3 && selectedCategory3) {
+      categoriesArr.map((category) => {
+        if (category[0] === selectedCategory1) {
+          category[3].map((subcategory) => {
+            if (subcategory[0] === selectedCategory2) {
+              subcategory[1].map((subsubcategory) => {
+                if (subsubcategory[0] === selectedCategory3) {
+                  setSelectedCategoryId(subsubcategory[1]);
+                }
+                return null;
+              });
+            }
+            return null;
+          });
+        }
+        return null;
+      });
+    }
+  }, [categoryStep, selectedCategory1, selectedCategory2, selectedCategory3]);
 
   return (
     <>
@@ -91,7 +162,7 @@ function Categories({ categoriesArr }) {
         }}
       >
         {/* If categoryStep = 0, then display */}
-        {categoryStep === 0 && (
+        {categoryStep === 0 && categoriesArr != null && (
           <>
             {categoriesArr.map((category) => (
               //   index 2 is the id, index 1 is the image, index 0 is the category name
@@ -175,11 +246,7 @@ function Categories({ categoriesArr }) {
                 return category[3].map((subcategory) => {
                   if (subcategory[0] === selectedCategory2) {
                     // If subcategory[1] only contains empty strings, return a single button
-                    if (
-                      subcategory[1].every(
-                        (subsubcategory) => subsubcategory[0] === ""
-                      )
-                    ) {
+                    if (subcategory[1][0][0] === "") {
                       return (
                         <Button
                           variant="primary"
