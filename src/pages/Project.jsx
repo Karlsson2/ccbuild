@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import EditProject from "../components/EditProject";
+import { Container, Row, Col, Button, Stack, Modal } from "react-bootstrap";
 
 
 const Project = () => {
@@ -58,8 +58,8 @@ const Project = () => {
   };
 
   const handleSaveProject = (updatedProject) => {
-    setProject(updatedProject); // Update the project state with new data
-    setShowEditProject(false); // Close the edit form after saving
+    setProject(updatedProject); 
+    setShowEditProject(false); 
   };
 
   return (
@@ -70,11 +70,19 @@ const Project = () => {
         <div>
         <Button onClick={handleOpenEditProject}>Edit</Button>
             {showEditProject && (
-              <EditProject
-                project={project}
-                onClose={handleCloseEditProject}
-                onSave={handleSaveProject}
-              />
+              <Modal size="xl" show={showEditProject} onHide={handleCloseEditProject}>
+                
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Project</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <EditProject
+                  project={project}
+                  onClose={handleCloseEditProject}
+                  onSave={handleSaveProject}
+                />
+              </Modal.Body>
+            </Modal>
             )}
           <Button variant="danger" onClick={handleDelete}>
             Radera

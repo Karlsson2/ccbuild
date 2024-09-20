@@ -2,16 +2,12 @@
 import { fetchImage, uploadProjectImage, uploadProductImage, saveImgPathToDb } from "../utils/handleSupabaseImage";
 import { supabase } from "../utils/supabase";
 import { useState } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button"
-import Stack from "react-bootstrap/Stack";
-/* import "./CreateProject.css";  */
+import { Container, Row, Col, Button, Stack, Modal } from "react-bootstrap";
 
-export default function CreateProject({ handleCloseCreateProject }) {
+export default function CreateProject({ onClose }) {
   const [name, setName] = useState('');
   const [country, setCountry] = useState('Sverige');
   const [region, setRegion] = useState('Göteborg');
@@ -77,8 +73,8 @@ export default function CreateProject({ handleCloseCreateProject }) {
     if (error) {
       console.error('Error inserting project: ', error);
     } else {
-      console.log('Project successfully inserted');
-      handleCloseCreateProject();
+        onClose();
+        console.log('Project successfully inserted');
     }
   };
 
@@ -378,9 +374,9 @@ export default function CreateProject({ handleCloseCreateProject }) {
               </Row>
               <Row>
                 <Stack direction="horizontal" gap={3}>
-                    <Button type="submit" className="btn btn-primary mb-2 ml-2">Submit</Button>
+                    <Button type="submit" className="btn btn-primary mb-2 ml-2" onClick={handleSubmit}>Submit</Button>
                 
-                    <Button type="button" className="btn btn-secondary mb-2 ml-2" onClick={handleCloseCreateProject}>Close</Button>
+                    <Button type="button" className="btn btn-secondary mb-2 ml-2" onClick={onClose}>Close</Button>
                 </Stack>
             </Row>
             </form>

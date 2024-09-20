@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Container, Row, Col, Button, Stack } from "react-bootstrap";
+import { Container, Row, Col, Button, Stack, Modal } from "react-bootstrap";
 
 
 export default function EditProject ({ project, onClose, onSave }) {
