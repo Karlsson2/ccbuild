@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase";
-import { Link } from "react-router-dom";
 import CreateProject from "../components/CreateProject";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

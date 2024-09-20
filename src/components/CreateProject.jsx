@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Container, Row, Col, Button, Stack, Modal } from "react-bootstrap";
+import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 
 export default function CreateProject({ onClose }) {
   const [name, setName] = useState('');

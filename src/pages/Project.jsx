@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
 import EditProject from "../components/EditProject";
-import { Container, Row, Col, Button, Stack, Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 
 
 const Project = () => {
