@@ -61,6 +61,7 @@ button:focus-visible {
 .project-card {
   border: unset !important;
   padding: 0px !important;
+  width: 100%;
 }
 .border-radius {
   border-radius: 5px !important;
