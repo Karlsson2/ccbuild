@@ -6,6 +6,7 @@ import Items from "../components/Items";
 import Button from "react-bootstrap/Button";
 import searchCategories from "../utils/searchCategories";
 import createCategoriesArray from "../utils/createCategoriesArray";
+import Categories from "../components/Categories";
 
 const Product = () => {
   const { productId } = useParams();
@@ -34,8 +35,8 @@ const Product = () => {
           const nestedArrays = createCategoriesArray(categories);
           setCategoriesArr(nestedArrays);
           // Test the searchCategories function
-          const searchResult = searchCategories(nestedArrays, "inred");
-          console.log("searchResult:", searchResult);
+          // const searchResult = searchCategories(nestedArrays, "tavel");
+          //console.log("searchResult:", searchResult);
         }
       } catch (error) {
         console.error("Unexpected error:", error);
@@ -74,6 +75,7 @@ const Product = () => {
       <h1>Product Details</h1>
       {product ? (
         <>
+          {categoriesArr && <Categories categoriesArr={categoriesArr} />}
           <div>
             <img src={imageUrl} alt="" />
           </div>
