@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
+import CreateProduct from "../components/CreateProduct";
+import { Button } from "react-bootstrap";
 import EditProject from "../components/EditProject";
 import { Button, Modal } from "react-bootstrap";
+
 
 
 const Project = () => {
@@ -14,7 +17,9 @@ const Project = () => {
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PRODUCT_IMAGE_FOLDER;
   const [products, setProducts] = useState(null);
+  const [showCreateProduct, setShowCreateProduct] = useState(false);
   const [showEditProject, setShowEditProject] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +65,16 @@ const Project = () => {
   const handleSaveProject = (updatedProject) => {
     setProject(updatedProject); 
     setShowEditProject(false); 
+  };
+
+  const handleOpenCreateProduct = () => {
+    setShowCreateProduct(true);
+  };
+
+  const handleCloseCreateProduct = () => {
+    console.log("Closing CreateProduct form");
+
+    setShowCreateProduct(false);
   };
 
   return (
@@ -130,6 +145,14 @@ const Project = () => {
         </>
       ) : (
         <p>No project data found. Please try again.</p>
+      )}
+      <button onClick={handleOpenCreateProduct}>Skapa Ny Produkt</button>
+      {showCreateProduct && (
+        <CreateProduct
+          handleCloseCreateProduct={handleCloseCreateProduct}
+          project_id={project.id}
+          projectName={project.name}
+        />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 export default function createCategoriesArray(categoriesData) {
   // Create a nested array from the categories data
   // Each object in the array has four pertinent properties:
-  // category_1, category_2, category_3, categoryid
+  // id, category_1, category_2, category_3, categoryid and image_url
   // Format the data to be used in the searchCategories function
 
   // Create an array to hold the nested arrays
@@ -12,12 +12,14 @@ export default function createCategoriesArray(categoriesData) {
   for (let i = 0; i < categoriesData.length; i++) {
     // Check if the category_1 is already in the nestedArrays
     let category1 = categoriesData[i].category_1;
+    let categoryId = categoriesData[i].id;
+    let imageUrl = categoriesData[i].image_url;
     let category1Index = nestedArrays.findIndex(
       (element) => element[0] === category1
     );
     // If the category_1 is not found in the nestedArrays, add it
     if (category1Index === -1) {
-      nestedArrays.push([category1]);
+      nestedArrays.push([category1, imageUrl, categoryId]);
     }
   }
   // For each category in nestedArrays, find each unique value in category_2 with a matching category_1
@@ -43,7 +45,7 @@ export default function createCategoriesArray(categoriesData) {
   // add as a subarray to the category_2 array
   for (let i = 0; i < nestedArrays.length; i++) {
     let category1 = nestedArrays[i][0];
-    let category2Array = nestedArrays[i][1];
+    let category2Array = nestedArrays[i][3];
     for (let j = 0; j < category2Array.length; j++) {
       let category2 = category2Array[j][0];
       let category3Array = [];
