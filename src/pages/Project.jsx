@@ -3,7 +3,6 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
 import CreateProduct from "../components/CreateProduct";
-import { Button } from "react-bootstrap";
 import EditProject from "../components/EditProject";
 import { Button, Modal } from "react-bootstrap";
 
