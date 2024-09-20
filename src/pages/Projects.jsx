@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase";
-import { Link } from "react-router-dom";
 import CreateProject from "../components/CreateProject";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal"
+import Button from "react-bootstrap/Button"
 import Accordion from "react-bootstrap/Accordion";
 import ProjectCard from "../components/ProjectCard";
 
@@ -42,24 +43,32 @@ const Projects = () => {
   };
 
   const handleCloseCreateProject = () => {
+    console.log('clicked close')
     setShowCreateProject(false);
+    setProjects(projects);
+    
   };
 
   return (
     <>
       <Container>
-        <Container>
-          <Row>
+      <Container>
+          <Row className="mt-3">
             <Col>
               <h1>Alla Projekt</h1>
             </Col>
-            <Col>
-              <button onClick={handleOpenCreateProject}>
+            <Col className="px-4 d-flex justify-content-end">
+              <Button onClick={handleOpenCreateProject}>
                 Skapa Nytt Projekt
-              </button>
-              {showCreateProject && (
-                <CreateProject onClose={handleCloseCreateProject} />
-              )}
+              </Button>
+              <Modal size="xl" show={showCreateProject} onHide={handleCloseCreateProject}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Skapa Nytt Projekt</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <CreateProject onClose={handleCloseCreateProject} />
+                </Modal.Body>
+              </Modal>
             </Col>
           </Row>
         </Container>

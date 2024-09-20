@@ -3,8 +3,8 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
 import CreateProduct from "../components/CreateProduct";
-import { Button } from "react-bootstrap";
 import EditProject from "../components/EditProject";
+import { Button, Modal } from "react-bootstrap";
 
 
 
@@ -62,8 +62,8 @@ const Project = () => {
   };
 
   const handleSaveProject = (updatedProject) => {
-    setProject(updatedProject); // Update the project state with new data
-    setShowEditProject(false); // Close the edit form after saving
+    setProject(updatedProject); 
+    setShowEditProject(false); 
   };
 
   const handleOpenCreateProduct = () => {
@@ -84,11 +84,19 @@ const Project = () => {
         <div>
         <Button onClick={handleOpenEditProject}>Edit</Button>
             {showEditProject && (
-              <EditProject
-                project={project}
-                onClose={handleCloseEditProject}
-                onSave={handleSaveProject}
-              />
+              <Modal size="xl" show={showEditProject} onHide={handleCloseEditProject}>
+                
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Project</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <EditProject
+                  project={project}
+                  onClose={handleCloseEditProject}
+                  onSave={handleSaveProject}
+                />
+              </Modal.Body>
+            </Modal>
             )}
           <Button variant="danger" onClick={handleDelete}>
             Radera
