@@ -60,5 +60,8 @@ export const egenskaperPollare = [
     "Ljuskälla",
     ["Ej Angivet", "Halogen", "LED", "Kompaktlysrör", "Metallhalogen"],
   ],
-  ["Färgtemperatur", ["2700K", "3000K", "3500K", "4000K", "5000K"]],
+  [
+    "Färgtemperatur",
+    ["Ej Angivet", "2700K", "3000K", "3500K", "4000K", "5000K"],
+  ],
 ];
