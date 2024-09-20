@@ -46,7 +46,6 @@ export default function CreateProduct({
   const [enr, setEnr] = useState("");
   const [bsab, setBsab] = useState("");
   const [bkfour, setBkfour] = useState("");
-  const [file_url, setFile] = useState("");
 
   const [purchase_price, setPurchasePrice] = useState("");
   const [external_price, setExternalPrice] = useState("");
@@ -59,6 +58,15 @@ export default function CreateProduct({
   const [can_send, setCanSend] = useState(false);
   const [comment, setComment] = useState("");
   const [contact_person, setContactPerson] = useState("");
+
+  const [selectedAttributes, setSelectedAttributes] = useState({});
+
+  const handleRadioChange = (attribute, option) => {
+    setSelectedAttributes((prev) => ({
+      ...prev,
+      [attribute]: option,
+    }));
+  };
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -111,6 +119,7 @@ export default function CreateProduct({
         can_send,
         comment,
         contact_person,
+        ...selectedAttributes,
       },
     ]);
     if (error) {
@@ -520,6 +529,10 @@ export default function CreateProduct({
                               id={`${attribute}-${option}`}
                               name={attribute}
                               value={option}
+                              defaultChecked={idx === 0}
+                              onChange={() =>
+                                handleRadioChange(attribute, option)
+                              }
                             />
                             <label
                               style={{ marginLeft: "1rem" }}
@@ -540,6 +553,7 @@ export default function CreateProduct({
                   </Col>
                 )}
               </Row>
+
               <h2>Marknadsplats</h2>
               <Row>
                 <Col>
