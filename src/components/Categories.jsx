@@ -163,6 +163,7 @@ function Categories() {
           gap: "4px",
           justifyContent: "flex-start",
           alignItems: "flex-start",
+          alignContent: "flex-start",
         }}
       >
         {/* If categoryStep = 0, then display */}

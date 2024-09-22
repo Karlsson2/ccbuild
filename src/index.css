@@ -228,6 +228,7 @@ button.cp {
   background-color: var(--blue);
   color: white;
   padding: 8px 32px;
+  margin-right: 20px;
   font-size: 18px;
   font-weight: normal;
   transition: all 0.25s;
