@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
 import Categories from "../components/Categories";
 import ImageUploader from "../components/ImageUploader";
+import searchCategories from "../utils/searchCategories";
 
 const CreateProduct = () => {
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
@@ -48,10 +49,6 @@ const CreateProduct = () => {
     setProductName(event.target.value);
   };
 
-  const handleCategoryChange = (event) => {
-    setSelectedProductCategory(event.target.value);
-  };
-
   const handleProductDescriptionChange = (event) => {
     setProductDescription(event.target.value);
   };
@@ -77,7 +74,7 @@ const CreateProduct = () => {
         project_id: projectId, // Link product to the project
         product_name: productName,
         image_url: imagePath,
-        category_id: selectedProductCategory,
+        category_id: selectedCategoryId,
         description: productDescription,
       },
     ]);
@@ -173,26 +170,11 @@ const CreateProduct = () => {
             </div>
           </Form.Group>
 
-          <Form.Group controlId="formProductCategory" className="mb-4">
-            <Form.Label className="create-prod">Produktkategori*</Form.Label>
-            <p>Sök eller välj från kategorilistan.</p>
-            <div className="search-box bg-gray border-gray br-8">
-              <img
-                src={`${baseUrl}/public/search.png`}
-                alt="Sök"
-                style={{ margin: "0 16px" }}
-              />
-              <Form.Control
-                className="search-hide"
-                type="text"
-                value={selectedProductCategory ? selectedProductCategory : ""}
-                onChange={handleCategoryChange}
-                placeholder="Sök kategorier..."
-              />
-            </div>
-          </Form.Group>
-
-          <Categories setSelectedCategoryId={setSelectedCategoryId} />
+          <Categories
+            selectedProductCategory={selectedProductCategory}
+            setSelectedProductCategory={setSelectedProductCategory}
+            setSelectedCategoryId={setSelectedCategoryId}
+          />
 
           <Form.Group controlId="formProductName" className="mb-4">
             <Form.Label className="create-prod">Produktnamn*</Form.Label>

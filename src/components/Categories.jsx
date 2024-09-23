@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import createCategoriesArray from "../utils/createCategoriesArray";
 import { supabase } from "../utils/supabase";
 import searchCategories from "../utils/searchCategories";
-import { Container, Row, Col, Image, Button } from "react-bootstrap";
+import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
 
-function Categories({ setSelectedCategoryId }) {
+function Categories({
+  selectedProductCategory,
+  setSelectedProductCategory,
+  setSelectedCategoryId,
+}) {
   const [categoriesArr, setCategoriesArr] = useState(null);
   const [categoryStep, setCategoryStep] = useState(0);
   const [selectedCategory1, setSelectedCategory1] = useState(null);
@@ -36,6 +40,16 @@ function Categories({ setSelectedCategoryId }) {
     };
     fetchCategories();
   }, []);
+
+  const handleCategoryChange = (event) => {
+    setSelectedProductCategory(event.target.value);
+    // If the search input is longer than 4 characters, search for categories
+    if (event.target.value.length > 4) {
+      const searchResult = searchCategories(categoriesArr, event.target.value);
+      //setCategoriesArr(searchResult);
+      console.log("searchResult:", searchResult);
+    }
+  };
 
   const handleCategory1Click = (e) => {
     const category1 = e.target.innerText;
@@ -100,6 +114,25 @@ function Categories({ setSelectedCategoryId }) {
 
   return (
     <>
+      {/* Search box */}
+      <Form.Group controlId="formProductCategory" className="mb-4">
+        <Form.Label className="create-prod">Produktkategori*</Form.Label>
+        <p>Sök eller välj från kategorilistan.</p>
+        <div className="search-box bg-gray border-gray br-8">
+          <img
+            src={`${baseUrl}/public/search.png`}
+            alt="Sök"
+            style={{ margin: "0 16px" }}
+          />
+          <Form.Control
+            className="search-hide"
+            type="text"
+            value={selectedProductCategory ? selectedProductCategory : ""}
+            onChange={handleCategoryChange}
+            placeholder="Sök kategorier..."
+          />
+        </div>
+      </Form.Group>
       {/* Status bar container */}
       <div
         style={{
@@ -169,12 +202,12 @@ function Categories({ setSelectedCategoryId }) {
         {/* If categoryStep = 0, then display */}
         {categoryStep === 0 && categoriesArr != null && (
           <>
-            {categoriesArr.map((category) => (
+            {categoriesArr.map((category, index) => (
               //   index 2 is the id, index 1 is the image, index 0 is the category name
               <Button
                 className="category-btn"
                 variant="primary"
-                key={category[2]}
+                key={`${category[2]}${index}`}
                 onClick={handleCategory1Click}
               >
                 <Image
@@ -228,6 +261,7 @@ function Categories({ setSelectedCategoryId }) {
                     if (subcategory[1][0][0] === "") {
                       return (
                         <Button
+                          style={{ cursor: "default" }}
                           className="selected-category-btn"
                           key={subcategory[1]}
                           onClick={null}
@@ -257,7 +291,11 @@ function Categories({ setSelectedCategoryId }) {
         {/* If categoryStep = 3, then display a single button with selectedCategory3 as content */}
         {categoryStep === 3 && (
           <>
-            <Button className="selected-category-btn" onClick={null}>
+            <Button
+              className="selected-category-btn"
+              onClick={null}
+              style={{ cursor: "default" }}
+            >
               {selectedCategory3}
             </Button>
           </>
