@@ -9,6 +9,7 @@ function Categories({
   setSelectedProductCategory,
   setSelectedCategoryId,
 }) {
+  const [searchTerm, setSearchTerm] = useState("");
   const [categoriesArr, setCategoriesArr] = useState(null);
   const [categoryStep, setCategoryStep] = useState(0);
   const [selectedCategory1, setSelectedCategory1] = useState(null);
@@ -44,8 +45,8 @@ function Categories({
     fetchCategories();
   }, []);
 
-  const handleCategoryChange = (event) => {
-    setSelectedProductCategory(event.target.value);
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
     // If the search input is longer than 4 characters, search for categories
     // If the search input is longer than 4 characters, search for categories
     if (event.target.value.length > 4) {
@@ -73,8 +74,11 @@ function Categories({
   }, []);
 
   // Handle selecting a category from the dropdown
+  // category is a subsubcategory array, e.g. ["Pollare", 999]
   const handleCategorySelect = (category) => {
-    setSelectedProductCategory(category.name); // Or however your data is structured
+    setSearchTerm(""); // Clear the search term
+    setSelectedProductCategory(category[0]);
+    setSelectedCategoryId(category[1]);
     setShowDropdown(false); // Hide dropdown after selection
   };
 
@@ -154,8 +158,8 @@ function Categories({
           <Form.Control
             className="search-hide"
             type="text"
-            value={selectedProductCategory ? selectedProductCategory : ""}
-            onChange={handleCategoryChange}
+            value={searchTerm ? searchTerm : ""}
+            onChange={handleSearchTermChange}
             placeholder="Sök kategorier..."
           />
           {/* Conditionally render the dropdown */}
@@ -170,9 +174,7 @@ function Categories({
                       return (
                         <li
                           key={index}
-                          onClick={() =>
-                            handleCategorySelect(subsubcategory[0])
-                          }
+                          onClick={() => handleCategorySelect(subsubcategory)}
                         >
                           {category[0]}
                           <img

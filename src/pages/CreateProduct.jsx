@@ -60,7 +60,7 @@ const CreateProduct = () => {
       alert("Please provide both a product name and an image.");
       return;
     }
-    // Console log what we will try to save
+    //Console log what we will try to save
     // console.log("Saving product with the following data:");
     // console.log("Project ID:", projectId);
     // console.log("Product name:", productName);
@@ -181,10 +181,9 @@ const CreateProduct = () => {
             <Form.Control
               className="bg-gray border-gray br-8"
               type="text"
-              value={productName ? productName : ""}
+              value={selectedProductCategory ? selectedProductCategory : ""}
               placeholder={"Fyll i produktnamn"}
               onChange={handleProductNameChange}
-              required
             />
           </Form.Group>
           <Form.Group controlId="formProductDescription" className="mb-4">
