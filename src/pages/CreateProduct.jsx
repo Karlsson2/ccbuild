@@ -56,17 +56,18 @@ const CreateProduct = () => {
   // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!productName || !imagePath) {
-      alert("Please provide both a product name and an image.");
-      return;
-    }
+    // if (!productName || !imagePath) {
+    //   alert("Please provide both a product name and an image.");
+    //   return;
+    // }
+
     //Console log what we will try to save
-    // console.log("Saving product with the following data:");
-    // console.log("Project ID:", projectId);
-    // console.log("Product name:", productName);
-    // console.log("Image path:", imagePath);
-    // console.log("Category ID:", selectedCategoryId);
-    // console.log("Description:", productDescription);
+    console.log("Saving product with the following data:");
+    console.log("Project ID:", projectId);
+    console.log("Product name:", productName);
+    console.log("Image path:", imagePath);
+    console.log("Category ID:", selectedCategoryId);
+    console.log("Description:", productDescription);
 
     // Now save the product with its image URL to the database
     const { data, error } = await supabase.from("products").insert([
@@ -97,124 +98,138 @@ const CreateProduct = () => {
   };
 
   return (
-    <div
-      className="mt-5"
-      style={{
-        fontFamily: "Inter",
-      }}
-    >
-      <Container>
-        <h1
-          style={{
-            fontSize: "48px",
-            fontWeight: "bold",
-            color: "var(--blue)",
-          }}
-        >
-          Lägg till ny produkt
-        </h1>
-        <h2
-          style={{
-            fontSize: "36px",
-            fontWeight: "bold",
-            margin: "20px 0",
-          }}
-        >
-          Generell information
-        </h2>
-        <p
-          style={{
-            fontSize: "18px",
-            fontWeight: "normal",
-          }}
-        >
-          Här fyller du i generell information om produkten så som vilken
-          kategori den tillhör och en beskrivning.
-        </p>
-      </Container>
-      <Container>
-        <Form>
-          <Form.Group controlId="formProjectName" className="mb-4">
-            <Form.Label className="create-prod">Projekt*</Form.Label>
-            <Form.Control
-              className="bg-gray border-gray br-8"
-              type="text"
-              value={projectName ? projectName : ""}
-              onChange={handleProjectNameChange}
-            />
-          </Form.Group>
+    <Container>
+      <div
+        className="mt-5"
+        style={{
+          fontFamily: "Inter",
+          width: "600px",
+        }}
+      >
+        <Container>
+          <h1
+            style={{
+              fontSize: "48px",
+              fontWeight: "bold",
+              color: "var(--blue)",
+            }}
+          >
+            Lägg till ny produkt
+          </h1>
+          <h2
+            style={{
+              fontSize: "36px",
+              fontWeight: "bold",
+              margin: "20px 0",
+            }}
+          >
+            Generell information
+          </h2>
+          <p
+            style={{
+              fontSize: "18px",
+              fontWeight: "normal",
+            }}
+          >
+            Här fyller du i generell information om produkten så som vilken
+            kategori den tillhör och en beskrivning.
+          </p>
+        </Container>
+        <Container>
+          <Form>
+            <Form.Group controlId="formProjectName" className="mb-4">
+              <Form.Label className="create-prod">Projekt*</Form.Label>
+              <Form.Control
+                className="bg-gray border-gray br-8"
+                type="text"
+                value={projectName ? projectName : ""}
+                onChange={handleProjectNameChange}
+                style={{ width: "305px" }}
+              />
+            </Form.Group>
 
-          <Form.Group className="mb-4">
-            <Form.Label className="create-prod">Produktbild</Form.Label>
-            {/* <p>Dra och släpp bilder här eller tryck för att bläddra lokalt</p> */}
-            <div
-              style={{
-                display: "flex",
-                gap: "16px",
-              }}
-            >
-              <ImageUploader onFileUpload={handleFileUpload} />
-              <div>
-                {/* Display the uploaded image */}
-                {imagePath && (
-                  <img
-                    src={imagePath}
-                    alt="Uppladdad produktbild"
-                    style={{
-                      height: "92px",
-                      width: "auto",
-                    }}
-                  />
-                )}
+            <Form.Group className="mb-4">
+              <Form.Label className="create-prod">Produktbild</Form.Label>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "16px",
+                }}
+              >
+                <ImageUploader onFileUpload={handleFileUpload} />
+                <div>
+                  {/* Display the uploaded image */}
+                  {imagePath && (
+                    <img
+                      src={imagePath}
+                      alt="Uppladdad produktbild"
+                      style={{
+                        height: "92px",
+                        width: "auto",
+                      }}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          </Form.Group>
+            </Form.Group>
 
-          <Categories
-            selectedProductCategory={selectedProductCategory}
-            setSelectedProductCategory={setSelectedProductCategory}
-            setSelectedCategoryId={setSelectedCategoryId}
-          />
+            <Categories
+              setSelectedProductCategory={setSelectedProductCategory}
+              setSelectedCategoryId={setSelectedCategoryId}
+              setProductName={setProductName}
+            />
 
-          <Form.Group controlId="formProductName" className="mb-4">
-            <Form.Label className="create-prod">Produktnamn*</Form.Label>
-            <Form.Control
-              className="bg-gray border-gray br-8"
-              type="text"
-              value={selectedProductCategory ? selectedProductCategory : ""}
-              placeholder={"Fyll i produktnamn"}
-              onChange={handleProductNameChange}
-            />
-          </Form.Group>
-          <Form.Group controlId="formProductDescription" className="mb-4">
-            <Form.Label className="create-prod">Produktbeskrivning</Form.Label>
-            <Form.Control
-              className="bg-gray border-gray br-8"
-              as="textarea"
-              rows="3"
-              value={productDescription ? productDescription : ""}
-              placeholder="Fyll i produktbeskrivning"
-              onChange={handleProductDescriptionChange}
-            />
-          </Form.Group>
-          <Button
-            variant="primary"
-            className={"cp save mb-5"}
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Spara
-          </Button>
-          <Button
-            variant="primary"
-            className={"cp cancel mb-5"}
-            onClick={handleCancel}
-          >
-            Avbryt
-          </Button>
-        </Form>
-      </Container>
-    </div>
+            <Form.Group controlId="formProductName" className="mb-4">
+              <Form.Label className="create-prod">Produktnamn*</Form.Label>
+              <Form.Control
+                className="bg-gray border-gray br-8"
+                type="text"
+                // for value, if productName is not null, use productName,
+                // else if selectedProductCategory is not null, use selectedProductCategory
+                // else use an empty string
+                value={
+                  productName
+                    ? productName
+                    : selectedProductCategory
+                    ? selectedProductCategory
+                    : ""
+                }
+                placeholder={"Fyll i produktnamn"}
+                onChange={handleProductNameChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formProductDescription" className="mb-4">
+              <Form.Label className="create-prod">
+                Produktbeskrivning
+              </Form.Label>
+              <Form.Control
+                className="bg-gray border-gray br-8"
+                as="textarea"
+                rows="3"
+                value={productDescription ? productDescription : ""}
+                placeholder="Fyll i produktbeskrivning"
+                onChange={handleProductDescriptionChange}
+              />
+            </Form.Group>
+            <Button
+              variant="primary"
+              className={"cp save mb-5"}
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Spara
+            </Button>
+            <Button
+              variant="primary"
+              className={"cp cancel mb-5"}
+              onClick={handleCancel}
+            >
+              Avbryt
+            </Button>
+          </Form>
+        </Container>
+      </div>
+    </Container>
   );
 };
 

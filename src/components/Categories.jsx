@@ -5,9 +5,9 @@ import searchCategories from "../utils/searchCategories";
 import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
 
 function Categories({
-  selectedProductCategory,
   setSelectedProductCategory,
   setSelectedCategoryId,
+  setProductName,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoriesArr, setCategoriesArr] = useState(null);
@@ -34,9 +34,6 @@ function Categories({
           console.log("Fetched categories:", categories);
           const nestedArrays = createCategoriesArray(categories);
           setCategoriesArr(nestedArrays);
-          // Test the searchCategories function
-          // const searchResult = searchCategories(nestedArrays, "tavel");
-          //console.log("searchResult:", searchResult);
         }
       } catch (error) {
         console.error("Unexpected error:", error);
@@ -47,9 +44,9 @@ function Categories({
 
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
-    // If the search input is longer than 4 characters, search for categories
-    // If the search input is longer than 4 characters, search for categories
-    if (event.target.value.length > 4) {
+    // If the search input is longer than 3 characters, search for categories
+    // If the search input is longer than 3 characters, search for categories
+    if (event.target.value.length > 3) {
       const searchResult = searchCategories(categoriesArr, event.target.value);
       //console.log("searchResult:", searchResult);
       setSearchResult(searchResult); // Save the search results
@@ -77,9 +74,44 @@ function Categories({
   // category is a subsubcategory array, e.g. ["Pollare", 999]
   const handleCategorySelect = (category) => {
     setSearchTerm(""); // Clear the search term
-    setSelectedProductCategory(category[0]);
     setSelectedCategoryId(category[1]);
+    getCategoryRow(category[1]); // Fetch the category row in categories table
     setShowDropdown(false); // Hide dropdown after selection
+    setSelectedProductCategory(null);
+  };
+
+  // Fetch the category row in categories table, and set all three levels of category
+  const getCategoryRow = async (categoryId) => {
+    try {
+      let { data: category, error } = await supabase
+        .from("categories")
+        .select("*")
+        .eq("categoryid", categoryId);
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        // Check if there is a third level of category
+        if (category[0].category_3 !== "") {
+          console.log("Fetched category:", category);
+          setSelectedCategory1(category[0].category_1);
+          setSelectedCategory2(category[0].category_2);
+          setSelectedCategory3(category[0].category_3);
+          setProductName(category[0].category_3);
+          setCategoryStep(3);
+        } else if (category[0].category_2 !== "") {
+          console.log("Fetched category:", category);
+          setSelectedCategory1(category[0].category_1);
+          setSelectedCategory2(category[0].category_2);
+          setSelectedCategory3(null);
+          setProductName(category[0].category_2);
+          setCategoryStep(2);
+        }
+        console.log("Will set selected category ID:", categoryId);
+        setSelectedCategoryId(categoryId);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
   };
 
   const handleCategory1Click = (e) => {
@@ -92,12 +124,14 @@ function Categories({
     const category2 = e.target.innerText;
     setSelectedCategory2(category2);
     setCategoryStep(2);
+    setProductName(category2);
   };
 
   const handleCategory3Click = (e) => {
     const category3 = e.target.innerText;
     setSelectedCategory3(category3);
     setCategoryStep(3);
+    setProductName(category3);
   };
 
   // Use effect to set selectedCategoryId when necessary
@@ -108,10 +142,15 @@ function Categories({
           category[3].map((subcategory) => {
             if (subcategory[0] === selectedCategory2) {
               if (subcategory[1][0][0] === "") {
-                setSelectedCategoryId(subcategory[1]);
+                console.log(
+                  "Only one subcategory, setting selected category ID, line 144",
+                  subcategory[1][0][1]
+                );
+                setSelectedCategoryId(subcategory[1][0][1]);
               }
               return subcategory[1].map((subsubcategory) => {
                 if (subsubcategory[0] === selectedCategory3) {
+                  console.log("Setting selected category ID, line 149");
                   setSelectedCategoryId(subsubcategory[1]);
                 }
                 return null;
@@ -130,6 +169,7 @@ function Categories({
             if (subcategory[0] === selectedCategory2) {
               subcategory[1].map((subsubcategory) => {
                 if (subsubcategory[0] === selectedCategory3) {
+                  console.log("Setting selected category ID, line 168");
                   setSelectedCategoryId(subsubcategory[1]);
                 }
                 return null;
