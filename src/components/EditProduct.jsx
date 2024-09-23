@@ -51,13 +51,13 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
 
   return (
     <Form>
-      <Row>
+      <Row className="mt-3 mb-3">
         <Col sm={3}>
           <Form.Group controlId="productName">
             <Form.Label>Produktnamn</Form.Label>
             <Form.Control
               type="text"
-              value={productName}
+              value={productName || "Ej Angivet"}
               onChange={(e) => setProductName(e.target.value)}
             />
           </Form.Group>
@@ -67,17 +67,19 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
             <Form.Label>Eget Id-nummer</Form.Label>
             <Form.Control
               type="text"
-              value={ownId}
+              value={ownId || "Ej Angivet"}
               onChange={(e) => setOwnId(e.target.value)}
             />
           </Form.Group>
         </Col>
-        <Col sm={3}>
+      </Row>
+      <Row className="mt-3 mb-3">
+        <Col sm={6}>
           <Form.Group controlId="description">
             <Form.Label>Produktbeskrivning</Form.Label>
             <Form.Control
               as="textarea"
-              value={description}
+              value={description || "Ej Angivet"}
               onChange={(e) => setDescription(e.target.value)}
             />
           </Form.Group>
@@ -87,9 +89,16 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
         <Col>
           <strong>Produktbilder</strong>
           <Row className="mt-3 mb-3">
-            <Col className="d-flex gap-3">
+            <Col className="d-flex flex-column flex-sm-row gap-3">
               {imageUrls.map((url, index) => (
-                <Form.Group controlId={`imageUrl${index}`} key={index}>
+                <Form.Group
+                  controlId={`imageUrl${index}`}
+                  key={index}
+                  style={{ textAlign: "center" }}
+                >
+                  <Form.Label>
+                    {index === 0 ? <p>Huvudbild</p> : <p>Bild {index + 1}</p>}
+                  </Form.Label>
                   <div
                     onClick={() =>
                       document.getElementById(`fileInput${index}`).click()
@@ -122,13 +131,16 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
           </Row>
         </Col>
       </Row>
-
-      <Button variant="primary" onClick={handleSave}>
-        Spara
-      </Button>
-      <Button variant="secondary" onClick={onCancel}>
-        Avbryt
-      </Button>
+      <Row className="mt-3 mb-3">
+        <Col className="gap-3 d-flex">
+          <Button variant="primary" onClick={handleSave}>
+            Spara
+          </Button>
+          <Button variant="secondary" onClick={onCancel}>
+            Avbryt
+          </Button>
+        </Col>
+      </Row>
     </Form>
   );
 };

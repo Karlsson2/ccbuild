@@ -181,8 +181,8 @@ const Product = () => {
 
   return (
     <Container>
-      <Row className="productHeader">
-        <Col sm={4}>
+      <Row className="productHeader mt-5 mb-5">
+        <Col md={4}>
           <Image
             fluid
             src={product.image_url1 ? product.image_url1 : noImageUrl}
@@ -191,26 +191,30 @@ const Product = () => {
             style={{ cursor: "pointer" }}
           />
         </Col>
-        <Col sm={8}>
-          <Row>
-            <Col>
-              <h1>{product.product_name}</h1>
-            </Col>
-          </Row>
-          <Row>
-            <Col>{category ? category.category_3 : "Loading category..."}</Col>{" "}
-          </Row>
-          <Row>
-            <Col>
-              {project ? (
-                <Link to={`/projects/${project.id}`}>{project.name}</Link>
-              ) : (
-                "Loading project..."
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+        <Col sm={8} className="d-flex flex-column justify-content-between">
+          <Col>
+            <Row>
+              <Col>
+                <h1>{product.product_name}</h1>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {category ? category.category_3 : "Loading category..."}
+              </Col>{" "}
+            </Row>
+            <Row>
+              <Col>
+                {project ? (
+                  <Link to={`/projects/${project.id}`}>{project.name}</Link>
+                ) : (
+                  "Loading project..."
+                )}
+              </Col>
+            </Row>
+          </Col>
+          <Row className="mt-3 mb-3">
+            <Col className="d-flex gap-3">
               <Button variant="primary" onClick={handleEditToggle}>
                 Redigera Produkt
               </Button>
@@ -231,27 +235,10 @@ const Product = () => {
         />
       ) : (
         <>
-          <Row>
-            <Col sm={3}>
-              <Row>
-                <Col>
-                  <strong>Produktnamn:</strong>
-                </Col>
-              </Row>
-              <Row>
-                <Col>{product.product_name}</Col>
-              </Row>
-            </Col>
-            <Col sm={3}>
-              <Row>
-                <Col>
-                  <strong>Projekt</strong>
-                </Col>
-              </Row>
-              <Row>
-                <Col>{project ? project.name : "Loading project..."}</Col>
-              </Row>
-            </Col>
+          <Row className="mt-3 mb-3">
+            <h2>Generell Information</h2>
+          </Row>
+          <Row className="mt-3 mb-3">
             <Col sm={3}>
               <Row>
                 <Col>
@@ -259,15 +246,15 @@ const Product = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>{product.own_id}</Col>
+                <Col>{!product.own_id ? "Ej Angivet" : product.own_id}</Col>
               </Row>
             </Col>
           </Row>
-          <Row>
+          <Row className="mt-3 mb-3">
             <Col>
               <Row>
                 <Col>
-                  <strong>ProduktBeskrivning</strong>
+                  <strong>Produktbeskrivning</strong>
                 </Col>
               </Row>
               <Row>
@@ -275,15 +262,15 @@ const Product = () => {
               </Row>
             </Col>
           </Row>
-          <Row>
+          <Row className="mt-3 mb-3">
             <Col>
-              <Row>
+              <Row className="mb-3">
                 <Col>
                   <strong>Produktbilder</strong>
                 </Col>
               </Row>
               <Row className="d-flex ">
-                <Col className="d-flex gap-3">
+                <Col className="d-flex flex-column flex-sm-row gap-3">
                   <Image
                     style={{
                       width: "100px",
@@ -338,6 +325,11 @@ const Product = () => {
           </Row>
         </>
       )}
+      <Row>
+        <Col>
+          <h2>Williamns component goes here</h2>
+        </Col>
+      </Row>
 
       {/* Confirm Delete Modal */}
       <Modal show={showConfirmModal} onHide={closeDeleteConfirmation}>
