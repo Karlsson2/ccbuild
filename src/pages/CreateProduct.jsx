@@ -176,12 +176,20 @@ const CreateProduct = () => {
           <Form.Group controlId="formProductCategory" className="mb-4">
             <Form.Label className="create-prod">Produktkategori*</Form.Label>
             <p>Sök eller välj från kategorilistan.</p>
-            <Form.Control
-              className="bg-gray border-gray br-8"
-              type="text"
-              value={selectedProductCategory ? selectedProductCategory : ""}
-              onChange={handleCategoryChange}
-            />
+            <div className="search-box bg-gray border-gray br-8">
+              <img
+                src={`${baseUrl}/public/search.png`}
+                alt="Sök"
+                style={{ margin: "0 16px" }}
+              />
+              <Form.Control
+                className="search-hide"
+                type="text"
+                value={selectedProductCategory ? selectedProductCategory : ""}
+                onChange={handleCategoryChange}
+                placeholder="Sök kategorier..."
+              />
+            </div>
           </Form.Group>
 
           <Categories setSelectedCategoryId={setSelectedCategoryId} />

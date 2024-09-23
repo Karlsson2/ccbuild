@@ -251,3 +251,20 @@ button.cp.cancel {
 .br-8 {
   border-radius: 8px;
 }
+
+/* Category search box */
+.search-box {
+  width: 480px;
+  height: 48px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  border: 1px solid var(--category-border-gray);
+}
+
+.search-hide {
+  border: none;
+  background-color: transparent;
+}
