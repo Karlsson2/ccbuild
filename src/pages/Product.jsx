@@ -8,11 +8,13 @@ const Product = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const product = location.state?.product;
-
+  const noImageUrl = import.meta.env.VITE_SUPABASE_NO_IMAGE_URL;
   const [project, setProject] = useState(location.state?.project || null);
   const [category, setCategory] = useState(null);
   const [categoryId, setCategoryId] = useState(product?.category_id || null);
   const [loading, setLoading] = useState(false);
+
+  console.log(noImageUrl);
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
@@ -122,6 +124,8 @@ const Product = () => {
     setSelectedImage("");
   };
 
+  console.log("No Image URL:", import.meta.env.VITE_SUPABASE_NO_IMAGE_URL);
+
   return (
     <Container>
       {product ? (
@@ -130,7 +134,7 @@ const Product = () => {
             <Col sm={4}>
               <Image
                 fluid
-                src={product.image_url1}
+                src={product.image_url1 ? product.image_url1 : noImageUrl}
                 alt={product.product_name}
                 onClick={() => handleImageClick(product.image_url1)}
                 style={{ cursor: "pointer" }}
@@ -227,9 +231,13 @@ const Product = () => {
                       padding: "0px",
                       cursor: "pointer",
                     }}
-                    src={product.image_url1}
+                    src={product.image_url1 ? product.image_url1 : noImageUrl}
                     alt={product.product_name}
-                    onClick={() => handleImageClick(product.image_url1)}
+                    onClick={() =>
+                      handleImageClick(
+                        product.image_url1 ? product.image_url1 : noImageUrl
+                      )
+                    }
                   />
                   <Image
                     style={{
@@ -239,9 +247,13 @@ const Product = () => {
                       padding: "0px",
                       cursor: "pointer",
                     }}
-                    src={product.image_url2}
+                    src={product.image_url2 ? product.image_url2 : noImageUrl}
                     alt={product.product_name}
-                    onClick={() => handleImageClick(product.image_url2)}
+                    onClick={() =>
+                      handleImageClick(
+                        product.image_url2 ? product.image_url2 : noImageUrl
+                      )
+                    }
                   />
                   <Image
                     style={{
@@ -251,9 +263,13 @@ const Product = () => {
                       padding: "0px",
                       cursor: "pointer",
                     }}
-                    src={product.image_url3}
+                    src={product.image_url3 ? product.image_url3 : noImageUrl}
                     alt={product.product_name}
-                    onClick={() => handleImageClick(product.image_url3)}
+                    onClick={() =>
+                      handleImageClick(
+                        product.image_url3 ? product.image_url3 : noImageUrl
+                      )
+                    }
                   />
                 </Col>
               </Row>
