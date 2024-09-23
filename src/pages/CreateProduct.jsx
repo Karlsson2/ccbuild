@@ -15,6 +15,7 @@ const CreateProduct = () => {
   const [productName, setProductName] = useState(null);
   const [productDescription, setProductDescription] = useState(null);
   const [selectedProductCategory, setSelectedProductCategory] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const location = useLocation();
   const [isUploading, setIsUploading] = useState(false);
 
@@ -39,6 +40,10 @@ const CreateProduct = () => {
     fetchData();
   }, []);
 
+  const handleProjectNameChange = (event) => {
+    setProjectName(event.target.value);
+  };
+
   const handleProductNameChange = (event) => {
     setProductName(event.target.value);
   };
@@ -59,12 +64,12 @@ const CreateProduct = () => {
       return;
     }
     // Console log what we will try to save
-    console.log("Saving product with the following data:");
-    console.log("Project ID:", projectId);
-    console.log("Product name:", productName);
-    console.log("Image path:", imagePath);
-    console.log("Category ID:", selectedProductCategory);
-    console.log("Description:", productDescription);
+    // console.log("Saving product with the following data:");
+    // console.log("Project ID:", projectId);
+    // console.log("Product name:", productName);
+    // console.log("Image path:", imagePath);
+    // console.log("Category ID:", selectedCategoryId);
+    // console.log("Description:", productDescription);
 
     // Now save the product with its image URL to the database
     const { data, error } = await supabase.from("products").insert([
@@ -96,6 +101,7 @@ const CreateProduct = () => {
 
   return (
     <div
+      className="mt-5"
       style={{
         fontFamily: "Inter",
       }}
@@ -114,6 +120,7 @@ const CreateProduct = () => {
           style={{
             fontSize: "36px",
             fontWeight: "bold",
+            margin: "20px 0",
           }}
         >
           Generell information
@@ -130,16 +137,17 @@ const CreateProduct = () => {
       </Container>
       <Container>
         <Form>
-          <Form.Group controlId="formProjectName">
+          <Form.Group controlId="formProjectName" className="mb-4">
             <Form.Label className="create-prod">Projekt*</Form.Label>
             <Form.Control
+              className="bg-gray border-gray br-8"
               type="text"
               value={projectName ? projectName : ""}
-              disabled
+              onChange={handleProjectNameChange}
             />
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="mb-4">
             <Form.Label className="create-prod">Produktbild</Form.Label>
             {/* <p>Dra och släpp bilder här eller tryck för att bläddra lokalt</p> */}
             <div
@@ -165,21 +173,23 @@ const CreateProduct = () => {
             </div>
           </Form.Group>
 
-          <Form.Group controlId="formProductCategory">
+          <Form.Group controlId="formProductCategory" className="mb-4">
             <Form.Label className="create-prod">Produktkategori*</Form.Label>
             <p>Sök eller välj från kategorilistan.</p>
             <Form.Control
+              className="bg-gray border-gray br-8"
               type="text"
               value={selectedProductCategory ? selectedProductCategory : ""}
               onChange={handleCategoryChange}
             />
           </Form.Group>
 
-          <Categories />
+          <Categories setSelectedCategoryId={setSelectedCategoryId} />
 
-          <Form.Group controlId="formProductName">
+          <Form.Group controlId="formProductName" className="mb-4">
             <Form.Label className="create-prod">Produktnamn*</Form.Label>
             <Form.Control
+              className="bg-gray border-gray br-8"
               type="text"
               value={productName ? productName : ""}
               placeholder={"Fyll i produktnamn"}
@@ -187,9 +197,10 @@ const CreateProduct = () => {
               required
             />
           </Form.Group>
-          <Form.Group controlId="formProductDescription">
+          <Form.Group controlId="formProductDescription" className="mb-4">
             <Form.Label className="create-prod">Produktbeskrivning</Form.Label>
             <Form.Control
+              className="bg-gray border-gray br-8"
               as="textarea"
               rows="3"
               value={productDescription ? productDescription : ""}
@@ -199,7 +210,7 @@ const CreateProduct = () => {
           </Form.Group>
           <Button
             variant="primary"
-            className={"cp save"}
+            className={"cp save mb-5"}
             type="submit"
             onClick={handleSubmit}
           >
@@ -207,7 +218,7 @@ const CreateProduct = () => {
           </Button>
           <Button
             variant="primary"
-            className={"cp cancel"}
+            className={"cp cancel mb-5"}
             onClick={handleCancel}
           >
             Avbryt

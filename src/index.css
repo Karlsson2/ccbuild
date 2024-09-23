@@ -240,3 +240,14 @@ button.cp.cancel {
   color: var(--blue);
   background-color: transparent;
 }
+
+/* General */
+.bg-gray {
+  background-color: var(--category-bg-gray);
+}
+.border-gray {
+  border-color: var(--category-border-gray);
+}
+.br-8 {
+  border-radius: 8px;
+}

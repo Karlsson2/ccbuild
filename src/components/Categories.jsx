@@ -4,13 +4,12 @@ import { supabase } from "../utils/supabase";
 import searchCategories from "../utils/searchCategories";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 
-function Categories() {
+function Categories({ setSelectedCategoryId }) {
   const [categoriesArr, setCategoriesArr] = useState(null);
   const [categoryStep, setCategoryStep] = useState(0);
   const [selectedCategory1, setSelectedCategory1] = useState(null);
   const [selectedCategory2, setSelectedCategory2] = useState(null);
   const [selectedCategory3, setSelectedCategory3] = useState(null);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_CATEGORY_FOLDER;
 
@@ -164,6 +163,7 @@ function Categories() {
           justifyContent: "flex-start",
           alignItems: "flex-start",
           alignContent: "flex-start",
+          marginBottom: "54px",
         }}
       >
         {/* If categoryStep = 0, then display */}
