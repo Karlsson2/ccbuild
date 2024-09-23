@@ -1,20 +1,23 @@
+// Product.js
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { Button, Container, Row, Col, Image, Modal } from "react-bootstrap";
+import EditProduct from "../components/EditProduct";
 
 const Product = () => {
   const { projectId, productId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const product = location.state?.product;
+  const [product, setProduct] = useState(location.state?.product || null);
+  const [shouldFetchProduct, setShouldFetchProduct] = useState(false);
+
   const noImageUrl = import.meta.env.VITE_SUPABASE_NO_IMAGE_URL;
   const [project, setProject] = useState(location.state?.project || null);
   const [category, setCategory] = useState(null);
   const [categoryId, setCategoryId] = useState(product?.category_id || null);
   const [loading, setLoading] = useState(false);
-
-  console.log(noImageUrl);
+  const [editMode, setEditMode] = useState(false);
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
@@ -22,7 +25,39 @@ const Product = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
-  // Fetch project data if not available in location.state
+  // Fetch product data if not available in location.state
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        let { data: productData, error } = await supabase
+          .from("products")
+          .select("*")
+          .eq("id", productId);
+
+        if (error) {
+          console.error("Error fetching product:", error);
+        } else {
+          const fetchedProduct = productData?.[0];
+          setProduct(fetchedProduct);
+          if (fetchedProduct?.category_id) {
+            setCategoryId(fetchedProduct.category_id);
+          }
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (shouldFetchProduct) {
+      fetchProduct();
+      setShouldFetchProduct(false); // Reset the flag
+    }
+  }, [shouldFetchProduct, productId]); // Watch for changes in shouldFetchProduct and productId
+
+  // Fetch project data
   useEffect(() => {
     const fetchProject = async () => {
       if (!project) {
@@ -124,52 +159,78 @@ const Product = () => {
     setSelectedImage("");
   };
 
-  console.log("No Image URL:", import.meta.env.VITE_SUPABASE_NO_IMAGE_URL);
+  const handleEditToggle = () => {
+    setEditMode(!editMode);
+  };
+
+  // Product.js
+  const handleSaveChanges = async (updatedProduct) => {
+    console.log("Saving updated product:", updatedProduct);
+    const { error } = await supabase
+      .from("products")
+      .update(updatedProduct)
+      .eq("id", updatedProduct.id);
+
+    if (error) {
+      console.error("Error updating product:", error);
+    } else {
+      setShouldFetchProduct(true); // Trigger fetch after successful save
+      setEditMode(false); // Exit edit mode after saving
+    }
+  };
 
   return (
     <Container>
-      {product ? (
-        <>
-          <Row className="productHeader">
-            <Col sm={4}>
-              <Image
-                fluid
-                src={product.image_url1 ? product.image_url1 : noImageUrl}
-                alt={product.product_name}
-                onClick={() => handleImageClick(product.image_url1)}
-                style={{ cursor: "pointer" }}
-              />
-            </Col>
-            <Col sm={8}>
-              <Row>
-                <Col>
-                  <h1>
-                    {category ? category.category_3 : "Loading category..."}
-                  </h1>
-                </Col>
-              </Row>
-              <Row>
-                <Col>Id: {product.id}</Col>
-              </Row>
-              <Row>
-                <Col>
-                  {project ? (
-                    <Link to={`/projects/${project.id}`}>{project.name}</Link>
-                  ) : (
-                    "Loading project..."
-                  )}
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Button variant="primary">Redigera Produkt</Button>
-                  <Button variant="danger" onClick={openDeleteConfirmation}>
-                    Radera Produkt
-                  </Button>
-                </Col>
-              </Row>
+      <Row className="productHeader">
+        <Col sm={4}>
+          <Image
+            fluid
+            src={product.image_url1 ? product.image_url1 : noImageUrl}
+            alt={product.product_name}
+            onClick={() => handleImageClick(product.image_url1)}
+            style={{ cursor: "pointer" }}
+          />
+        </Col>
+        <Col sm={8}>
+          <Row>
+            <Col>
+              <h1>{product.product_name}</h1>
             </Col>
           </Row>
+          <Row>
+            <Col>{category ? category.category_3 : "Loading category..."}</Col>{" "}
+          </Row>
+          <Row>
+            <Col>
+              {project ? (
+                <Link to={`/projects/${project.id}`}>{project.name}</Link>
+              ) : (
+                "Loading project..."
+              )}
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Button variant="primary" onClick={handleEditToggle}>
+                Redigera Produkt
+              </Button>
+              <Button variant="danger" onClick={openDeleteConfirmation}>
+                Radera Produkt
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      {editMode ? (
+        <EditProduct
+          product={product}
+          noImageUrl={noImageUrl}
+          onSave={handleSaveChanges}
+          onCancel={handleEditToggle}
+          onImageClick={handleImageClick}
+        />
+      ) : (
+        <>
           <Row>
             <Col sm={3}>
               <Row>
@@ -276,23 +337,7 @@ const Product = () => {
             </Col>
           </Row>
         </>
-      ) : (
-        <p>Ingen produktdata. Vänligen försök igen.</p>
       )}
-
-      <Row>
-        <Col xs={6}>
-          <h2>Lägg till individer</h2>
-          <p>
-            Lägg till individer kopplade till din produkt och specificera deras
-            marknadsplatsstatus samt aktuella status. För att optimera
-            synligheten på marknadsplatsen och underlätta för potentiella
-            köpare, är det viktigt att fylla i samtliga relevanta fält. Särskild
-            vikt bör läggas vid att ange produktens vikt, då detta är avgörande
-            för en korrekt beräkning av klimatbesparing.
-          </p>
-        </Col>
-      </Row>
 
       {/* Confirm Delete Modal */}
       <Modal show={showConfirmModal} onHide={closeDeleteConfirmation}>
