@@ -16,6 +16,9 @@ function Categories({
   const [selectedCategory3, setSelectedCategory3] = useState(null);
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_CATEGORY_FOLDER;
+  // for search:
+  const [searchResult, setSearchResult] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // use effect for fetching categories from categories table
   useEffect(() => {
@@ -44,11 +47,35 @@ function Categories({
   const handleCategoryChange = (event) => {
     setSelectedProductCategory(event.target.value);
     // If the search input is longer than 4 characters, search for categories
+    // If the search input is longer than 4 characters, search for categories
     if (event.target.value.length > 4) {
       const searchResult = searchCategories(categoriesArr, event.target.value);
-      //setCategoriesArr(searchResult);
-      console.log("searchResult:", searchResult);
+      //console.log("searchResult:", searchResult);
+      setSearchResult(searchResult); // Save the search results
+      setShowDropdown(true); // Show the dropdown when results are available
+    } else {
+      setShowDropdown(false); // Hide dropdown if search input is too short
     }
+  };
+
+  // Handle clicking outside search to close the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.closest(".search-box") === null) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Handle selecting a category from the dropdown
+  const handleCategorySelect = (category) => {
+    setSelectedProductCategory(category.name); // Or however your data is structured
+    setShowDropdown(false); // Hide dropdown after selection
   };
 
   const handleCategory1Click = (e) => {
@@ -131,6 +158,46 @@ function Categories({
             onChange={handleCategoryChange}
             placeholder="Sök kategorier..."
           />
+          {/* Conditionally render the dropdown */}
+          {showDropdown && searchResult.length > 0 && (
+            <div className="dropdown-container">
+              <ul className="dropdown-list">
+                {searchResult.map((category) => {
+                  const subCategories = category[3];
+                  return subCategories.map((subcategory) => {
+                    const subSubCategories = subcategory[1];
+                    return subSubCategories.map((subsubcategory, index) => {
+                      return (
+                        <li
+                          key={index}
+                          onClick={() =>
+                            handleCategorySelect(subsubcategory[0])
+                          }
+                        >
+                          {category[0]}
+                          <img
+                            src={`${baseUrl}/public/blue_arrow_right.png`}
+                            alt="Pil åt höger"
+                          />
+                          {subcategory[0]}
+
+                          {subsubcategory[0] !== "" && (
+                            <>
+                              <img
+                                src={`${baseUrl}/public/blue_arrow_right.png`}
+                                alt="Pil åt höger"
+                              />
+                              {subsubcategory[0]}
+                            </>
+                          )}
+                        </li>
+                      );
+                    });
+                  });
+                })}
+              </ul>
+            </div>
+          )}
         </div>
       </Form.Group>
       {/* Status bar container */}

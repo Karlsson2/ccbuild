@@ -33,6 +33,7 @@ export default function searchCategories(categories, searchTerm) {
 
     //Search the third level
     function searchSubSubCategories(subCategories, j) {
+      let subSubArray = [];
       const subSubCategories = subCategories[j][1];
       for (let k = 0; k < subSubCategories.length; k++) {
         //If subSubCategories[k][0] is empty string "", skip it
@@ -40,20 +41,24 @@ export default function searchCategories(categories, searchTerm) {
           continue;
         }
         // If subSubCategories[k][0] includes the searchTerm, add it to the result
-        if (
+        else if (
           subSubCategories[k][0]
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
         ) {
-          // If there is a hit, return an array with the parent and the entire subSubCategory
-          // which will be an array with the matching term AND an id
-          result.push([
-            categories[i][0],
-            categories[i][1],
-            categories[i][2],
-            [subCategories[j][0], [subSubCategories[k]]],
-          ]);
+          // If there is a hit, push the subSubCategory to subSubArray, will include both name and id
+          subSubArray.push(subSubCategories[k]);
         }
+      }
+
+      // If subSubArray is not empty, push the parent and the matching term and its subcategories to result
+      if (subSubArray.length > 0) {
+        result.push([
+          categories[i][0],
+          categories[i][1],
+          categories[i][2],
+          [[subCategories[j][0], subSubArray]],
+        ]);
       }
     }
   }
