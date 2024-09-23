@@ -20,6 +20,8 @@
   --category-text-black: #000000;
   --status-green: #44a036;
   --blue: #488ac6;
+  --upload-border-gray: #e2e2e2;
+  --upload-text-gray: #8d8d8d;
 }
 
 a {

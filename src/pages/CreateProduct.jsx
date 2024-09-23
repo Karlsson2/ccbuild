@@ -4,11 +4,7 @@ import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
 import Categories from "../components/Categories";
-import {
-  fetchImage,
-  uploadNewProductImage,
-  saveImgPathToDb,
-} from "../utils/handleSupabaseImage";
+import ImageUploader from "../components/ImageUploader";
 
 const CreateProduct = () => {
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
@@ -18,9 +14,8 @@ const CreateProduct = () => {
   const [projectName, setProjectName] = useState(null);
   const [productName, setProductName] = useState(null);
   const [productDescription, setProductDescription] = useState(null);
-  const location = useLocation();
   const [selectedProductCategory, setSelectedProductCategory] = useState(null);
-  const [productImage, setProductImage] = useState(null); // For the uploaded image URL
+  const location = useLocation();
   const [isUploading, setIsUploading] = useState(false);
 
   // Fetch project name using projectId
@@ -48,6 +43,10 @@ const CreateProduct = () => {
     setProductName(event.target.value);
   };
 
+  const handleCategoryChange = (event) => {
+    setSelectedProductCategory(event.target.value);
+  };
+
   const handleProductDescriptionChange = (event) => {
     setProductDescription(event.target.value);
   };
@@ -59,13 +58,22 @@ const CreateProduct = () => {
       alert("Please provide both a product name and an image.");
       return;
     }
+    // Console log what we will try to save
+    console.log("Saving product with the following data:");
+    console.log("Project ID:", projectId);
+    console.log("Product name:", productName);
+    console.log("Image path:", imagePath);
+    console.log("Category ID:", selectedProductCategory);
+    console.log("Description:", productDescription);
 
     // Now save the product with its image URL to the database
     const { data, error } = await supabase.from("products").insert([
       {
+        project_id: projectId, // Link product to the project
         product_name: productName,
         image_url: imagePath,
-        project_id: projectId, // Link product to the project
+        category_id: selectedProductCategory,
+        description: productDescription,
       },
     ]);
 
@@ -81,22 +89,9 @@ const CreateProduct = () => {
     console.log("cancel");
   };
 
-  const handleCategoryChange = (event) => {
-    setSelectedProductCategory(event.target.value);
-  };
-
-  // Function to handle image selection and upload
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setIsUploading(true);
-      const image = await uploadNewProductImage(file);
-      setIsUploading(false);
-
-      if (image) {
-        setImagePath(image); // Store the image URL in state
-      }
-    }
+  const handleFileUpload = (fileName) => {
+    console.log("Uploaded file name:", fileName);
+    setImagePath(`${baseUrl}${bucketFolder}${fileName}`); // Store the file name in the state or handle it accordingly
   };
 
   return (
@@ -144,7 +139,7 @@ const CreateProduct = () => {
             />
           </Form.Group>
 
-          <Form.Group controlId="formProductImg">
+          <Form.Group>
             <Form.Label className="create-prod">Produktbild</Form.Label>
             {/* <p>Dra och släpp bilder här eller tryck för att bläddra lokalt</p> */}
             <div
@@ -153,20 +148,12 @@ const CreateProduct = () => {
                 gap: "16px",
               }}
             >
-              <Form.Control
-                type="file"
-                value={""}
-                onChange={handleImageUpload}
-                style={{
-                  height: "92px",
-                  width: "240px",
-                }}
-              />
+              <ImageUploader onFileUpload={handleFileUpload} />
               <div>
                 {/* Display the uploaded image */}
                 {imagePath && (
                   <img
-                    src={`${baseUrl}${bucketFolder}${imagePath}`}
+                    src={imagePath}
                     alt="Uppladdad produktbild"
                     style={{
                       height: "92px",
