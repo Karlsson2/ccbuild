@@ -40,7 +40,6 @@ export const uploadProductImagWithReturn = async (file) => {
 
   console.log("File uploaded successfully", fileUrl);
 
-  await saveImgPathToDb(fileUrl);
   return fileUrl; // Return the URL for further use
 };
 
