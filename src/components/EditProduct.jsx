@@ -1,15 +1,8 @@
-// EditProduct.js
 import React, { useState } from "react";
 import { Button, Form, Col, Row, Image } from "react-bootstrap";
 import { uploadProductImagWithReturn } from "../utils/handleSupabaseImage";
 
-const EditProduct = ({
-  product,
-  noImageUrl,
-  onSave,
-  onCancel,
-  onImageClick,
-}) => {
+const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
   const [productName, setProductName] = useState(product.product_name);
   const [ownId, setOwnId] = useState(product.own_id);
   const [description, setDescription] = useState(product.description);
@@ -20,16 +13,16 @@ const EditProduct = ({
   ]);
   const [imageFiles, setImageFiles] = useState([null, null, null]); // To hold selected files
 
-  const handleImageUrlChange = (index, value) => {
-    const updatedUrls = [...imageUrls];
-    updatedUrls[index] = value;
-    setImageUrls(updatedUrls);
-  };
-
   const handleFileChange = (index, file) => {
     const updatedFiles = [...imageFiles];
     updatedFiles[index] = file;
     setImageFiles(updatedFiles);
+
+    // Update the imageUrls to show the selected image
+    const newImageUrl = file ? URL.createObjectURL(file) : noImageUrl;
+    const updatedUrls = [...imageUrls];
+    updatedUrls[index] = newImageUrl;
+    setImageUrls(updatedUrls);
   };
 
   const handleSave = async () => {
@@ -93,28 +86,43 @@ const EditProduct = ({
       <Row>
         <Col>
           <strong>Produktbilder</strong>
-          <Row className="d-flex gap-3 mt-2">
-            {imageUrls.map((url, index) => (
-              <Col key={index} sm={4}>
-                <Form.Group controlId={`imageUrl${index}`}>
-                  <Form.Label>Bild {index + 1}</Form.Label>
+          <Row className="mt-3 mb-3">
+            <Col className="d-flex gap-3">
+              {imageUrls.map((url, index) => (
+                <Form.Group controlId={`imageUrl${index}`} key={index}>
+                  <div
+                    onClick={() =>
+                      document.getElementById(`fileInput${index}`).click()
+                    }
+                    style={{
+                      border: "2px dashed #ccc",
+                      borderRadius: "5px",
+                      padding: "2px",
+                      cursor: "pointer",
+                      width: "100px",
+                      height: "100px",
+                    }}
+                  >
+                    <Image
+                      fluid
+                      src={url}
+                      alt={`Bild ${index + 1}`}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
                   <Form.Control
+                    id={`fileInput${index}`}
                     type="file"
+                    style={{ display: "none" }}
                     onChange={(e) => handleFileChange(index, e.target.files[0])}
                   />
-                  <Image
-                    fluid
-                    src={url}
-                    alt={`Produktbild ${index + 1}`}
-                    onClick={() => onImageClick(url)}
-                    style={{ cursor: "pointer", marginTop: "5px" }}
-                  />
                 </Form.Group>
-              </Col>
-            ))}
+              ))}
+            </Col>
           </Row>
         </Col>
       </Row>
+
       <Button variant="primary" onClick={handleSave}>
         Spara
       </Button>
