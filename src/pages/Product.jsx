@@ -2,11 +2,32 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { supabase } from "../utils/supabase";
+
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Image,
+  Modal,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
+
 import Items from "../components/Items";
 import Categories from "../components/Categories";
 import ItemsLoop from "../components/ItemsLoop";
-import { Button, Container, Row, Col, Image, Modal } from "react-bootstrap";
+
 import EditProduct from "../components/EditProduct";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import {
+  faPencil,
+  faInfo,
+  faLeaf,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 
 const Product = () => {
@@ -15,6 +36,11 @@ const Product = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(location.state?.product || null);
   const [shouldFetchProduct, setShouldFetchProduct] = useState(false);
+  console.log(product);
+  console.log(location.state);
+  if (product == null) {
+    console.log("reeeee!");
+  }
 
   const noImageUrl = import.meta.env.VITE_SUPABASE_NO_IMAGE_URL;
   const [project, setProject] = useState(location.state?.project || null);
@@ -29,10 +55,13 @@ const Product = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
+
   const [items, setItems] = useState([])
 
   // Fetch product data if not available in location.state
   useEffect(() => {
+    console.log("Fetching product with id:", productId);
+
     const fetchProduct = async () => {
       setLoading(true);
       try {
@@ -45,6 +74,7 @@ const Product = () => {
           console.error("Error fetching product:", error);
         } else {
           const fetchedProduct = productData?.[0];
+          console.log("Fetched product:", fetchedProduct); // Log fetched product
           setProduct(fetchedProduct);
           if (fetchedProduct?.category_id) {
             setCategoryId(fetchedProduct.category_id);
@@ -59,9 +89,9 @@ const Product = () => {
 
     if (shouldFetchProduct) {
       fetchProduct();
-      setShouldFetchProduct(false); // Reset the flag
+      setShouldFetchProduct(false); // Reset the flag after fetching
     }
-  }, [shouldFetchProduct, productId]); // Watch for changes in shouldFetchProduct and productId
+  }, [product, shouldFetchProduct, productId]);
 
   // Fetch project data
   useEffect(() => {
@@ -169,7 +199,6 @@ const Product = () => {
     setEditMode(!editMode);
   };
 
-  // Product.js
   const handleSaveChanges = async (updatedProduct) => {
     console.log("Saving updated product:", updatedProduct);
     const { error } = await supabase
@@ -180,7 +209,7 @@ const Product = () => {
     if (error) {
       console.error("Error updating product:", error);
     } else {
-      setShouldFetchProduct(true); // Trigger fetch after successful save
+      setShouldFetchProduct(true); // Trigger re-fetch after saving
       setEditMode(false); // Exit edit mode after saving
     }
   };
@@ -256,34 +285,57 @@ const Product = () => {
           />
         </Col>
         <Col sm={8} className="d-flex flex-column justify-content-between">
-          <Col>
+          <Col className="gap-2 d-flex flex-column">
             <Row>
               <Col>
-                <h1>{product.product_name}</h1>
+                <h1 className="generellInfoHeader">
+                  {product.product_name.charAt(0).toUpperCase() +
+                    product.product_name.slice(1)}
+                </h1>
               </Col>
             </Row>
             <Row>
               <Col>
-                {category ? category.category_3 : "Loading category..."}
-              </Col>{" "}
+                <span className="ccId">{product.id}</span>{" "}
+              </Col>
             </Row>
             <Row>
               <Col>
-                {project ? (
-                  <Link to={`/projects/${project.id}`}>{project.name}</Link>
-                ) : (
-                  "Loading project..."
-                )}
+                <Button variant="success" className="buttonC02">
+                  Totalt 800kg CO2e
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id="tooltip-top" className="custom-tooltip">
+                        <FontAwesomeIcon icon={faLeaf} /> <br></br>
+                        Här är din totala klimatbesparing för alla{" "}
+                        {product.product_name}.<br></br>
+                      </Tooltip>
+                    }
+                  >
+                    <div className="infoCircle">
+                      <FontAwesomeIcon icon={faInfo} />
+                    </div>
+                  </OverlayTrigger>
+                </Button>
               </Col>
             </Row>
           </Col>
-          <Row className="mt-3 mb-3">
+          <Row className="mt-3 ">
             <Col className="d-flex gap-3">
-              <Button variant="primary" onClick={handleEditToggle}>
-                Redigera Produkt
+              <Button
+                variant="primary"
+                className={"editProduct"}
+                onClick={handleEditToggle}
+              >
+                <FontAwesomeIcon icon={faPencil} /> Ändra generell Info
               </Button>
-              <Button variant="danger" onClick={openDeleteConfirmation}>
-                Radera Produkt
+              <Button
+                variant="danger"
+                className={"deleteProduct"}
+                onClick={openDeleteConfirmation}
+              >
+                <FontAwesomeIcon icon={faTrashCan} /> Radera Produkt
               </Button>
               <Button onClick={handleCreateNewItem}> 
                 Skapa ny produkt
@@ -291,7 +343,32 @@ const Product = () => {
             </Col>
           </Row>
         </Col>
+        <Row>
+          <Col xm={3} className="mt-3">
+            {category ? (
+              <>
+                {category.category_1 && <span>{category.category_1}</span>}
+                {category.category_1 && category.category_2 && (
+                  <span className="chevron-blue">
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </span>
+                )}
+                {category.category_2 && <span>{category.category_2}</span>}
+                {category.category_2 && category.category_3 && (
+                  <span className="chevron-blue">
+                    {" "}
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </span>
+                )}
+                {category.category_3 && <span>{category.category_3}</span>}
+              </>
+            ) : (
+              "Loading category..."
+            )}
+          </Col>
+        </Row>
       </Row>
+
       {editMode ? (
         <EditProduct
           product={product}
@@ -303,9 +380,25 @@ const Product = () => {
       ) : (
         <>
           <Row className="mt-3 mb-3">
-            <h2>Generell Information</h2>
+            <h2 className="generellInfoSubHeader">Generell Information</h2>
           </Row>
           <Row className="mt-3 mb-3">
+            <Col sm={3}>
+              <Row>
+                <Col>
+                  <strong>Projekt</strong>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  {project ? (
+                    <Link to={`/projects/${project.id}`}>{project.name}</Link>
+                  ) : (
+                    "Loading project..."
+                  )}
+                </Col>
+              </Row>
+            </Col>
             <Col sm={3}>
               <Row>
                 <Col>
@@ -313,10 +406,17 @@ const Product = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>{!product.own_id ? "Ej Angivet" : product.own_id}</Col>
+                <Col>
+                  {!product.internal_id ? (
+                    <span className="interal-id-not">"Ej Angivet"</span>
+                  ) : (
+                    product.internal_id
+                  )}
+                </Col>
               </Row>
             </Col>
           </Row>
+
           <Row className="mt-3 mb-3">
             <Col>
               <Row>
@@ -340,8 +440,8 @@ const Product = () => {
                 <Col className="d-flex flex-column flex-sm-row gap-3">
                   <Image
                     style={{
-                      width: "100px",
-                      height: "100px",
+                      width: "93px",
+                      height: "93px",
                       objectFit: "cover",
                       padding: "0px",
                       cursor: "pointer",
@@ -356,8 +456,8 @@ const Product = () => {
                   />
                   <Image
                     style={{
-                      width: "100px",
-                      height: "100px",
+                      width: "93px",
+                      height: "93px",
                       objectFit: "cover",
                       padding: "0px",
                       cursor: "pointer",
@@ -372,8 +472,8 @@ const Product = () => {
                   />
                   <Image
                     style={{
-                      width: "100px",
-                      height: "100px",
+                      width: "93px",
+                      height: "93px",
                       objectFit: "cover",
                       padding: "0px",
                       cursor: "pointer",

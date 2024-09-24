@@ -4,7 +4,7 @@ import { uploadProductImagWithReturn } from "../utils/handleSupabaseImage";
 
 const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
   const [productName, setProductName] = useState(product.product_name);
-  const [ownId, setOwnId] = useState(product.own_id);
+  const [internalId, setInternalId] = useState(product.internal_id);
   const [description, setDescription] = useState(product.description);
   const [imageUrls, setImageUrls] = useState([
     product.image_url1 || noImageUrl,
@@ -40,7 +40,7 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
     const updatedProduct = {
       ...product,
       product_name: productName,
-      own_id: ownId,
+      internal_id: internalId,
       description,
       image_url1: newImageUrls[0],
       image_url2: newImageUrls[1],
@@ -57,18 +57,18 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
             <Form.Label>Produktnamn</Form.Label>
             <Form.Control
               type="text"
-              value={productName || "Ej Angivet"}
+              value={productName}
               onChange={(e) => setProductName(e.target.value)}
             />
           </Form.Group>
         </Col>
         <Col sm={3}>
-          <Form.Group controlId="ownId">
+          <Form.Group controlId="internalId">
             <Form.Label>Eget Id-nummer</Form.Label>
             <Form.Control
               type="text"
-              value={ownId || "Ej Angivet"}
-              onChange={(e) => setOwnId(e.target.value)}
+              value={internalId}
+              onChange={(e) => setInternalId(e.target.value)}
             />
           </Form.Group>
         </Col>
@@ -79,7 +79,7 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
             <Form.Label>Produktbeskrivning</Form.Label>
             <Form.Control
               as="textarea"
-              value={description || "Ej Angivet"}
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </Form.Group>
@@ -108,8 +108,8 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
                       borderRadius: "5px",
                       padding: "2px",
                       cursor: "pointer",
-                      width: "100px",
-                      height: "100px",
+                      width: "93px",
+                      height: "93px",
                     }}
                   >
                     <Image
