@@ -176,6 +176,7 @@ button:focus-visible {
 .cat.sibling.selected > div.status-header {
   font-weight: bold;
   font-size: 18px;
+  cursor: default;
 }
 
 .cat.siblings-row {
@@ -191,6 +192,7 @@ div.status-header {
   font-size: 18px;
   width: 100%;
   text-align: center;
+  cursor: pointer;
 }
 
 .category-btn,

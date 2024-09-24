@@ -135,6 +135,34 @@ function Categories({
     setProductName(category3);
   };
 
+  const handleHeader0Click = () => {
+    setCategoryStep(0);
+    setSelectedCategory1(null);
+    setSelectedCategory2(null);
+    setSelectedCategory3(null);
+    setSelectedCategoryId(null);
+    setProductName("");
+  };
+
+  const handleHeader1Click = () => {
+    if (categoryStep > 1) {
+      setCategoryStep(1);
+      setSelectedCategory2(null);
+      setSelectedCategory3(null);
+      setSelectedCategoryId(null);
+      setProductName(selectedCategory1);
+    }
+  };
+
+  const handleHeader2Click = () => {
+    if (categoryStep > 2) {
+      setCategoryStep(2);
+      setSelectedCategory3(null);
+      setSelectedCategoryId(null);
+      setProductName(selectedCategory2);
+    }
+  };
+
   // Use effect to set selectedCategoryId when necessary
   useEffect(() => {
     if (categoryStep === 2 && selectedCategory2) {
@@ -261,7 +289,9 @@ function Categories({
             <Col
               className={`cat sibling ${categoryStep === 0 ? "selected" : ""}`}
             >
-              <div className="status-header">Kategorier</div>
+              <div className="status-header" onClick={handleHeader0Click}>
+                Kategorier
+              </div>
               <div className="cat colored-box selected"></div>
             </Col>
 
@@ -269,7 +299,7 @@ function Categories({
             <Col
               className={`cat sibling ${categoryStep === 1 ? "selected" : ""}`}
             >
-              <div className="status-header">
+              <div className="status-header" onClick={handleHeader1Click}>
                 {selectedCategory1 ? selectedCategory1 : ""}
               </div>
               <div className="cat colored-box"></div>
@@ -279,7 +309,7 @@ function Categories({
             <Col
               className={`cat sibling ${categoryStep === 2 ? "selected" : ""}`}
             >
-              <div className="status-header">
+              <div className="status-header" onClick={handleHeader2Click}>
                 {selectedCategory2 ? selectedCategory2 : ""}
               </div>
               <div className="cat colored-box"></div>

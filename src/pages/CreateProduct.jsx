@@ -103,7 +103,7 @@ const CreateProduct = () => {
         className="mt-5"
         style={{
           fontFamily: "Inter",
-          width: "600px",
+          width: "640px",
         }}
       >
         <Container>
