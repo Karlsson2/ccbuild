@@ -1,40 +1,44 @@
 import React from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
+import { Container, Button, Form } from "react-bootstrap";
 import Categories from "../components/Categories";
 import ImageUploader from "../components/ImageUploader";
-import searchCategories from "../utils/searchCategories";
 
 const CreateProduct = () => {
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PRODUCT_IMAGE_FOLDER;
   const [imagePath, setImagePath] = useState("");
   const { projectId } = useParams();
+  const [projects, setProjects] = useState([]);
   const [projectName, setProjectName] = useState(null);
   const [productName, setProductName] = useState(null);
   const [productDescription, setProductDescription] = useState(null);
   const [selectedProductCategory, setSelectedProductCategory] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [isUploading, setIsUploading] = useState(false);
 
-  // Fetch project name using projectId
+  // Fetch all projects, save all project names and ids in an array
+  // then find the project name that matches the current projectId and set it in the state
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let { data: project, error } = await supabase
+        let { data: projects, error } = await supabase
           .from("projects")
-          .select("*")
-          .eq("id", projectId);
+          .select("*");
         if (error) {
           console.error("Error fetching data:", error);
-        } else {
-          console.log("Fetched project:", project);
-          setProjectName(project[0].name);
         }
+        console.log("Fetched projects:", projects);
+        const currentProjects = projects.map((project) => {
+          return { id: project.id, name: project.name };
+        });
+        setProjects(currentProjects);
+        const currentProjectName = currentProjects.find(
+          (project) => project.id == projectId
+        ).name;
+        setProjectName(currentProjectName);
       } catch (error) {
         console.error("Unexpected error:", error);
       }
@@ -43,7 +47,7 @@ const CreateProduct = () => {
   }, []);
 
   const handleProjectNameChange = (event) => {
-    setProjectName(event.target.value);
+    navigate(`/projects/${event.target.value}/create-product`);
   };
 
   const handleProductNameChange = (event) => {
@@ -57,10 +61,6 @@ const CreateProduct = () => {
   // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // if (!productName || !imagePath) {
-    //   alert("Please provide both a product name and an image.");
-    //   return;
-    // }
 
     //Console log what we will try to save
     console.log("Saving product with the following data:");
@@ -154,13 +154,21 @@ const CreateProduct = () => {
           <Form>
             <Form.Group controlId="formProjectName" className="mb-4">
               <Form.Label className="create-prod">Projekt*</Form.Label>
+              {/* Map through projects array, create select with project name as option text and project id as value.
+               Select the option with projectId */}
               <Form.Control
+                as="select"
                 className="bg-gray border-gray br-8"
-                type="text"
-                value={projectName ? projectName : ""}
+                value={projectId}
                 onChange={handleProjectNameChange}
                 style={{ width: "305px" }}
-              />
+              >
+                {projects.map((project, index) => (
+                  <option key={index} value={project.id}>
+                    {project.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
 
             <Form.Group className="mb-4">

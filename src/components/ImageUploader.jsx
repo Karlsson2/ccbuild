@@ -57,7 +57,7 @@ const ImageUploader = ({ onFileUpload }) => {
           color: "var(--upload-text-gray)",
         }}
       >
-        Dra och släpp bilder här eller tryck för att bläddra lokalt
+        Dra och släpp en bild här eller tryck för att bläddra lokalt
       </span>
 
       <Form.Control
