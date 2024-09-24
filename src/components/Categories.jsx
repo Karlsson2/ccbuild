@@ -2,17 +2,25 @@ import { useState, useEffect } from "react";
 import createCategoriesArray from "../utils/createCategoriesArray";
 import { supabase } from "../utils/supabase";
 import searchCategories from "../utils/searchCategories";
-import { Container, Row, Col, Image, Button } from "react-bootstrap";
+import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
+import highlightMatch from "../utils/highlightMatch.jsx";
 
-function Categories() {
+function Categories({
+  setSelectedProductCategory,
+  setSelectedCategoryId,
+  setProductName,
+}) {
+  const [searchTerm, setSearchTerm] = useState("");
   const [categoriesArr, setCategoriesArr] = useState(null);
   const [categoryStep, setCategoryStep] = useState(0);
   const [selectedCategory1, setSelectedCategory1] = useState(null);
   const [selectedCategory2, setSelectedCategory2] = useState(null);
   const [selectedCategory3, setSelectedCategory3] = useState(null);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_CATEGORY_FOLDER;
+  // for search:
+  const [searchResult, setSearchResult] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // use effect for fetching categories from categories table
   useEffect(() => {
@@ -27,9 +35,6 @@ function Categories() {
           console.log("Fetched categories:", categories);
           const nestedArrays = createCategoriesArray(categories);
           setCategoriesArr(nestedArrays);
-          // Test the searchCategories function
-          // const searchResult = searchCategories(nestedArrays, "tavel");
-          //console.log("searchResult:", searchResult);
         }
       } catch (error) {
         console.error("Unexpected error:", error);
@@ -37,6 +42,78 @@ function Categories() {
     };
     fetchCategories();
   }, []);
+
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
+    // If the search input is longer than 3 characters, search for categories
+    // If the search input is longer than 3 characters, search for categories
+    if (event.target.value.length > 3) {
+      const searchResult = searchCategories(categoriesArr, event.target.value);
+      //console.log("searchResult:", searchResult);
+      setSearchResult(searchResult); // Save the search results
+      setShowDropdown(true); // Show the dropdown when results are available
+    } else {
+      setShowDropdown(false); // Hide dropdown if search input is too short
+    }
+  };
+
+  // Handle clicking outside search to close the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.closest(".search-box") === null) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Handle selecting a category from the dropdown
+  // category is a subsubcategory array, e.g. ["Pollare", 999]
+  const handleCategorySelect = (category) => {
+    setSearchTerm(""); // Clear the search term
+    setSelectedCategoryId(category[1]);
+    getCategoryRow(category[1]); // Fetch the category row in categories table
+    setShowDropdown(false); // Hide dropdown after selection
+    setSelectedProductCategory(null);
+  };
+
+  // Fetch the category row in categories table, and set all three levels of category
+  const getCategoryRow = async (categoryId) => {
+    try {
+      let { data: category, error } = await supabase
+        .from("categories")
+        .select("*")
+        .eq("categoryid", categoryId);
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        // Check if there is a third level of category
+        if (category[0].category_3 !== "") {
+          console.log("Fetched category:", category);
+          setSelectedCategory1(category[0].category_1);
+          setSelectedCategory2(category[0].category_2);
+          setSelectedCategory3(category[0].category_3);
+          setProductName(category[0].category_3);
+          setCategoryStep(3);
+        } else if (category[0].category_2 !== "") {
+          console.log("Fetched category:", category);
+          setSelectedCategory1(category[0].category_1);
+          setSelectedCategory2(category[0].category_2);
+          setSelectedCategory3(null);
+          setProductName(category[0].category_2);
+          setCategoryStep(2);
+        }
+        console.log("Will set selected category ID:", categoryId);
+        setSelectedCategoryId(categoryId);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
+  };
 
   const handleCategory1Click = (e) => {
     const category1 = e.target.innerText;
@@ -48,12 +125,42 @@ function Categories() {
     const category2 = e.target.innerText;
     setSelectedCategory2(category2);
     setCategoryStep(2);
+    setProductName(category2);
   };
 
   const handleCategory3Click = (e) => {
     const category3 = e.target.innerText;
     setSelectedCategory3(category3);
     setCategoryStep(3);
+    setProductName(category3);
+  };
+
+  const handleHeader0Click = () => {
+    setCategoryStep(0);
+    setSelectedCategory1(null);
+    setSelectedCategory2(null);
+    setSelectedCategory3(null);
+    setSelectedCategoryId(null);
+    setProductName("");
+  };
+
+  const handleHeader1Click = () => {
+    if (categoryStep > 1) {
+      setCategoryStep(1);
+      setSelectedCategory2(null);
+      setSelectedCategory3(null);
+      setSelectedCategoryId(null);
+      setProductName(selectedCategory1);
+    }
+  };
+
+  const handleHeader2Click = () => {
+    if (categoryStep > 2) {
+      setCategoryStep(2);
+      setSelectedCategory3(null);
+      setSelectedCategoryId(null);
+      setProductName(selectedCategory2);
+    }
   };
 
   // Use effect to set selectedCategoryId when necessary
@@ -64,10 +171,15 @@ function Categories() {
           category[3].map((subcategory) => {
             if (subcategory[0] === selectedCategory2) {
               if (subcategory[1][0][0] === "") {
-                setSelectedCategoryId(subcategory[1]);
+                console.log(
+                  "Only one subcategory, setting selected category ID, line 144",
+                  subcategory[1][0][1]
+                );
+                setSelectedCategoryId(subcategory[1][0][1]);
               }
               return subcategory[1].map((subsubcategory) => {
                 if (subsubcategory[0] === selectedCategory3) {
+                  console.log("Setting selected category ID, line 149");
                   setSelectedCategoryId(subsubcategory[1]);
                 }
                 return null;
@@ -86,6 +198,7 @@ function Categories() {
             if (subcategory[0] === selectedCategory2) {
               subcategory[1].map((subsubcategory) => {
                 if (subsubcategory[0] === selectedCategory3) {
+                  console.log("Setting selected category ID, line 168");
                   setSelectedCategoryId(subsubcategory[1]);
                 }
                 return null;
@@ -101,21 +214,84 @@ function Categories() {
 
   return (
     <>
+      {/* Search box */}
+      <Form.Group controlId="formProductCategory" className="mb-4">
+        <Form.Label className="create-prod">Produktkategori*</Form.Label>
+        <p>Sök eller välj från kategorilistan.</p>
+        <div className="search-box bg-gray border-gray br-8">
+          <img
+            src={`${baseUrl}/public/search.png`}
+            alt="Sök"
+            style={{ margin: "0 16px" }}
+          />
+          <Form.Control
+            className="search-hide"
+            type="text"
+            value={searchTerm ? searchTerm : ""}
+            onChange={handleSearchTermChange}
+            placeholder="Sök kategorier..."
+          />
+          {/* Conditionally render the dropdown */}
+          {showDropdown && searchResult.length > 0 && (
+            <div className="dropdown-container">
+              <ul className="dropdown-list">
+                {searchResult.map((category) => {
+                  const subCategories = category[3];
+                  return subCategories.map((subcategory) => {
+                    const subSubCategories = subcategory[1];
+                    return subSubCategories.map((subsubcategory, index) => {
+                      return (
+                        <li
+                          key={index}
+                          onClick={() => handleCategorySelect(subsubcategory)}
+                        >
+                          {/* Highlight matching characters in category */}
+                          {highlightMatch(category[0], searchTerm)}
+
+                          <img
+                            src={`${baseUrl}/public/blue_arrow_right.png`}
+                            alt="Pil åt höger"
+                          />
+                          {/* Highlight matching characters in subcategory */}
+                          {highlightMatch(subcategory[0], searchTerm)}
+
+                          {subsubcategory[0] !== "" && (
+                            <>
+                              <img
+                                src={`${baseUrl}/public/blue_arrow_right.png`}
+                                alt="Pil åt höger"
+                              />
+                              {/* Highlight matching characters in subsubcategory */}
+                              {highlightMatch(subsubcategory[0], searchTerm)}
+                            </>
+                          )}
+                        </li>
+                      );
+                    });
+                  });
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+      </Form.Group>
       {/* Status bar container */}
-      <Container
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
           gap: "4px",
         }}
       >
-        <Container className="my-5">
+        <Container className="mb-3">
           <Row className="cat siblings-row justify-content-start">
             {/* First sibling */}
             <Col
               className={`cat sibling ${categoryStep === 0 ? "selected" : ""}`}
             >
-              <div className="status-header">Kategorier</div>
+              <div className="status-header" onClick={handleHeader0Click}>
+                Kategorier
+              </div>
               <div className="cat colored-box selected"></div>
             </Col>
 
@@ -123,7 +299,7 @@ function Categories() {
             <Col
               className={`cat sibling ${categoryStep === 1 ? "selected" : ""}`}
             >
-              <div className="status-header">
+              <div className="status-header" onClick={handleHeader1Click}>
                 {selectedCategory1 ? selectedCategory1 : ""}
               </div>
               <div className="cat colored-box"></div>
@@ -133,7 +309,7 @@ function Categories() {
             <Col
               className={`cat sibling ${categoryStep === 2 ? "selected" : ""}`}
             >
-              <div className="status-header">
+              <div className="status-header" onClick={handleHeader2Click}>
                 {selectedCategory2 ? selectedCategory2 : ""}
               </div>
               <div className="cat colored-box"></div>
@@ -150,40 +326,33 @@ function Categories() {
             </Col>
           </Row>
         </Container>
-      </Container>
+      </div>
 
       {/* Category buttons container */}
-      <Container
+
+      <div
         style={{
+          height: "204px",
+          overflowY: "scroll",
           display: "flex",
-          flexDirection: "row",
           flexWrap: "wrap",
           gap: "4px",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          alignContent: "flex-start",
+          marginBottom: "54px",
         }}
       >
         {/* If categoryStep = 0, then display */}
         {categoryStep === 0 && categoriesArr != null && (
           <>
-            {categoriesArr.map((category) => (
+            {categoriesArr.map((category, index) => (
               //   index 2 is the id, index 1 is the image, index 0 is the category name
               <Button
+                className="category-btn"
                 variant="primary"
-                key={category[2]}
+                key={`${category[2]}${index}`}
                 onClick={handleCategory1Click}
-                style={{
-                  backgroundColor: "var(--category-bg-gray)",
-                  borderColor: "var(--category-border-gray)",
-                  borderRadius: "32px",
-                  color: "var(--category-text-black)",
-                  padding: "8px, 16px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "16px",
-                  fontFamily: "Poppins",
-                  fontSize: "16px",
-                  fonWeight: "regular",
-                }}
               >
                 <Image
                   src={`${baseUrl}${bucketFolder}${category[1]}`}
@@ -208,23 +377,10 @@ function Categories() {
               if (category[0] === selectedCategory1) {
                 return category[3].map((subcategory) => (
                   <Button
+                    className="category-btn"
                     variant="primary"
                     key={subcategory[1]}
                     onClick={handleCategory2Click}
-                    style={{
-                      backgroundColor: "var(--category-bg-gray)",
-                      borderColor: "var(--category-border-gray)",
-                      borderRadius: "32px",
-                      color: "var(--category-text-black)",
-                      padding: "8px, 16px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: "16px",
-                      fontFamily: "Poppins",
-                      fontSize: "16px",
-                      fonWeight: "regular",
-                    }}
                   >
                     {subcategory[0]}
                     <Image
@@ -249,23 +405,10 @@ function Categories() {
                     if (subcategory[1][0][0] === "") {
                       return (
                         <Button
-                          variant="primary"
+                          style={{ cursor: "default" }}
+                          className="selected-category-btn"
                           key={subcategory[1]}
                           onClick={null}
-                          style={{
-                            backgroundColor: "var(--status-green)",
-                            borderColor: "var(--status-green)",
-                            borderRadius: "32px",
-                            color: "white",
-                            padding: "8px, 16px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            gap: "16px",
-                            fontFamily: "Poppins",
-                            fontSize: "16px",
-                            fonWeight: "regular",
-                          }}
                         >
                           {selectedCategory2}
                         </Button>
@@ -273,23 +416,10 @@ function Categories() {
                     }
                     return subcategory[1].map((subsubcategory) => (
                       <Button
+                        className="category-btn"
                         variant="primary"
                         key={subsubcategory[1]}
                         onClick={handleCategory3Click}
-                        style={{
-                          backgroundColor: "var(--category-bg-gray)",
-                          borderColor: "var(--category-border-gray)",
-                          borderRadius: "32px",
-                          color: "var(--category-text-black)",
-                          padding: "8px, 16px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          gap: "16px",
-                          fontFamily: "Poppins",
-                          fontSize: "16px",
-                          fonWeight: "regular",
-                        }}
                       >
                         {subsubcategory[0]}
                       </Button>
@@ -306,28 +436,15 @@ function Categories() {
         {categoryStep === 3 && (
           <>
             <Button
-              variant="primary"
+              className="selected-category-btn"
               onClick={null}
-              style={{
-                backgroundColor: "var(--status-green)",
-                borderColor: "var(--status-green)",
-                borderRadius: "32px",
-                color: "white",
-                padding: "8px, 16px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: "16px",
-                fontFamily: "Poppins",
-                fontSize: "16px",
-                fonWeight: "regular",
-              }}
+              style={{ cursor: "default" }}
             >
               {selectedCategory3}
             </Button>
           </>
         )}
-      </Container>
+      </div>
     </>
   );
 }

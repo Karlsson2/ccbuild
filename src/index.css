@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -19,6 +19,9 @@
   --category-border-gray: #c5c5c5;
   --category-text-black: #000000;
   --status-green: #44a036;
+  --blue: #488ac6;
+  --upload-border-gray: #e2e2e2;
+  --upload-text-gray: #8d8d8d;
 }
 
 a {
@@ -147,7 +150,7 @@ button:focus-visible {
   padding-right: 0px !important;
 }
 
-/* Categories status bar */
+/* Categories component */
 .cat.sibling {
   display: inline-block;
   margin: 0;
@@ -172,7 +175,8 @@ button:focus-visible {
 }
 .cat.sibling.selected > div.status-header {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
+  cursor: default;
 }
 
 .cat.siblings-row {
@@ -185,6 +189,117 @@ div.status-header {
   padding-left: 8px;
   padding-right: 8px;
   font-family: "Inter";
+  font-size: 18px;
   width: 100%;
   text-align: center;
+  cursor: pointer;
+}
+
+.category-btn,
+.selected-category-btn {
+  background-color: var(--category-bg-gray);
+  border-color: var(--category-border-gray);
+  border-radius: 32px;
+  color: var(--category-text-black);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: regular;
+  height: 48px;
+}
+
+.selected-category-btn,
+.selected-category-btn:hover,
+.category-btn:hover {
+  background-color: var(--status-green);
+  border-color: var(--status-green);
+  color: white;
+}
+
+/* Create Product */
+label.create-prod {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+button.cp {
+  border-radius: 32px;
+  border: 1px solid var(--blue);
+  background-color: var(--blue);
+  color: white;
+  padding: 8px 32px;
+  margin-right: 20px;
+  font-size: 18px;
+  font-weight: normal;
+  transition: all 0.25s;
+}
+
+button.cp.cancel {
+  color: var(--blue);
+  background-color: transparent;
+}
+
+/* General */
+.bg-gray {
+  background-color: var(--category-bg-gray);
+}
+.border-gray {
+  border-color: var(--category-border-gray);
+}
+.br-8 {
+  border-radius: 8px;
+}
+
+/* Category search box */
+.search-box {
+  width: 480px;
+  height: 48px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  border: 1px solid var(--category-border-gray);
+  position: relative;
+}
+
+.search-hide {
+  border: none;
+  background-color: transparent;
+}
+
+/* Search result dropdown */
+.dropdown-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure it appears above other content */
+  background-color: var(--category-bg-gray);
+  border: 1px solid var(--category-border-gray);
+  max-height: 200px;
+  overflow-y: auto; /* Make it scrollable if there are many results */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: "Poppins", sans-serif;
+}
+
+.dropdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-list li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-list li:hover {
+  background-color: #f0f0f0;
 }
