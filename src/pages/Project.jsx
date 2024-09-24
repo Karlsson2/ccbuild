@@ -63,10 +63,6 @@ const Project = () => {
   return (
     <div>
       <h1>Project Details</h1>
-      {/* new product button */}
-      <Button onClick={() => navigate(`/projects/${projectId}/create-product`)}>
-        Skapa produkt
-      </Button>
       {project ? (
         <>
           <div>
