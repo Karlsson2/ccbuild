@@ -29,6 +29,8 @@ const Product = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
+  const [items, setItems] = useState([])
+
   // Fetch product data if not available in location.state
   useEffect(() => {
     const fetchProduct = async () => {
@@ -183,6 +185,64 @@ const Product = () => {
     }
   };
 
+
+  // Fetcha och CRUD Items logik \/
+  const fetchItems = async () => {
+    try {
+      let { data: fetchedItems, error } = await supabase
+        .from("items")
+        .select("*");
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        console.log("Fetched Items:", fetchedItems);
+        setItems(fetchedItems);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const handleCreateNewItem = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('items')
+        .insert([{ amount: 1 }]);
+
+      if (error) {
+        console.error('Error creating new item', error);
+      } else {
+        console.log('New item created', data);
+        fetchItems();
+      }
+    } catch (err) {
+      console.error('An error occurred', err);
+    }
+  };
+
+  const handleDeleteItem = async (itemId) => {
+    try {
+      const { data, error } = await supabase
+        .from('items')
+        .delete()
+        .eq('id', itemId);
+  
+      if (error) {
+        console.error('Error deleting:', error);
+      } else {
+        console.log('Deleted item with id:', itemId);
+        fetchItems();
+        
+      }
+    } catch (err) {
+      console.error('An error occurred:', err);
+    }
+  };
+
   return (
     <Container>
       <Row className="productHeader mt-5 mb-5">
@@ -224,6 +284,9 @@ const Product = () => {
               </Button>
               <Button variant="danger" onClick={openDeleteConfirmation}>
                 Radera Produkt
+              </Button>
+              <Button onClick={handleCreateNewItem}> 
+                Skapa ny produkt
               </Button>
             </Col>
           </Row>
@@ -331,7 +394,7 @@ const Product = () => {
       )}
       <Row>
         <Col>
-          <h2>Williamns component goes here</h2>
+          <ItemsLoop items={items} handleDeleteItem={handleDeleteItem}/>
         </Col>
       </Row>
 
