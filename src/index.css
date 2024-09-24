@@ -189,3 +189,74 @@ div.status-header {
   width: 100%;
   text-align: center;
 }
+
+.deleteProduct,
+.editProduct,
+.buttonC02 {
+  border-radius: 100px !important;
+  padding: 8px 16px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  font-weight: 600 !important;
+}
+.buttonC02 {
+  background-color: white !important;
+  color: #44a036 !important;
+  border: 1px solid #44a036;
+}
+.editProduct {
+  background-color: #488ac6 !important;
+  border: #488ac6;
+}
+.deleteProduct {
+  background-color: white !important;
+  color: #ff6666 !important;
+  border: 1px solid #ff6666 !important;
+  font-size: 18px !important;
+}
+.generellInfoHeader {
+  color: #488ac6 !important;
+  font-size: 48px !important;
+  font-weight: 700 !important;
+}
+.ccId {
+  color: #488ac6 !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin-left: 8x;
+}
+.infoCircle {
+  border: #44a036 2px solid;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.custom-tooltip .tooltip-inner {
+  background-color: #44a036 !important; /* Change background color */
+  color: white; /* Change text color */
+  font-size: 16px; /* Change font size */
+  font-weight: 400;
+  border-radius: 8px; /* Round the edges */
+}
+.custom-tooltip {
+  --bs-tooltip-bg: #44a036; /* Apply the same color to the arrow */
+}
+.chevron-blue {
+  color: #488ac6 !important;
+  font-weight: 700;
+  margin: 0 8px;
+  font-size: 15px;
+}
+.generellInfoSubHeader {
+  font-size: 36px;
+  font-weight: 700;
+}
+.interal-id-not {
+  color: #8a8a8a;
+}
