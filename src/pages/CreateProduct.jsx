@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
@@ -17,6 +17,7 @@ const CreateProduct = () => {
   const [productDescription, setProductDescription] = useState(null);
   const [selectedProductCategory, setSelectedProductCategory] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const navigate = useNavigate();
   const location = useLocation();
   const [isUploading, setIsUploading] = useState(false);
 
@@ -70,26 +71,40 @@ const CreateProduct = () => {
     console.log("Description:", productDescription);
 
     // Now save the product with its image URL to the database
-    const { data, error } = await supabase.from("products").insert([
-      {
-        project_id: projectId, // Link product to the project
-        product_name: productName,
-        image_url: imagePath,
-        category_id: selectedCategoryId,
-        description: productDescription,
-      },
-    ]);
+    const { data, error } = await supabase
+      .from("products")
+      .insert(
+        [
+          {
+            project_id: projectId, // Link product to the project
+            product_name: productName,
+            image_url: imagePath,
+            category_id: selectedCategoryId,
+            description: productDescription,
+          },
+        ],
+        { returning: "minimal" }
+      )
+      .select("*"); // Select all columns after insertion
 
     if (error) {
       console.error("Error saving product to the database: ", error);
     } else {
-      console.log("Product saved successfully!");
-      // Reset state or navigate to another view
+      console.log("Returned data:", data); // Log the entire data object
+
+      if (Array.isArray(data) && data.length > 0) {
+        const newProductId = data[0].id; // Assuming 'id' is the column name for the primary key
+        console.log("New product ID:", newProductId);
+
+        navigate(`/projects/${projectId}/${newProductId}`);
+      } else {
+        console.warn("No products were returned after insertion");
+      }
     }
   };
 
   const handleCancel = () => {
-    console.log("cancel");
+    navigate(`/projects/${projectId}/`);
   };
 
   const handleFileUpload = (fileName) => {
