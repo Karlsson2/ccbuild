@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import CreateProduct from "../components/CreateProduct";
 import EditProject from "../components/EditProject";
 import { Button, Modal } from "react-bootstrap";
+import ItemsLoop from "../components/ItemsLoop";
 
 
 
@@ -135,7 +136,7 @@ const Project = () => {
                   })}
                 </ul>
               ) : (
-                <p>No products found for this project.</p>
+                <p>No items founs for this product</p>
               )
             ) : (
               <p>Loading products...</p>

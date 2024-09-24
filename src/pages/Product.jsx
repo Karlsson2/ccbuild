@@ -2,8 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { supabase } from "../utils/supabase";
+import Items from "../components/Items";
+import Categories from "../components/Categories";
+import ItemsLoop from "../components/ItemsLoop";
 import { Button, Container, Row, Col, Image, Modal } from "react-bootstrap";
 import EditProduct from "../components/EditProduct";
+
 
 const Product = () => {
   const { projectId, productId } = useParams();
