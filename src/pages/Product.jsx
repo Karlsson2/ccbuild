@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Items from "../components/Items";
 import Button from "react-bootstrap/Button";
 import Categories from "../components/Categories";
+import ItemsLoop from "../components/ItemsLoop";
 
 const Product = () => {
   const { productId } = useParams();
@@ -67,21 +68,11 @@ const Product = () => {
               items.length > 0 ? (
                 <>
                   <ul>
-                    {items.map((item) => {
-                      return (
-                        <li key={item.id}>
-                          <strong>ID:</strong> {item.id},{" "}
-                          <strong>Antal:</strong> {item.amount}
-                          <Button
-                            variant="primary"
-                            onClick={() => setShowItems(item.id)}
-                            style={{ marginLeft: "10px" }}
-                          >
-                            Visa
-                          </Button>
-                        </li>
-                      );
-                    })}
+                    
+                      
+                        <ItemsLoop items={items} setItems={setItems} setShowItems={setShowItems} />
+                      
+                    
                   </ul>
                   <Button
                     variant="primary"
