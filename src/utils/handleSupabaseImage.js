@@ -85,3 +85,20 @@ export const fetchImage = async () => {
     return images;
   }
 };
+
+export const uploadNewProductImage = async (file) => {
+  const { data, error } = await supabase.storage
+    .from("ccbuild") // Specify the bucket
+    .upload(`product_image/${file.name}`, file); // Upload to a specific folder
+
+  if (error) {
+    console.error("Error uploading product image: ", error);
+    return null;
+  }
+
+  const fileUrl = `${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/ccbuild/${file.name}`;
+  console.log("Product image uploaded successfully", fileUrl);
+
+  // Return the file name
+  return file.name;
+};
