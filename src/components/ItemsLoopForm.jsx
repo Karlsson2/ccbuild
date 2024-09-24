@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Row, Col, Form, Modal, Button, Card, Container } from "react-bootstrap";
 import { supabase } from "../utils/supabase";
+import ItemsLoopFormDropdown from "./ItemsLoopFormDropdown";
 
-export default function ItemsLoopForm({ items: initialItems }) {
+export default function ItemsLoopForm({ items: initialItems, handleDeleteItem }) {
   const [formData, setFormData] = useState(initialItems || {});
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -30,24 +31,6 @@ export default function ItemsLoopForm({ items: initialItems }) {
       }
     } catch (err) {
       console.error('An error occurred during submission:', err);
-    }
-  };
-
-  const handleDeleteItem = async (itemId) => {
-    try {
-      const { data, error } = await supabase
-        .from('items')
-        .delete()
-        .eq('id', itemId);
-  
-      if (error) {
-        console.error('Error deleting:', error);
-      } else {
-        console.log('Deleted item with id:', itemId);
-        
-      }
-    } catch (err) {
-      console.error('An error occurred:', err);
     }
   };
 
@@ -518,6 +501,7 @@ export default function ItemsLoopForm({ items: initialItems }) {
                     </Form.Group>
                 </Col>
                 </Row>
+                <ItemsLoopFormDropdown formData={formData} setFormData={setFormData} />
                 <Button type="submit">Skicka</Button>
             </Form>
           </Card.Body>
