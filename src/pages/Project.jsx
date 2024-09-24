@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import CreateProduct from "../components/CreateProduct";
 import EditProject from "../components/EditProject";
 import { Button, Modal } from "react-bootstrap";
-
+import ItemsLoop from "../components/ItemsLoop";
 
 
 const Project = () => {
@@ -41,26 +41,26 @@ const Project = () => {
 
   const handleDelete = async () => {
     const { error } = await supabase
-    .from("projects")
-    .delete()
-    .eq("id", projectId);
+      .from("projects")
+      .delete()
+      .eq("id", projectId);
 
     if (!error) {
       navigate("/projects");
-      console.log('Deleted project:', project.name, 'with id:', projectId)
+      console.log("Deleted project:", project.name, "with id:", projectId);
     } else {
-      console.error("Error deleting project: ", projectId, error)
+      console.error("Error deleting project: ", projectId, error);
     }
-  }
+  };
 
   const handleOpenEditProject = () => {
     setShowEditProject(true);
   };
-  
+
   const handleCloseEditProject = () => {
     setShowEditProject(false);
   };
-
+  
   const handleSaveProject = (updatedProject) => {
     setProject(updatedProject); 
     setShowEditProject(false); 
@@ -81,8 +81,8 @@ const Project = () => {
       <h1>Project Details</h1>
       {project ? (
         <>
-        <div>
-        <Button onClick={handleOpenEditProject}>Edit</Button>
+          <div>
+            <Button onClick={handleOpenEditProject}>Edit</Button>
             {showEditProject && (
               <Modal size="xl" show={showEditProject} onHide={handleCloseEditProject}>
                 
@@ -98,10 +98,10 @@ const Project = () => {
               </Modal.Body>
             </Modal>
             )}
-          <Button variant="danger" onClick={handleDelete}>
-            Radera
-          </Button>
-        </div>
+            <Button variant="danger" onClick={handleDelete}>
+              Radera
+            </Button>
+          </div>
           <div>
             <strong>ID:</strong> {project.id}
           </div>
@@ -135,7 +135,7 @@ const Project = () => {
                   })}
                 </ul>
               ) : (
-                <p>No products found for this project.</p>
+                <p>No items founs for this product</p>
               )
             ) : (
               <p>Loading products...</p>
