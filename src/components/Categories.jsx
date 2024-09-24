@@ -3,6 +3,7 @@ import createCategoriesArray from "../utils/createCategoriesArray";
 import { supabase } from "../utils/supabase";
 import searchCategories from "../utils/searchCategories";
 import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
+import highlightMatch from "../utils/highlightMatch.jsx";
 
 function Categories({
   setSelectedProductCategory,
@@ -216,12 +217,15 @@ function Categories({
                           key={index}
                           onClick={() => handleCategorySelect(subsubcategory)}
                         >
-                          {category[0]}
+                          {/* Highlight matching characters in category */}
+                          {highlightMatch(category[0], searchTerm)}
+
                           <img
                             src={`${baseUrl}/public/blue_arrow_right.png`}
                             alt="Pil åt höger"
                           />
-                          {subcategory[0]}
+                          {/* Highlight matching characters in subcategory */}
+                          {highlightMatch(subcategory[0], searchTerm)}
 
                           {subsubcategory[0] !== "" && (
                             <>
@@ -229,7 +233,8 @@ function Categories({
                                 src={`${baseUrl}/public/blue_arrow_right.png`}
                                 alt="Pil åt höger"
                               />
-                              {subsubcategory[0]}
+                              {/* Highlight matching characters in subsubcategory */}
+                              {highlightMatch(subsubcategory[0], searchTerm)}
                             </>
                           )}
                         </li>
@@ -250,7 +255,7 @@ function Categories({
           gap: "4px",
         }}
       >
-        <Container className="my-5">
+        <Container className="mb-3">
           <Row className="cat siblings-row justify-content-start">
             {/* First sibling */}
             <Col
