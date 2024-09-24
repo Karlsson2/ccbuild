@@ -29,15 +29,14 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-
 const Product = () => {
   const { projectId, productId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState(location.state?.product || null);
   const [shouldFetchProduct, setShouldFetchProduct] = useState(false);
-  console.log(product);
-  console.log(location.state);
+  console.log("product", product);
+  console.log("location state", location.state);
   if (product == null) {
     console.log("reeeee!");
   }
@@ -55,8 +54,16 @@ const Product = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
 
+  const [items, setItems] = useState([]);
 
-  const [items, setItems] = useState([])
+  // Use effect to check if product is available in location.state
+  useEffect(() => {
+    console.log("First useEffect Product:", product);
+    if (!product) {
+      console.log("Product not available in location state. Fetching...");
+      setShouldFetchProduct(true);
+    }
+  }, []);
 
   // Fetch product data if not available in location.state
   useEffect(() => {
@@ -214,7 +221,6 @@ const Product = () => {
     }
   };
 
-
   // Fetcha och CRUD Items logik \/
   const fetchItems = async () => {
     try {
@@ -239,36 +245,35 @@ const Product = () => {
   const handleCreateNewItem = async () => {
     try {
       const { data, error } = await supabase
-        .from('items')
+        .from("items")
         .insert([{ amount: 1 }]);
 
       if (error) {
-        console.error('Error creating new item', error);
+        console.error("Error creating new item", error);
       } else {
-        console.log('New item created', data);
+        console.log("New item created", data);
         fetchItems();
       }
     } catch (err) {
-      console.error('An error occurred', err);
+      console.error("An error occurred", err);
     }
   };
 
   const handleDeleteItem = async (itemId) => {
     try {
       const { data, error } = await supabase
-        .from('items')
+        .from("items")
         .delete()
-        .eq('id', itemId);
-  
+        .eq("id", itemId);
+
       if (error) {
-        console.error('Error deleting:', error);
+        console.error("Error deleting:", error);
       } else {
-        console.log('Deleted item with id:', itemId);
+        console.log("Deleted item with id:", itemId);
         fetchItems();
-        
       }
     } catch (err) {
-      console.error('An error occurred:', err);
+      console.error("An error occurred:", err);
     }
   };
 
@@ -278,9 +283,9 @@ const Product = () => {
         <Col md={4}>
           <Image
             fluid
-            src={product.image_url1 ? product.image_url1 : noImageUrl}
-            alt={product.product_name}
-            onClick={() => handleImageClick(product.image_url1)}
+            src={product?.image_url1 ? product?.image_url1 : noImageUrl}
+            alt={product?.product_name}
+            onClick={() => handleImageClick(product?.image_url1)}
             style={{ cursor: "pointer" }}
           />
         </Col>
@@ -289,14 +294,14 @@ const Product = () => {
             <Row>
               <Col>
                 <h1 className="generellInfoHeader">
-                  {product.product_name.charAt(0).toUpperCase() +
-                    product.product_name.slice(1)}
+                  {product?.product_name.charAt(0).toUpperCase() +
+                    product?.product_name.slice(1)}
                 </h1>
               </Col>
             </Row>
             <Row>
               <Col>
-                <span className="ccId">{product.id}</span>{" "}
+                <span className="ccId">{product?.id}</span>{" "}
               </Col>
             </Row>
             <Row>
@@ -309,7 +314,7 @@ const Product = () => {
                       <Tooltip id="tooltip-top" className="custom-tooltip">
                         <FontAwesomeIcon icon={faLeaf} /> <br></br>
                         Här är din totala klimatbesparing för alla{" "}
-                        {product.product_name}.<br></br>
+                        {product?.product_name}.<br></br>
                       </Tooltip>
                     }
                   >
@@ -337,9 +342,7 @@ const Product = () => {
               >
                 <FontAwesomeIcon icon={faTrashCan} /> Radera Produkt
               </Button>
-              <Button onClick={handleCreateNewItem}> 
-                Skapa ny produkt
-              </Button>
+              <Button onClick={handleCreateNewItem}>Skapa ny produkt</Button>
             </Col>
           </Row>
         </Col>
@@ -407,10 +410,10 @@ const Product = () => {
               </Row>
               <Row>
                 <Col>
-                  {!product.internal_id ? (
+                  {!product?.internal_id ? (
                     <span className="interal-id-not">"Ej Angivet"</span>
                   ) : (
-                    product.internal_id
+                    product?.internal_id
                   )}
                 </Col>
               </Row>
@@ -425,7 +428,7 @@ const Product = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>{product.description}</Col>
+                <Col>{product?.description}</Col>
               </Row>
             </Col>
           </Row>
@@ -446,11 +449,11 @@ const Product = () => {
                       padding: "0px",
                       cursor: "pointer",
                     }}
-                    src={product.image_url1 ? product.image_url1 : noImageUrl}
-                    alt={product.product_name}
+                    src={product?.image_url1 ? product?.image_url1 : noImageUrl}
+                    alt={product?.product_name}
                     onClick={() =>
                       handleImageClick(
-                        product.image_url1 ? product.image_url1 : noImageUrl
+                        product?.image_url1 ? product?.image_url1 : noImageUrl
                       )
                     }
                   />
@@ -462,11 +465,11 @@ const Product = () => {
                       padding: "0px",
                       cursor: "pointer",
                     }}
-                    src={product.image_url2 ? product.image_url2 : noImageUrl}
-                    alt={product.product_name}
+                    src={product?.image_url2 ? product?.image_url2 : noImageUrl}
+                    alt={product?.product_name}
                     onClick={() =>
                       handleImageClick(
-                        product.image_url2 ? product.image_url2 : noImageUrl
+                        product?.image_url2 ? product?.image_url2 : noImageUrl
                       )
                     }
                   />
@@ -478,11 +481,11 @@ const Product = () => {
                       padding: "0px",
                       cursor: "pointer",
                     }}
-                    src={product.image_url3 ? product.image_url3 : noImageUrl}
-                    alt={product.product_name}
+                    src={product?.image_url3 ? product?.image_url3 : noImageUrl}
+                    alt={product?.product_name}
                     onClick={() =>
                       handleImageClick(
-                        product.image_url3 ? product.image_url3 : noImageUrl
+                        product?.image_url3 ? product?.image_url3 : noImageUrl
                       )
                     }
                   />
@@ -494,7 +497,7 @@ const Product = () => {
       )}
       <Row>
         <Col>
-          <ItemsLoop items={items} handleDeleteItem={handleDeleteItem}/>
+          <ItemsLoop items={items} handleDeleteItem={handleDeleteItem} />
         </Col>
       </Row>
 
