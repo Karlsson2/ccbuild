@@ -11,7 +11,7 @@ function ProjectCard({ project }) {
     <Col className="col-lg-4 col-md-6 col-sm-6 project-container">
       <Link to={`/projects/${project.id}`} state={{ project }} key={project.id}>
         <Card
-          style={{ width: "18rem", minHeight: "240px" }}
+          style={{ width: "100%", minHeight: "240px" }}
           className="project-card"
         >
           <Card.Body className="border-radius no-padding">

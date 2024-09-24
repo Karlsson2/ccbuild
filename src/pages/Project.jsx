@@ -2,18 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import CreateProduct from "../components/CreateProduct";
 import EditProject from "../components/EditProject";
+import { Button, Modal } from "react-bootstrap";
+import ItemsLoop from "../components/ItemsLoop";
+
 
 const Project = () => {
   const { projectId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const project = location.state?.project;
+  const [project, setProject] = useState(null);
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PRODUCT_IMAGE_FOLDER;
   const [products, setProducts] = useState(null);
+  const [showCreateProduct, setShowCreateProduct] = useState(false);
   const [showEditProject, setShowEditProject] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +27,7 @@ const Project = () => {
         .select("*")
         .eq("id", projectId)
         .single();
-      /* setProject(projectData); */
+        setProject(projectData);
 
       const { data: productsData } = await supabase
         .from("products")
@@ -55,9 +60,20 @@ const Project = () => {
   const handleCloseEditProject = () => {
     setShowEditProject(false);
   };
+  
+  const handleSaveProject = (updatedProject) => {
+    setProject(updatedProject); 
+    setShowEditProject(false); 
+  };
 
-  const handleSaveProject = () => {
-    Object.assign(project, updatedProject);
+  const handleOpenCreateProduct = () => {
+    setShowCreateProduct(true);
+  };
+
+  const handleCloseCreateProduct = () => {
+    console.log("Closing CreateProduct form");
+
+    setShowCreateProduct(false);
   };
 
   return (
@@ -68,11 +84,19 @@ const Project = () => {
           <div>
             <Button onClick={handleOpenEditProject}>Edit</Button>
             {showEditProject && (
-              <EditProject
-                project={project}
-                onClose={handleCloseEditProject}
-                onSave={handleSaveProject}
-              />
+              <Modal size="xl" show={showEditProject} onHide={handleCloseEditProject}>
+                
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Project</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <EditProject
+                  project={project}
+                  onClose={handleCloseEditProject}
+                  onSave={handleSaveProject}
+                />
+              </Modal.Body>
+            </Modal>
             )}
             <Button variant="danger" onClick={handleDelete}>
               Radera
@@ -111,7 +135,7 @@ const Project = () => {
                   })}
                 </ul>
               ) : (
-                <p>No products found for this project.</p>
+                <p>No items founs for this product</p>
               )
             ) : (
               <p>Loading products...</p>
@@ -120,6 +144,14 @@ const Project = () => {
         </>
       ) : (
         <p>No project data found. Please try again.</p>
+      )}
+      <button onClick={handleOpenCreateProduct}>Skapa Ny Produkt</button>
+      {showCreateProduct && (
+        <CreateProduct
+          handleCloseCreateProduct={handleCloseCreateProduct}
+          project_id={project.id}
+          projectName={project.name}
+        />
       )}
     </div>
   );
