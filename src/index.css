@@ -508,3 +508,19 @@ form label:not(.form-check-label) {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
+.breadcrumb-link {
+  color: #1a1a1a;
+  font-weight: 400;
+
+  font-size: 14px;
+}
+.breadcrumb-link:hover {
+  text-decoration: underline;
+  color: #488ac6;
+}
+.breadcrumb-chevron {
+  font-size: 13px;
+  color: #488ac6;
+  font-weight: 600;
+  margin-left: 10px;
+}
