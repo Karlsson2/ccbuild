@@ -132,7 +132,7 @@ const Project = () => {
                 </Row>
               </Col>
               <Col className="buttons">
-                <Link to={`/projects/${project.id}/create-project`}>
+                <Link to={`/projects/${project.id}/create-product`}>
                   <Button
                     className="createProduct"
                     style={{
