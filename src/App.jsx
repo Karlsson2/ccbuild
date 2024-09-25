@@ -5,12 +5,13 @@ import Project from "./pages/Project";
 import Product from "./pages/Product";
 import CreateProduct from "./pages/CreateProduct";
 import Header from "./components/Header";
+import Breadcrumbs from "./utils/breadcrumbs";
 
 const App = () => {
   return (
     <Router>
       <Header></Header>
-
+      <Breadcrumbs></Breadcrumbs>
       <Routes>
         <Route path="/" element={<Projects />} />
         <Route path="/projects" element={<Projects />} />

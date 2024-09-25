@@ -1,8 +1,9 @@
 import React from "react";
+
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
-import { useState, useEffect } from "react";
-import { Container, Button, Form, Spinner } from "react-bootstrap";
+import { useState, useEffect, useRef } from "react";
+import { Overlay, Container, Button, Form, Spinner } from "react-bootstrap";
 import Categories from "../components/Categories";
 import ImageUploader from "../components/ImageUploader";
 
@@ -19,6 +20,10 @@ const CreateProduct = () => {
   const [imageLoading, setImageLoading] = useState(-1);
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const [isCategoryIdMissing, setIsCategoryIdMissing] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const categoryDivRef = useRef(null); // Reference for the category div
 
   // Fetch all projects, save all project names and ids in an array
   // then find the project name that matches the current projectId and set it in the state
@@ -65,8 +70,8 @@ const CreateProduct = () => {
 
   // Function to handle form submission
   const handleSubmit = async (event) => {
-    event.preventDefault();
-
+    event.preventDefault(); // Prevent the default form submission
+    setIsCategoryIdMissing(false);
     //Console log what we will try to save
     console.log("Saving product with the following data:");
     console.log("Project ID:", projectId);
@@ -77,6 +82,21 @@ const CreateProduct = () => {
     console.log("Category ID:", selectedCategoryId);
     console.log("Description:", productDescription);
 
+    if (selectedCategoryId === null || selectedCategoryId === "") {
+      console.error("Category ID is missing");
+      setIsCategoryIdMissing(false); // Set the state to true to apply the class
+
+      if (!selectedCategoryId) {
+        setIsCategoryIdMissing(true); // Show error if no category selected
+        if (categoryDivRef.current) {
+          categoryDivRef.current.focus(); // Focus on the category div
+          setShowOverlay(true); // Show the overlay
+        }
+        return;
+      }
+
+      return;
+    }
     // Now save the product with its image URL to the database
     const { data, error } = await supabase
       .from("products")
@@ -110,6 +130,31 @@ const CreateProduct = () => {
         console.warn("No products were returned after insertion");
       }
     }
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      // Hide the overlay if clicking outside the categoryDiv
+      if (
+        categoryDivRef.current &&
+        !categoryDivRef.current.contains(event.target)
+      ) {
+        setShowOverlay(false); // Hide the overlay
+      }
+    };
+    if (showOverlay) {
+      document.addEventListener("click", handleOutsideClick);
+    }
+    // Cleanup event listener when overlay is hidden or component unmounts
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [showOverlay]);
+
+  const handleDivClick = (event) => {
+    // Stop the event from bubbling up to the document click handler
+    event.stopPropagation();
+    setShowOverlay(false); // Hide the overlay if the div is clicked
   };
 
   const handleCancel = () => {
@@ -201,12 +246,11 @@ const CreateProduct = () => {
           </p>
         </Container>
         <Container>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formProjectName" className="mb-4">
               <Form.Label className="create-prod">Projekt*</Form.Label>
-              {/* Map through projects array, create select with project name as option text and project id as value.
-               Select the option with projectId */}
               <Form.Control
+                required
                 as="select"
                 className="bg-gray border-gray br-8"
                 value={projectId}
@@ -229,7 +273,6 @@ const CreateProduct = () => {
                   gap: "16px",
                 }}
               >
-                {/* Display a spinner while uploading */}
                 {imageLoading !== -1 && (
                   <div
                     style={{
@@ -261,79 +304,104 @@ const CreateProduct = () => {
                     justifyContent: "flex-start",
                   }}
                 >
-                  {
-                    // map through imagePaths array and display each image if not null
-                    imagePaths.map((imagePath, index) => {
-                      if (imagePath) {
-                        return (
-                          <div
-                            className="image-container"
+                  {imagePaths.map((imagePath, index) => {
+                    if (imagePath) {
+                      return (
+                        <div
+                          className="image-container"
+                          key={index}
+                          style={{
+                            position: "relative",
+                          }}
+                        >
+                          <img
+                            className="uploaded-image"
+                            onClick={handleDeleteClick}
                             key={index}
+                            src={imagePath}
+                            alt="Uppladdad produktbild"
                             style={{
-                              position: "relative",
+                              height: "92px",
+                              width: "auto",
+                              cursor: "pointer",
                             }}
-                          >
+                            onLoadStart={() => {
+                              setImageLoading(index);
+                              setIsUploading(true);
+                            }}
+                            onLoad={() => {
+                              setImageLoading(-1);
+                              setIsUploading(false);
+                            }}
+                          />
+
+                          {imageLoading !== index && (
                             <img
-                              className="uploaded-image"
-                              onClick={handleDeleteClick}
-                              key={index}
-                              src={imagePath}
-                              alt="Uppladdad produktbild"
+                              key={index + 999}
+                              src={`${baseUrl}/public/close_small.png`}
+                              alt="Ta bort bild"
                               style={{
-                                height: "92px",
-                                width: "auto",
+                                position: "absolute",
+                                top: "0",
+                                right: "0",
                                 cursor: "pointer",
                               }}
-                              onLoadStart={() => {
-                                setImageLoading(index);
-                                setIsUploading(true);
-                              }}
-                              onLoad={() => {
-                                setImageLoading(-1);
-                                setIsUploading(false);
-                              }}
+                              onClick={handleDeleteClick}
                             />
-
-                            {/* Display a close button on the top right of the image,
-                            but only AFTER the image above has loaded */}
-                            {imageLoading !== index && (
-                              <img
-                                key={index + 999}
-                                src={`${baseUrl}/public/close_small.png`}
-                                alt="Ta bort bild"
-                                style={{
-                                  position: "absolute",
-                                  top: "0",
-                                  right: "0",
-                                  cursor: "pointer",
-                                }}
-                                onClick={handleDeleteClick}
-                              />
-                            )}
-                          </div>
-                        );
-                      }
-                      return null;
-                    })
-                  }
+                          )}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
                 </div>
               </div>
             </Form.Group>
 
-            <Categories
-              setSelectedProductCategory={setSelectedProductCategory}
-              setSelectedCategoryId={setSelectedCategoryId}
-              setProductName={setProductName}
-            />
+            <Overlay
+              target={categoryDivRef.current}
+              show={showOverlay}
+              placement="top"
+            >
+              {({ ...props }) => (
+                <div
+                  {...props}
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "#86b7fe",
+                    padding: "5px 10px",
+                    color: "white",
+                    borderRadius: 3,
+                    ...props.style,
+                  }}
+                >
+                  Kategori är obligatorisk!
+                </div>
+              )}
+            </Overlay>
+
+            <div
+              className={`mb-5 categoryInput ${
+                isCategoryIdMissing ? "border-danger" : ""
+              }`}
+              tabIndex={0}
+              ref={categoryDivRef}
+              onClick={handleDivClick}
+              aria-label="Select Category"
+            >
+              <Categories
+                setSelectedProductCategory={setSelectedProductCategory}
+                setSelectedCategoryId={setSelectedCategoryId}
+                setProductName={setProductName}
+              />
+            </div>
 
             <Form.Group controlId="formProductName" className="mb-4">
               <Form.Label className="create-prod">Produktnamn*</Form.Label>
               <Form.Control
+                required
                 className="bg-gray border-gray br-8"
                 type="text"
-                // for value, if productName is not null, use productName,
-                // else if selectedProductCategory is not null, use selectedProductCategory
-                // else use an empty string
                 value={
                   productName
                     ? productName
@@ -350,6 +418,7 @@ const CreateProduct = () => {
                 Produktbeskrivning
               </Form.Label>
               <Form.Control
+                required
                 className="bg-gray border-gray br-8"
                 as="textarea"
                 rows="3"
@@ -358,12 +427,7 @@ const CreateProduct = () => {
                 onChange={handleProductDescriptionChange}
               />
             </Form.Group>
-            <Button
-              variant="primary"
-              className={"cp save mb-5"}
-              type="submit"
-              onClick={handleSubmit}
-            >
+            <Button variant="primary" className={"cp save mb-5"} type="submit">
               Spara
             </Button>
             <Button
