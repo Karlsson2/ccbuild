@@ -101,8 +101,8 @@ const Product = () => {
   }, [product, shouldFetchProduct, productId]);
 
   useEffect(() => {
-    console.log('produktID', productId)
-  })
+    console.log("produktID", productId);
+  });
 
   // Fetch project data
   useEffect(() => {
@@ -362,7 +362,7 @@ const Product = () => {
                     className={"deleteProduct"}
                     onClick={openDeleteConfirmation}
                   >
-                    <FontAwesomeIcon icon={faTrashCan} /> Radera Produkt
+                    <FontAwesomeIcon icon={faTrashCan} /> Radera produkt
                   </Button>
                 </Col>
               </Row>
@@ -428,7 +428,7 @@ const Product = () => {
                 <Col sm={3}>
                   <Row>
                     <Col>
-                      <strong>Eget Id-nummer</strong>
+                      <strong>Eget id-nummer</strong>
                     </Col>
                   </Row>
                   <Row>
@@ -553,7 +553,7 @@ const Product = () => {
                 className="mb-4 mt-2"
                 onClick={handleCreateNewItem}
               >
-                Skapa ny produkt
+                Lägg till individ
               </Button>
             </>
           )}
