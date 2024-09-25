@@ -115,7 +115,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                         <Form.Check 
                         type="checkbox" 
                         name="suggest_price"
-                        checked={formData.suggest_price || ""}
+                        checked={formData.suggest_price}
                         onChange={handleInputChange}
                         label="Låt köparen föreslå pris" />
                     </Form.Group>
