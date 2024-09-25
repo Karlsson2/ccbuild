@@ -4,9 +4,28 @@ import { supabase } from "../utils/supabase";
 import { Link } from "react-router-dom";
 import CreateProduct from "../components/CreateProduct";
 import EditProject from "../components/EditProject";
-import { Button, Modal } from "react-bootstrap";
+import ProductCard from "../components/ProductCard";
+import {
+  Accordion,
+  Form,
+  Button,
+  Modal,
+  Container,
+  Row,
+  Col,
+  Card,
+} from "react-bootstrap";
 import ItemsLoop from "../components/ItemsLoop";
-
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import {
+  faPencil,
+  faPlus,
+  faInfo,
+  faLeaf,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Project = () => {
   const { projectId } = useParams();
@@ -19,7 +38,6 @@ const Project = () => {
   const [showCreateProduct, setShowCreateProduct] = useState(false);
   const [showEditProject, setShowEditProject] = useState(false);
 
-
   useEffect(() => {
     const fetchData = async () => {
       const { data: projectData } = await supabase
@@ -27,7 +45,7 @@ const Project = () => {
         .select("*")
         .eq("id", projectId)
         .single();
-        setProject(projectData);
+      setProject(projectData);
 
       const { data: productsData } = await supabase
         .from("products")
@@ -60,10 +78,10 @@ const Project = () => {
   const handleCloseEditProject = () => {
     setShowEditProject(false);
   };
-  
+
   const handleSaveProject = (updatedProject) => {
-    setProject(updatedProject); 
-    setShowEditProject(false); 
+    setProject(updatedProject);
+    setShowEditProject(false);
   };
 
   const handleOpenCreateProduct = () => {
@@ -75,85 +93,159 @@ const Project = () => {
 
     setShowCreateProduct(false);
   };
-
+  console.log(products);
   return (
-    <div>
-      <h1>Project Details</h1>
+    <Container>
       {project ? (
         <>
-          <div>
-            <Button onClick={handleOpenEditProject}>Edit</Button>
-            {showEditProject && (
-              <Modal size="xl" show={showEditProject} onHide={handleCloseEditProject}>
-                
-              <Modal.Header closeButton>
-                <Modal.Title>Edit Project</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <EditProject
-                  project={project}
-                  onClose={handleCloseEditProject}
-                  onSave={handleSaveProject}
-                />
-              </Modal.Body>
-            </Modal>
-            )}
-            <Button variant="danger" onClick={handleDelete}>
-              Radera
-            </Button>
+          <div
+            className="projectsdetails-banner"
+            style={{ backgroundImage: `url(${project.image_url})` }}
+          >
+            <div className="projectsdetails-actions">
+              <Button onClick={handleOpenEditProject}>
+                <FontAwesomeIcon icon={faPencil} /> Edit
+              </Button>
+              {showEditProject && (
+                <Modal
+                  size="xl"
+                  show={showEditProject}
+                  onHide={handleCloseEditProject}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Edit Project</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <EditProject
+                      project={project}
+                      onClose={handleCloseEditProject}
+                      onSave={handleSaveProject}
+                    />
+                  </Modal.Body>
+                </Modal>
+              )}
+              <Button variant="danger" onClick={handleDelete}>
+                <FontAwesomeIcon icon={faTrashCan} /> Radera
+              </Button>
+            </div>
+            <Row className="projectsdetails-info">
+              <Col className="content">
+                <Row>
+                  <h1>{project.name}</h1>
+                </Row>
+                <Row>
+                  <Col>{project.organization}</Col>
+                </Row>
+              </Col>
+              <Col className="buttons">
+                <Link to={`/projects/${project.id}/create-project`}>
+                  <Button
+                    className="createProduct"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faPlus} /> Skapa Ny Produkt
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
           </div>
-          <div>
-            <strong>ID:</strong> {project.id}
-          </div>
-          <div>
-            <strong>Name:</strong> {project.name}
-          </div>
-          <div>
-            <strong>Created At:</strong>{" "}
-            {new Date(project.created_at).toLocaleString()}
-          </div>
-          <div>
-            <strong>Products:</strong>
-            {products ? (
-              products.length > 0 ? (
-                <ul>
-                  {products.map((product) => {
-                    const imageUrl = `${baseUrl}${bucketFolder}${product.image_url}`;
-                    return (
-                      <Link
-                        to={`/projects/${project.id}/${product.id}`}
-                        state={{ product }}
-                        key={product.id}
-                      >
-                        <li>
-                          <strong>ID:</strong> {product.id},{" "}
-                          <strong>Name:</strong> {product.product_name},{" "}
-                          <img src={imageUrl} alt={product.product_name} />
-                        </li>
-                      </Link>
-                    );
-                  })}
-                </ul>
-              ) : (
-                <p>No items founs for this product</p>
-              )
-            ) : (
-              <p>Loading products...</p>
-            )}
-          </div>
+
+          <Container>
+            <Row className="mt-4">
+              <Col className="col-lg-3 col-md-12">
+                <Col>
+                  <h3>Filter</h3>
+                </Col>
+                <Accordion
+                  defaultActiveKey={["0", "1", "2", "3", "4"]}
+                  alwaysOpen
+                  flush
+                >
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Fritext</Accordion.Header>
+                    <Accordion.Body>
+                      <Form>
+                        <Row>
+                          <Col>
+                            <Form.Control
+                              type="text"
+                              placeholder="Fritext"
+                              className=" mr-sm-2"
+                            />
+                          </Col>
+                        </Row>
+                      </Form>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>Märkning</Accordion.Header>
+                    <Accordion.Body>
+                      <Form.Select aria-label="Default select example">
+                        <option>Alla</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </Form.Select>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header>Inventeringsstatus</Accordion.Header>
+                    <Accordion.Body>
+                      {" "}
+                      <Form.Select aria-label="Default select example">
+                        <option>Välj...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </Form.Select>{" "}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header>Marknadsplatsstatus</Accordion.Header>
+                    <Accordion.Body>
+                      {" "}
+                      <Form.Select aria-label="Default select example">
+                        <option>Välj...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </Form.Select>{" "}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </Col>
+              <Col>
+                <Row className="mt-4">
+                  {products ? (
+                    products.length > 0 ? (
+                      <>
+                        {products.map((product) => (
+                          <ProductCard
+                            project={project}
+                            product={product}
+                            key={product.id}
+                          />
+                        ))}
+                      </>
+                    ) : (
+                      <p>No products found for this project.</p>
+                    )
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </Row>
+              </Col>
+            </Row>
+          </Container>
         </>
       ) : (
         <p>No project data found. Please try again.</p>
       )}
-      <button onClick={handleOpenCreateProduct}>Skapa Ny Produkt</button>
-      {showCreateProduct && (
-        <CreateProduct
-          handleCloseCreateProduct={handleCloseCreateProduct}
-          project_id={project.id}
-          projectName={project.name}
-        />
-      )}
-    </div>
+    </Container>
   );
 };
 
