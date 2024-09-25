@@ -523,7 +523,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                   <Col md={12}>
                     <Form.Group className="mb-3">
                       <Form.Label>Färgtemperatur</Form.Label>
-                      {/* Use d-flex to ensure the radios are flex items */}
+                     
                       <div className="d-flex flex-wrap">
                         {['Ej angivet', '2700K', '3000K', '3500K', '4100K', '5000K', '6500K'].map((temp, index) => (
                           <div key={index} className="me-2 mb-2">
