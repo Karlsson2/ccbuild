@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form } from "react-bootstrap";
 import { uploadNewProductImage } from "../utils/handleSupabaseImage";
 
@@ -6,15 +6,11 @@ const ImageUploader = ({ onFileUpload }) => {
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = "/public/";
   const uploadIcon = `${baseUrl}${bucketFolder}upload.png`;
-  const [dragging, setDragging] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      setIsUploading(true);
       const image = await uploadNewProductImage(file);
-      setIsUploading(false);
 
       // Call the parent's callback function and pass the file name
       if (onFileUpload && image) {
@@ -26,16 +22,12 @@ const ImageUploader = ({ onFileUpload }) => {
   return (
     <div
       style={{
-        border: dragging
-          ? "1px solid var(--upload-border-gray)"
-          : "1px solid var(--upload-border-gray)",
+        border: "1px solid var(--upload-border-gray)",
         borderRadius: "4px",
         width: "240px",
         height: "92px",
         padding: "8px",
-        backgroundColor: dragging
-          ? "var(--category-bg-gray)"
-          : "var(--category-bg-gray)",
+        backgroundColor: "var(--category-bg-gray)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -54,19 +46,18 @@ const ImageUploader = ({ onFileUpload }) => {
         }}
       />
 
-      <img size={32} color={dragging ? "#007bff" : "#888"} />
+      <img size={32} color={"#888"} />
       <span
         style={{
           display: "inline-block",
           textAlign: "center",
-
           fontFamily: "Inter",
           fontWeight: "bold",
           fontSize: "14px",
           color: "var(--upload-text-gray)",
         }}
       >
-        Dra och släpp bilder här eller tryck för att bläddra lokalt
+        Dra och släpp en bild här eller tryck för att bläddra lokalt
       </span>
 
       <Form.Control
