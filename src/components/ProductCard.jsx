@@ -10,6 +10,8 @@ const ProductCard = ({ project, product }) => {
   const itemsWeight = items?.reduce((acc, item) => acc + item.weight, 0);
   const itemsTotal = items?.reduce((acc, item) => acc + item.amount, 0);
   const itemsCO2 = itemsWeight * 0.8;
+  const noImageUrl =
+    "https://cpqsrfnheiohlhnpxpgo.supabase.co/storage/v1/object/public/ccbuild/public/ingenbild.jpeg";
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -63,7 +65,7 @@ const ProductCard = ({ project, product }) => {
         <Card className="mb-3 product-card " style={{ position: "relative" }}>
           <div className="organisation-info">{project.organization}</div>
           <img
-            src={product.image_url1}
+            src={product.image_url1 ? product.image_url1 : noImageUrl}
             alt={product.product_name}
             style={{
               width: "100%",
