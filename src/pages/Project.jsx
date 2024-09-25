@@ -84,16 +84,6 @@ const Project = () => {
     setShowEditProject(false);
   };
 
-  const handleOpenCreateProduct = () => {
-    setShowCreateProduct(true);
-  };
-
-  const handleCloseCreateProduct = () => {
-    console.log("Closing CreateProduct form");
-
-    setShowCreateProduct(false);
-  };
-  console.log(products);
   return (
     <Container>
       {project ? (
@@ -103,7 +93,7 @@ const Project = () => {
             style={{ backgroundImage: `url(${project.image_url})` }}
           >
             <div className="projectsdetails-actions">
-              <Button onClick={handleOpenEditProject}>
+              <Button onClick={handleOpenEditProject} className="editProduct">
                 <FontAwesomeIcon icon={faPencil} /> Edit
               </Button>
               {showEditProject && (
@@ -113,7 +103,7 @@ const Project = () => {
                   onHide={handleCloseEditProject}
                 >
                   <Modal.Header closeButton>
-                    <Modal.Title>Edit Project</Modal.Title>
+                    <Modal.Title>Edit Project - {project.name}</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <EditProject
@@ -124,7 +114,11 @@ const Project = () => {
                   </Modal.Body>
                 </Modal>
               )}
-              <Button variant="danger" onClick={handleDelete}>
+              <Button
+                variant="danger"
+                onClick={handleDelete}
+                className="deleteProduct "
+              >
                 <FontAwesomeIcon icon={faTrashCan} /> Radera
               </Button>
             </div>
@@ -138,7 +132,7 @@ const Project = () => {
                 </Row>
               </Col>
               <Col className="buttons">
-                <Link to={`/projects/${project.id}/create-project`}>
+                <Link to={`/projects/${project.id}/create-product`}>
                   <Button
                     className="createProduct"
                     style={{

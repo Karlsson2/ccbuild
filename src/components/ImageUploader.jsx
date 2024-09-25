@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import { uploadNewProductImage } from "../utils/handleSupabaseImage";
 
-const ImageUploader = ({ onFileUpload }) => {
+const ImageUploader = ({ onFileUpload, setIsUploading }) => {
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = "/public/";
   const uploadIcon = `${baseUrl}${bucketFolder}upload.png`;
@@ -10,8 +10,9 @@ const ImageUploader = ({ onFileUpload }) => {
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
+      setIsUploading(true);
       const image = await uploadNewProductImage(file);
-
+      setIsUploading(false);
       // Call the parent's callback function and pass the file name
       if (onFileUpload && image) {
         onFileUpload(image); // Pass the image name to the parent

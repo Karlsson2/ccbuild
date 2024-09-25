@@ -2,21 +2,22 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../utils/supabase";
 import { useState, useEffect } from "react";
-import { Container, Button, Form } from "react-bootstrap";
+import { Container, Button, Form, Spinner } from "react-bootstrap";
 import Categories from "../components/Categories";
 import ImageUploader from "../components/ImageUploader";
 
 const CreateProduct = () => {
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PRODUCT_IMAGE_FOLDER;
-  const [imagePath, setImagePath] = useState("");
+  const [imagePaths, setImagePaths] = useState([]);
   const { projectId } = useParams();
   const [projects, setProjects] = useState([]);
-  const [projectName, setProjectName] = useState(null);
   const [productName, setProductName] = useState(null);
   const [productDescription, setProductDescription] = useState(null);
   const [selectedProductCategory, setSelectedProductCategory] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [imageLoading, setImageLoading] = useState(-1);
+  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
   // Fetch all projects, save all project names and ids in an array
@@ -38,7 +39,7 @@ const CreateProduct = () => {
         const currentProjectName = currentProjects.find(
           (project) => project.id == projectId
         ).name;
-        setProjectName(currentProjectName);
+        // setProjectName(currentProjectName);
       } catch (error) {
         console.error("Unexpected error:", error);
       }
@@ -58,6 +59,10 @@ const CreateProduct = () => {
     setProductDescription(event.target.value);
   };
 
+  const handleImageLoading = (index) => {
+    setImageLoading(index);
+  };
+
   // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -66,7 +71,9 @@ const CreateProduct = () => {
     console.log("Saving product with the following data:");
     console.log("Project ID:", projectId);
     console.log("Product name:", productName);
-    console.log("Image path:", imagePath);
+    console.log("Image path 1:", imagePaths[0]);
+    console.log("Image path 2:", imagePaths[1]);
+    console.log("Image path 3:", imagePaths[2]);
     console.log("Category ID:", selectedCategoryId);
     console.log("Description:", productDescription);
 
@@ -78,7 +85,9 @@ const CreateProduct = () => {
           {
             project_id: projectId, // Link product to the project
             product_name: productName,
-            image_url: imagePath,
+            image_url1: imagePaths[0],
+            image_url2: imagePaths[1],
+            image_url3: imagePaths[2],
             category_id: selectedCategoryId,
             description: productDescription,
           },
@@ -108,8 +117,31 @@ const CreateProduct = () => {
   };
 
   const handleFileUpload = (fileName) => {
-    console.log("Uploaded file name:", fileName);
-    setImagePath(`${baseUrl}${bucketFolder}${fileName}`); // Store the file name in the state or handle it accordingly
+    setImageLoading(imagePaths.length);
+    setImagePaths((prevPaths) => {
+      // Check if the array already has 3 or more items
+      if (prevPaths.length >= 3) {
+        // Create a new array where the oldest item is replaced
+        const newPaths = [...prevPaths];
+        const indexToReplace = prevPaths.length % 3; // Circular index (0, 1, 2)
+        newPaths[indexToReplace] = `${baseUrl}${bucketFolder}${fileName}`;
+        return newPaths;
+      } else {
+        // If less than 3 items, just add the new file name to the array
+        return [...prevPaths, `${baseUrl}${bucketFolder}${fileName}`];
+      }
+    });
+  };
+
+  const handleDeleteClick = (event) => {
+    // Find the index of the image in the array and set it to null
+    const index = imagePaths.indexOf(event.target.src);
+    setImagePaths((prevPaths) => {
+      const newPaths = [...prevPaths];
+      //splice the image path from the array
+      newPaths.splice(index, 1);
+      return newPaths;
+    });
   };
 
   return (
@@ -123,6 +155,7 @@ const CreateProduct = () => {
       >
         <Container>
           <h1
+            className="mb-4"
             style={{
               fontSize: "48px",
               fontWeight: "bold",
@@ -131,6 +164,23 @@ const CreateProduct = () => {
           >
             Lägg till ny produkt
           </h1>
+          <div
+            style={{
+              width: "100%",
+              height: "4px",
+              backgroundColor: "var(--hr-gray)",
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
+            <div
+              style={{
+                width: "220px",
+                height: "4px",
+                backgroundColor: "var(--hr-yellow)",
+              }}
+            ></div>
+          </div>
           <h2
             style={{
               fontSize: "36px",
@@ -172,26 +222,101 @@ const CreateProduct = () => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Label className="create-prod">Produktbild</Form.Label>
+              <Form.Label className="create-prod">Produktbilder</Form.Label>
               <div
                 style={{
                   display: "flex",
                   gap: "16px",
                 }}
               >
-                <ImageUploader onFileUpload={handleFileUpload} />
-                <div>
-                  {/* Display the uploaded image */}
-                  {imagePath && (
-                    <img
-                      src={imagePath}
-                      alt="Uppladdad produktbild"
-                      style={{
-                        height: "92px",
-                        width: "auto",
-                      }}
-                    />
-                  )}
+                {/* Display a spinner while uploading */}
+                {imageLoading !== -1 && (
+                  <div
+                    style={{
+                      border: "1px solid var(--upload-border-gray)",
+                      borderRadius: "4px",
+                      width: "240px",
+                      height: "92px",
+                      padding: "8px",
+                      backgroundColor: "var(--category-bg-gray)",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Spinner animation="border" size="xl" />
+                  </div>
+                )}
+                {imageLoading === -1 && (
+                  <ImageUploader
+                    onFileUpload={handleFileUpload}
+                    setIsUploading={setIsUploading}
+                  />
+                )}
+                <div
+                  style={{
+                    width: "320px",
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {
+                    // map through imagePaths array and display each image if not null
+                    imagePaths.map((imagePath, index) => {
+                      if (imagePath) {
+                        return (
+                          <div
+                            className="image-container"
+                            key={index}
+                            style={{
+                              position: "relative",
+                            }}
+                          >
+                            <img
+                              className="uploaded-image"
+                              onClick={handleDeleteClick}
+                              key={index}
+                              src={imagePath}
+                              alt="Uppladdad produktbild"
+                              style={{
+                                height: "92px",
+                                width: "auto",
+                                cursor: "pointer",
+                              }}
+                              onLoadStart={() => {
+                                setImageLoading(index);
+                                setIsUploading(true);
+                              }}
+                              onLoad={() => {
+                                setImageLoading(-1);
+                                setIsUploading(false);
+                              }}
+                            />
+
+                            {/* Display a close button on the top right of the image,
+                            but only AFTER the image above has loaded */}
+                            {imageLoading !== index && (
+                              <img
+                                key={index + 999}
+                                src={`${baseUrl}/public/close_small.png`}
+                                alt="Ta bort bild"
+                                style={{
+                                  position: "absolute",
+                                  top: "0",
+                                  right: "0",
+                                  cursor: "pointer",
+                                }}
+                                onClick={handleDeleteClick}
+                              />
+                            )}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })
+                  }
                 </div>
               </div>
             </Form.Group>

@@ -22,6 +22,8 @@
   --blue: #488ac6;
   --upload-border-gray: #e2e2e2;
   --upload-text-gray: #8d8d8d;
+  --hr-gray: #d9d9d9;
+  --hr-yellow: #ffed46;
 }
 
 a {
@@ -471,4 +473,23 @@ form label:not(.form-check-label) {
   color: #488ac6;
   border: 1px solid #488ac6;
   border-radius: 100px;
+}
+.greenText {
+  color: #44a036;
+}
+.product-card .card-text {
+  margin-bottom: 4px;
+}
+.organisation-info {
+  padding: 2px;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #0f5c49;
+  margin-left: 8px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  color: white;
+  font-size: 10px;
 }
