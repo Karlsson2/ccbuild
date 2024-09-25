@@ -60,13 +60,14 @@ const ProductCard = ({ project, product }) => {
   return (
     <Col className="col-lg-4 col-md-6 col-sm-6 project-container">
       <Link to={`/projects/${project.id}/${product.id}`} state={{ product }}>
-        <Card className="mb-3 product-card">
+        <Card className="mb-3 product-card " style={{ position: "relative" }}>
+          <div className="organisation-info">{project.organization}</div>
           <img
             src={product.image_url1}
             alt={product.product_name}
             style={{
               width: "100%",
-              height: "240px",
+              height: "200px",
               objectFit: "cover",
             }}
           />
@@ -74,7 +75,7 @@ const ProductCard = ({ project, product }) => {
             style={{
               fontSize: "12px",
               backgroundColor: "#f9f9f9",
-              height: "240px",
+              height: "220px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -115,7 +116,8 @@ const ProductCard = ({ project, product }) => {
               <Card.Text
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
-                <strong>Total klimatbesparing:</strong> {itemsCO2} kg CO₂e
+                <strong>Total klimatbesparing:</strong>{" "}
+                <span className="greenText">{itemsCO2} kg CO₂e</span>
               </Card.Text>
               <Card.Text
                 style={{ display: "flex", justifyContent: "space-between" }}

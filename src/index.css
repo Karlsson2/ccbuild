@@ -472,3 +472,22 @@ form label:not(.form-check-label) {
   border: 1px solid #488ac6;
   border-radius: 100px;
 }
+.greenText {
+  color: #44a036;
+}
+.product-card .card-text {
+  margin-bottom: 4px;
+}
+.organisation-info {
+  padding: 2px;
+  border-radius: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #0f5c49;
+  margin-left: 8px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  color: white;
+  font-size: 10px;
+}
