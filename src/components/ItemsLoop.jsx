@@ -4,7 +4,7 @@ import { supabase } from "../utils/supabase";
 import ItemsLoopForm from "./ItemsLoopForm";
 
 
-export default function ItemsLoop({ items, handleDeleteItem }) {
+export default function ItemsLoop({ items, handleDeleteItem, productId }) {
 
   return (
     <>
