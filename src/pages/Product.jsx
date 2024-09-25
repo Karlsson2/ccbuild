@@ -101,8 +101,8 @@ const Product = () => {
   }, [product, shouldFetchProduct, productId]);
 
   useEffect(() => {
-    console.log('produktID', productId)
-  })
+    console.log("produktID", productId);
+  });
 
   // Fetch project data
   useEffect(() => {
@@ -308,7 +308,12 @@ const Product = () => {
                 src={product?.image_url1 ? product?.image_url1 : noImageUrl}
                 alt={product?.product_name}
                 onClick={() => handleImageClick(product?.image_url1)}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: "pointer",
+                  height: "240px",
+                  objectFit: "cover",
+                  width: "100%",
+                }}
               />
             </Col>
             <Col sm={8} className="d-flex flex-column justify-content-between">
@@ -434,7 +439,7 @@ const Product = () => {
                   <Row>
                     <Col>
                       {!product?.internal_id ? (
-                        <span className="interal-id-not">"Ej Angivet"</span>
+                        <span className="interal-id-not">Ej Angivet</span>
                       ) : (
                         product?.internal_id
                       )}
@@ -451,7 +456,11 @@ const Product = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col>{product?.description}</Col>
+                    <Col>
+                      {product?.description || (
+                        <span className="interal-id-not">Ej Angivet</span>
+                      )}
+                    </Col>
                   </Row>
                 </Col>
               </Row>
