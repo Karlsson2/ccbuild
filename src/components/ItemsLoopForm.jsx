@@ -15,13 +15,14 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value === "" ? null : value,
-    }));
-  };
+  const handleInputChange = (event) => {
+    const { name, type, checked, value } = event.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setFormData({
+        ...formData,
+        [name]: newValue,
+    });
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -458,30 +459,28 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     <Form.Group className="mb-3">
                     <Form.Label>CE-märkning</Form.Label>
                     <Row>
-                        <Col>
-                        <Form.Check
-                            inline
-                            type="radio"
-                            label="Ja"
-                            name="ce_mark"
-                            value="true"
-                            checked={formData.ce_mark === "true"}
-                            onChange={handleInputChange}
-                          
-                        />
-                        </Col>
-                        <Col>
-                        <Form.Check
-                            inline
-                            type="radio"
-                            label="Nej"
-                            name="ce_mark"
-                            value="false"
-                            checked={formData.ce_mark !== "true"}
-                            onChange={handleInputChange}
-                          
-                        />
-                        </Col>
+                    <Col>
+                      <Form.Check
+                          inline
+                          type="radio"
+                          label="Ja"
+                          name="ce_mark"
+                          value={true}
+                          checked={formData.ce_mark === true}
+                          onChange={handleInputChange}
+                      />
+                  </Col>
+                  <Col>
+                      <Form.Check
+                          inline
+                          type="radio"
+                          label="Nej"
+                          name="ce_mark"
+                          value={false}
+                          checked={formData.ce_mark === false}
+                          onChange={handleInputChange}
+                      />
+                  </Col>
                     </Row>
                     </Form.Group>
                 </Col>
