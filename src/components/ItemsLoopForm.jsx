@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Form, Modal, Button, Card, Container } from "react-bootstrap";
+import { Row, Col, Form, Modal, Button, Card, Container, Tooltip, OverlayTrigger, } from "react-bootstrap";
 import { supabase } from "../utils/supabase";
 import ItemsLoopFormDropdown from "./ItemsLoopFormDropdown";
 import arrowUp from "../assets/arrow-up.svg"
 import bin from "../assets/recycle-bin.png"
+import { faPencil, faInfo, faLeaf, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 
 export default function ItemsLoopForm({ items: initialItems, handleDeleteItem }) {
@@ -16,13 +20,14 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
   const handleShow = () => setShow(true);
 
   const handleInputChange = (event) => {
-    const { name, type, checked, value } = event.target;
-    const newValue = type === 'checkbox' ? checked : value;
-    setFormData({
-        ...formData,
-        [name]: newValue,
-    });
-};
+    const { name, value, type, checked } = event.target;
+    const newValue = type === "checkbox" ? checked : value === "true" ? true : value === "false" ? false : value;
+    
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: newValue,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -112,7 +117,9 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
               </Form.Select>
             </Col>
             <Col xs="auto" style={{ border: "1px solid green", borderRadius: "700px", padding: "2px 12px"  }}>
-              <span className="text-success">400 kg CO2e</span>
+              <span className="text-success">
+                400 kg CO2e
+              </span>
             </Col>
             <Col xs="auto">
               <div className="hover-pointer" onClick={(e) => {handleShow(); e.stopPropagation();}}>
@@ -457,11 +464,22 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 </Row>
               <Card.Title>Certifieringar</Card.Title>
                 <Row>
-                <Col md={4}>
+                <Col md={2}>
                     <Form.Group className="mb-3">
                     <Form.Label>CE-märkning</Form.Label>
                     <Row>
                     <Col>
+                    <Form.Check
+                          inline
+                          type="radio"
+                          label="Nej"
+                          name="ce_mark"
+                          value={false}
+                          checked={formData.ce_mark === false}
+                          onChange={handleInputChange}
+                      />
+                  </Col>
+                  <Col>
                       <Form.Check
                           inline
                           type="radio"
@@ -472,23 +490,12 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                           onChange={handleInputChange}
                       />
                   </Col>
-                  <Col>
-                      <Form.Check
-                          inline
-                          type="radio"
-                          label="Nej"
-                          name="ce_mark"
-                          value={false}
-                          checked={formData.ce_mark === false}
-                          onChange={handleInputChange}
-                      />
-                  </Col>
                     </Row>
                     </Form.Group>
                 </Col>
                 </Row>
 
-                <Col md={8}>
+                <Col md={9}>
                     <Form.Group className="mb-3">
                     <Form.Label>Ljuskälla</Form.Label>
                     <Row>
@@ -516,15 +523,15 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       <Form.Label>Färgtemperatur</Form.Label>
                       {/* Use d-flex to ensure the radios are flex items */}
                       <div className="d-flex flex-wrap">
-                        {["Ej angivet", 2700, 3000, 3500, 4100, 5000, 6500].map((temp, index) => (
+                        {['Ej angivet', '2700K', '3000K', '3500K', '4100K', '5000K', '6500K'].map((temp, index) => (
                           <div key={index} className="me-2 mb-2">
                             <Form.Check
                               inline
                               type="radio"
-                              label={`${temp}K`}
+                              label={`${temp}`}
                               name="color_temp"
-                              value={`${temp}K`}
-                              checked={formData.color_temp === `${temp}K`}
+                              value={`${temp}`}
+                              checked={formData.color_temp === `${temp}`}
                               onChange={handleInputChange}
                             />
                           </div>
@@ -535,19 +542,19 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 
 
                 <Row>
-                <Col md={5}>
+                <Col md={12}>
                     <Form.Group className="mb-3">
                     <Form.Label>IP-klassning</Form.Label>
                     <Row>
-                        {[0, 1].map((ip_class, index) => (
-                        <Col key={index} xs={6} sm={4} md={3}>
+                        {['Ej angivet', 'IP20', 'IP23', 'IP43/44/45', 'IP54/55', 'IP66', 'IP67', 'IP68'].map((ip_class, index) => (
+                        <Col key={index}  >
                             <Form.Check
                             inline
                             type="radio"
-                            label={`IP${ip_class}`}
+                            label={`${ip_class}`}
                             name="ip_class"
-                            value={`IP${ip_class}`}
-                            checked={formData.ip_class === `IP${ip_class}`}
+                            value={`${ip_class}`}
+                            checked={formData.ip_class === `${ip_class}`}
                             onChange={handleInputChange}
                           
                             />

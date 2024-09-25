@@ -12,11 +12,13 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
         setIsExpanded(!isExpanded);
       };
 
-      const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
+      const handleInputChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        const newValue = type === "checkbox" ? checked : value === "true" ? true : value === "false" ? false : value;
+        
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: newValue,
         }));
       };
 
@@ -113,11 +115,14 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                     <Col className="d-flex align-items-end mb-2">
                     <Form.Group>
                         <Form.Check 
-                        type="checkbox" 
+                        inline
+                        type="checkbox"
+                        label="Låt köparen föreslå pris" 
                         name="suggest_price"
                         checked={formData.suggest_price}
                         onChange={handleInputChange}
-                        label="Låt köparen föreslå pris" />
+                        />
+                          
                     </Form.Group>
                     </Col>
                   </Row>
