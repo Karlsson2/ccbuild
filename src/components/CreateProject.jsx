@@ -20,14 +20,6 @@ export default function CreateProject({ onClose }) {
   const [description, setDescription] = useState("");
   const [project_number, setProject_Number] = useState("");
   const [organization, setOrganization] = useState("Yrgo");
-  const [location_1, setLocation1] = useState("");
-  const [location_2, setLocation2] = useState("");
-  const [location_3, setLocation3] = useState("");
-  const [location_4, setLocation4] = useState("");
-  const [decision_1, setDecision1] = useState("");
-  const [decision_2, setDecision2] = useState("");
-  const [decision_3, setDecision3] = useState("");
-  const [decision_4, setDecision4] = useState("");
   const [start_date, setStart_date] = useState("");
   const [end_date, setEnd_date] = useState("");
   const [first_access_date, setFirst_access_date] = useState("");
@@ -56,14 +48,6 @@ export default function CreateProject({ onClose }) {
         description,
         project_number,
         organization,
-        location_1,
-        location_2,
-        location_3,
-        location_4,
-        decision_1,
-        decision_2,
-        decision_3,
-        decision_4,
         start_date,
         end_date,
         first_access_date,
@@ -192,106 +176,6 @@ export default function CreateProject({ onClose }) {
                     <option value="Yrgo">Utbildningskonto - Yrgo</option>
                     <option value="Annat">annat</option>
                   </select>
-                </Col>
-              </Row>
-
-              <h2>Platsbenämningar</h2>
-              <Row className="mb-4">
-                <Col>
-                  <label>Platsbenämning #1</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="location_1"
-                    placeholder="1..."
-                    value={location_1}
-                    onChange={(e) => setLocation1(e.target.value)}
-                  />
-                </Col>
-                <Col>
-                  <label>Platsbenämning #2</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="location_2"
-                    placeholder="2..."
-                    value={location_2}
-                    onChange={(e) => setLocation2(e.target.value)}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label>Platsbenämning #3</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="location_3"
-                    placeholder="3..."
-                    value={location_3}
-                    onChange={(e) => setLocation3(e.target.value)}
-                  />
-                </Col>
-                <Col>
-                  <label>Platsbenämning #4</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="location_4"
-                    placeholder="4..."
-                    value={location_4}
-                    onChange={(e) => setLocation4(e.target.value)}
-                  />
-                </Col>
-              </Row>
-
-              <h2>Beslutsbenämningar</h2>
-              <Row className="mb-4">
-                <Col>
-                  <label>Beslutsbenämning #1</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="decision_1"
-                    placeholder="1..."
-                    value={decision_1}
-                    onChange={(e) => setDecision1(e.target.value)}
-                  />
-                </Col>
-                <Col>
-                  <label>Beslutsbenämning #2</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="decision_2"
-                    placeholder="2..."
-                    value={decision_2}
-                    onChange={(e) => setDecision2(e.target.value)}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <label>Beslutsbenämning #3</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="location_3"
-                    placeholder="3..."
-                    value={decision_3}
-                    onChange={(e) => setDecision3(e.target.value)}
-                  />
-                </Col>
-                <Col>
-                  <label>Beslutsbenämning #4</label>
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    id="decision_4"
-                    placeholder="4..."
-                    value={decision_4}
-                    onChange={(e) => setDecision4(e.target.value)}
-                  />
                 </Col>
               </Row>
 
