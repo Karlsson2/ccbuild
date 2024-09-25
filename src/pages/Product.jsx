@@ -492,9 +492,31 @@ const Product = () => {
                 </Col>
               </Row>
             </Col>
+            <Row>
+              <Row className="mt-5 mb-3">
+                <Col>
+                  <h2 className="generellInfoSubHeader">Lägg till individer</h2>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={6}>
+                  Lägg till individer kopplade till din produkt och specificera
+                  deras marknadsplatsstatus samt aktuella status. För att
+                  optimera synligheten på marknadsplatsen och underlätta för
+                  potentiella köpare, är det viktigt att fylla i samtliga
+                  relevanta fält. Särskild vikt bör läggas vid att ange
+                  produktens vikt, då detta är avgörande för en korrekt
+                  beräkning av klimatbesparing.
+                </Col>
+              </Row>
+            </Row>
           </Row>
-          <Button variant="outline-primary" className="mb-4 mt-2" onClick={handleCreateNewItem}> 
-                Skapa ny produkt
+          <Button
+            variant="outline-primary"
+            className="mb-4 mt-2"
+            onClick={handleCreateNewItem}
+          >
+            Skapa ny produkt
           </Button>
         </>
       )}
