@@ -493,6 +493,9 @@ const Product = () => {
               </Row>
             </Col>
           </Row>
+          <Button variant="outline-primary" className="mb-4 mt-2" onClick={handleCreateNewItem}> 
+                Skapa ny produkt
+          </Button>
         </>
       )}
       <Row>
