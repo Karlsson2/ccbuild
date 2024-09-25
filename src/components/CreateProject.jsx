@@ -3,11 +3,9 @@ import { fetchImage, uploadProjectImage, uploadProductImage, saveImgPathToDb } f
 import { supabase } from "../utils/supabase";
 import { useState } from "react";
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 
-export default function CreateProject({ onClose }) {
+export default function CreateProject({ onClose, fetchData }) {
   const [name, setName] = useState('');
   const [country, setCountry] = useState('Sverige');
   const [region, setRegion] = useState('Göteborg');
@@ -24,12 +22,6 @@ export default function CreateProject({ onClose }) {
   const [decision_2, setDecision2] = useState('');
   const [decision_3, setDecision3] = useState('');
   const [decision_4, setDecision4] = useState('');
-  const [start_date, setStart_date] = useState('');
-  const [end_date, setEnd_date] = useState('');
-  const [first_access_date, setFirst_access_date] = useState('');
-  const [last_access_date, setLast_access_date] = useState('');
-  const [first_delivery_date, setFirst_delivery_date] = useState('');
-  const [last_delivery_date, setLast_delivery_date] = useState('');
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -62,12 +54,6 @@ export default function CreateProject({ onClose }) {
           decision_2,
           decision_3,
           decision_4,
-          start_date,
-          end_date,
-          first_access_date,
-          last_access_date,
-          first_delivery_date,
-          last_delivery_date,
         },
       ]);
     if (error) {
@@ -75,6 +61,7 @@ export default function CreateProject({ onClose }) {
     } else {
         onClose();
         console.log('Project successfully inserted');
+        fetchData();
     }
   };
 
@@ -291,94 +278,11 @@ export default function CreateProject({ onClose }) {
                 </Col>
               </Row>
 
-              <h2>Datum</h2>
-              <Row className="mb-3">
-                <Col>
-                  <label>Startdatum</label>
-                  <div>
-                    <DatePicker
-                        placeholder="Välj datum"
-                        id="start_date"
-                        selected={start_date}
-                        onChange={(date) => setStart_date(date)}
-                        className="form-control"
-                    />
-                  </div>
-                </Col>
-                <Col>
-                <div>
-                  <label>Slutdatum</label>
-                  <DatePicker
-                    placeholder="Välj datum"
-                    id="end_date"
-                    selected={end_date}
-                    onChange={(date) => setEnd_date(date)}
-                    className="form-control"
-                  />
-                  </div>
-                </Col>
-              </Row>
-
-              <Row className="mb-4">
-                <Col>
-                  <label>Första åtkomstdatum</label>
-                  <div>
-                  <DatePicker
-                    placeholder="Välj datum"
-                    id="first_access_date"
-                    selected={first_access_date}
-                    onChange={(date) => setFirst_access_date(date)}
-                    className="form-control"
-                  />
-                  </div>
-                </Col>
-                <Col>
-                  <label>Sista åtkomstdatum</label>
-                  <div>
-                  <DatePicker
-                    placeholder="Välj datum"
-                    id="last_access_date"
-                    selected={last_access_date}
-                    onChange={(date) => setLast_access_date(date)}
-                    className="form-control"
-                  />
-                  </div>
-                </Col>
-              </Row>
-
-              <Row className="mb-4">
-                <Col>
-                  <label>Första möjliga leveransdatum</label>
-                  <div>
-                  <DatePicker
-                    placeholder="Välj datum"
-                    id="first_delivery_date"
-                    selected={first_delivery_date}
-                    onChange={(date) => setFirst_delivery_date(date)}
-                    className="form-control"
-                  />
-                  </div>
-                </Col>
-                <Col>
-                  <label>Sista möjliga leveransdatum</label>
-                  <div>
-                  <DatePicker
-                    placeholder="Välj datum"
-                    id="last_delivery_date"
-                    selected={last_delivery_date}
-                    onChange={(date) => setLast_delivery_date(date)}
-                    className="form-control"
-                  />
-                  </div>
-                </Col>
-              </Row>
-              <Row>
                 <Stack direction="horizontal" gap={3}>
-                    <Button type="submit" className="btn btn-primary mb-2 ml-2" onClick={handleSubmit}>Submit</Button>
+                    <Button type="submit" className="btn btn-primary mb-2 ml-2" onClick={handleSubmit}>Skapa</Button>
                 
-                    <Button type="button" className="btn btn-secondary mb-2 ml-2" onClick={onClose}>Close</Button>
+                    <Button type="button" className="btn btn-secondary mb-2 ml-2" onClick={onClose}>Stäng</Button>
                 </Stack>
-            </Row>
             </form>
           </Col>
         </Row>

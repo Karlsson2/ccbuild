@@ -14,7 +14,7 @@ const Projects = () => {
   const [projects, setProjects] = useState(null);
   const [showCreateProject, setShowCreateProject] = useState(false);
 
-  useEffect(() => {
+
     const fetchData = async () => {
       try {
         let { data: projects, error } = await supabase
@@ -30,7 +30,8 @@ const Projects = () => {
         console.error("Unexpected error:", error);
       }
     };
-
+    
+    useEffect(() => {
     fetchData();
   }, []);
 
@@ -69,7 +70,7 @@ const Projects = () => {
                   <Modal.Title>Skapa Nytt Projekt</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <CreateProject onClose={handleCloseCreateProject} />
+                  <CreateProject fetchData={fetchData} onClose={handleCloseCreateProject} />
                 </Modal.Body>
               </Modal>
             </Col>

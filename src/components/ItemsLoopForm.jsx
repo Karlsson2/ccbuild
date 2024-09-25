@@ -36,6 +36,8 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
         console.error('Error upserting data: ', error);
       } else {
         console.log('Data upserted successfully:', data);
+        toggleExpansion();
+
       }
     } catch (err) {
       console.error('An error occurred during submission:', err);
