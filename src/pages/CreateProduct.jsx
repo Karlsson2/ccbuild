@@ -256,10 +256,9 @@ const CreateProduct = () => {
                 )}
                 <div
                   style={{
-                    width: "320px",
                     display: "flex",
                     gap: "16px",
-                    justifyContent: "space-between",
+                    justifyContent: "flex-start",
                   }}
                 >
                   {
