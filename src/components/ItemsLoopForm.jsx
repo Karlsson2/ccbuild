@@ -75,6 +75,13 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
               
               >
                 <option>Välj status</option>
+                <option>Ej publicerad</option>
+                <option>Publicerad som intern annons</option>
+                <option>Publicerad som extern annons</option>
+                <option>Reserverad</option>
+                <option>Såld</option>
+                <option>Avpublicerad</option>
+                <option>Automatiskt avpublicerad</option>
               </Form.Select>
             </Col>
             <Col xs={4}>
@@ -87,6 +94,18 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
               >
                 <option>Välj marknadsplatsstatus</option>
                 <option>Inventerad</option>
+                <option>Inventerad - i lager/förråd</option>
+                <option>Inventerad i byggnad</option>
+                <option>Mängdad</option>
+                <option>Mängdad - i byggnad</option>
+                <option>Mängdad - i lager/förråd</option>
+                <option>På rekonditionering</option>
+                <option>I lager</option>
+                <option>Bevarad</option>
+                <option>Återbrukad i projektet</option>
+                <option>Återbrukad inom organisationen</option>
+                <option>Återbrukad av externt av annan aktör</option>
+                <option>Avfallshanterad</option>
               </Form.Select>
             </Col>
             <Col xs="auto" style={{ border: "1px solid green", borderRadius: "700px", padding: "2px 12px"  }}>
@@ -138,8 +157,10 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     
                     >
                       <option value="">Välj estetiskt skick</option>
+                      <option>1</option>
                       <option>2</option>
                       <option>3</option>
+                      <option>4</option>
                       <option>5</option>
                     </Form.Select>
                   </Form.Group>
@@ -154,8 +175,11 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     
                     >
                       <option value="">Välj funktionellt skick</option>
-                      <option >1</option>
-                      <option >5</option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>
@@ -198,6 +222,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     >
                       <option>Enkel att demontera/demontering krävs ej</option>
                       <option>Begränsad demonterbarhet</option>
+                      <option>Går ej att demontera</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mt-2">
@@ -222,6 +247,9 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     
                     >
                       <option>Välj</option>
+                      <option>Dålig</option>
+                      <option>Okej</option>
+                      <option>Bra</option>
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className="mt-2">
@@ -277,10 +305,10 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     <Form.Label>Enhets vikt</Form.Label>
                     <Form.Select
                       type="text"
-                      /* name="unit_weight"
+                      name="unit_weight"
                       value={formData.unit_weight}
                       onChange={handleInputChange}
-                     */
+                     
                     >
                       <option>kg</option>
                       <option>ton</option>
@@ -308,9 +336,8 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     <Form.Label>Enhets mått</Form.Label>
                     <Form.Select
                       name="unit_dimensions"
-                      /* value={formData.unit_dimensions}
+                      value={formData.unit_dimensions}
                       onChange={handleInputChange}
-                     */
                     >
                       <option>mm</option>
                       <option>cm</option>

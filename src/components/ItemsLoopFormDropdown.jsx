@@ -46,14 +46,25 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                   <Form.Group>
                     <Form.Label>Välj marknadsplats status</Form.Label>
                     <Form.Select
-                        name="market_place"
-                        value={formData.market_place}
-                        onChange={handleInputChange}
-                    
-                    >
-                        <option>Välj marknadsplatsstatus</option>
-                        <option>Inventerad</option>
-                    </Form.Select>
+                name="market_place"
+                value={formData.market_place}
+                onChange={handleInputChange}
+                >
+                <option>Välj marknadsplatsstatus</option>
+                <option>Inventerad</option>
+                <option>Inventerad - i lager/förråd</option>
+                <option>Inventerad i byggnad</option>
+                <option>Mängdad</option>
+                <option>Mängdad - i byggnad</option>
+                <option>Mängdad - i lager/förråd</option>
+                <option>På rekonditionering</option>
+                <option>I lager</option>
+                <option>Bevarad</option>
+                <option>Återbrukad i projektet</option>
+                <option>Återbrukad inom organisationen</option>
+                <option>Återbrukad av externt av annan aktör</option>
+                <option>Avfallshanterad</option>
+              </Form.Select>
                   </Form.Group>
           
                   <Form.Text className="text-muted">
@@ -104,7 +115,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                         <Form.Check 
                         type="checkbox" 
                         name="suggest_price"
-                        value={formData.suggest_price}
+                        checked={formData.suggest_price || ""}
                         onChange={handleInputChange}
                         label="Låt köparen föreslå pris" />
                     </Form.Group>
@@ -117,7 +128,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                         <Form.Check 
                         type="checkbox" 
                         name="can_pickup"
-                        value={formData.can_pickup}
+                        checked={formData.can_pickup}
                         onChange={handleInputChange}
                         label="Kan hämtas på plats" />
                       </Form.Group>
@@ -126,7 +137,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                         <Form.Check 
                         type="checkbox" 
                         name="can_send"
-                        value={formData.can_send}
+                        checked={formData.can_send}
                         onChange={handleInputChange}
                         label="Kan skickas med frakt" />
                       </Form.Group>
@@ -188,7 +199,8 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                     placeholder="Kontaktperson"
                     >
                       <option>Välj kontaktperson</option>
-                      <option>Person 1</option>
+                      <option>John Doe</option>
+                      <option>Doe John</option>
                     </Form.Control>
                   </Form.Group>
           
@@ -218,7 +230,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                       <Form.Group>
                         <Form.Label>Tillverkningsår</Form.Label>
                         <Form.Control 
-                        type="text" 
+                        type="number" 
                         name="manufacturing"
                         value={formData.manufacturing}
                         onChange={handleInputChange}
@@ -229,7 +241,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                       <Form.Group>
                         <Form.Label>Inköpsår</Form.Label>
                         <Form.Control 
-                        type="text" 
+                        type="number" 
                         name="purchase_year"
                         value={formData.purchase_year}
                         onChange={handleInputChange}

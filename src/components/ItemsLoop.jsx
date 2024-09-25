@@ -13,7 +13,7 @@ export default function ItemsLoop({ items, handleDeleteItem, productId }) {
           <ItemsLoopForm items={item} key={item.id} handleDeleteItem={handleDeleteItem} />
         ))
       ) : (
-        <p>No items found.</p>
+        <p>Inga typer av denna produkt finns ännu!</p>
       )}
     </>
   );

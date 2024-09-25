@@ -364,9 +364,6 @@ const Product = () => {
                   >
                     <FontAwesomeIcon icon={faTrashCan} /> Radera Produkt
                   </Button>
-                  <Button onClick={handleCreateNewItem}>
-                    Skapa ny produkt
-                  </Button>
                 </Col>
               </Row>
             </Col>

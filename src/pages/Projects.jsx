@@ -58,7 +58,7 @@ const Projects = () => {
               <h1>Alla Projekt</h1>
             </Col>
             <Col className="px-4 d-flex justify-content-end">
-              <Button onClick={handleOpenCreateProject}>
+              <Button variant="outline-primary" onClick={handleOpenCreateProject}>
                 Skapa Nytt Projekt
               </Button>
               <Modal size="xl" show={showCreateProject} onHide={handleCloseCreateProject}>
