@@ -10,7 +10,10 @@ import { useState } from "react";
 import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 
 export default function CreateProject({ onClose, fetchData }) {
-  const [name, setName] = useState(null);
+
+  const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
+  const bucketFolder = import.meta.env.VITE_SUPABASE_PROJECT_FOLDER;
+  const [name, setName] = useState("");
   const [country, setCountry] = useState("Sverige");
   const [region, setRegion] = useState("Göteborg");
   const [image, setImage] = useState(null);
@@ -18,12 +21,14 @@ export default function CreateProject({ onClose, fetchData }) {
   const [description, setDescription] = useState("");
   const [project_number, setProject_Number] = useState("");
   const [organization, setOrganization] = useState("Yrgo");
+  const [image_url, setImageUrl] = useState("");
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
       setImage(file);
-      await uploadProjectImage(file);
+      const imagePath = await uploadProjectImage(file);
+      setImageUrl(`${baseUrl}${bucketFolder}${imagePath}`);
     }
   };
 
@@ -35,7 +40,7 @@ export default function CreateProject({ onClose, fetchData }) {
         name,
         country,
         region,
-        image_url: image ? await uploadProjectImage(image) : null,
+        image_url: image ? image_url : null,
         currency,
         description,
         project_number,

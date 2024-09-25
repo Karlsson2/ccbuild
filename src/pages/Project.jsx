@@ -141,7 +141,7 @@ const Project = () => {
                       gap: "10px",
                     }}
                   >
-                    <FontAwesomeIcon icon={faPlus} /> Skapa Ny Produkt
+                    <FontAwesomeIcon icon={faPlus} /> Skapa ny produkt
                   </Button>
                 </Link>
               </Col>
@@ -226,10 +226,10 @@ const Project = () => {
                         ))}
                       </>
                     ) : (
-                      <p>No products found for this project.</p>
+                      <p>Inga produkter hittades för det här projektet.</p>
                     )
                   ) : (
-                    <p>Loading...</p>
+                    <p>Laddar...</p>
                   )}
                 </Row>
               </Col>
@@ -237,7 +237,7 @@ const Project = () => {
           </Container>
         </>
       ) : (
-        <p>No project data found. Please try again.</p>
+        <p>Ingen projektdata. Vänligen försök igen.</p>
       )}
     </Container>
   );

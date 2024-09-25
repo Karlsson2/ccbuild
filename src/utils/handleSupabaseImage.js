@@ -5,21 +5,24 @@ function generateTimestamp() {
   return now.toISOString().replace(/[:.-]/g, ""); // Format: YYYYMMDDTHHMMSS
 }
 
+// Upload project image for new project
 export const uploadProjectImage = async (file) => {
+  const timestamp = generateTimestamp();
   const { data, error } = await supabase.storage
     .from("ccbuild") // från bucket
-    .upload(`project_image/${file.name}`, file); // ladda upp till specifik map
+    .upload(`project_image/${timestamp}${file.name}`, file); // ladda upp till specifik map
 
   if (error) {
     console.error("Error uploading data: ", error);
     return;
   }
 
-  const fileUrl = `${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/ccbuild/${file.name}`; // Skapa url att hämta bild från
+  const fileUrl = `${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/ccbuild/${timestamp}${file.name}`; // Skapa url att hämta bild från
 
   console.log("File uploaded successfully", fileUrl);
 
-  await saveImgPathToDb(fileUrl);
+  // Return the file name
+  return `${timestamp}${file.name}`;
 };
 
 export const uploadProductImagWithReturn = async (file) => {
