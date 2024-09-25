@@ -150,6 +150,9 @@ button:focus-visible {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
+.accordion-header {
+  padding: 10px 0px;
+}
 
 /* Categories component */
 .cat.sibling {
@@ -419,4 +422,10 @@ button.cp.cancel {
 }
 .product-card img {
   border-radius: 8px 8px 0px 0px;
+}
+.createProduct {
+  background: #fff;
+  color: #488ac6;
+  border: 1px solid #488ac6;
+  border-radius: 100px;
 }

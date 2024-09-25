@@ -6,9 +6,35 @@ import { supabase } from "../utils/supabase";
 
 const ProductCard = ({ project, product }) => {
   const [category, setCategory] = useState(null);
-  useEffect(() => {
-    console.log(product);
+  const [items, setItems] = useState(null);
+  const itemsWeight = items?.reduce((acc, item) => acc + item.weight, 0);
+  const itemsTotal = items?.reduce((acc, item) => acc + item.amount, 0);
+  const itemsCO2 = itemsWeight * 0.8;
 
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        let { data: itemsData, error } = await supabase
+          .from("items")
+          .select("*")
+          .eq("product_id", product.id);
+
+        if (error) {
+          console.error("Error fetching items:", error);
+        } else {
+          setItems(itemsData);
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      }
+    };
+
+    if (product) {
+      fetchItems();
+    }
+  }, [product]);
+
+  useEffect(() => {
     const fetchCategory = async () => {
       try {
         let { data: categoryData, error } = await supabase
@@ -44,7 +70,16 @@ const ProductCard = ({ project, product }) => {
               objectFit: "cover",
             }}
           />
-          <Card.Body style={{ fontSize: "12px", backgroundColor: "#f9f9f9" }}>
+          <Card.Body
+            style={{
+              fontSize: "12px",
+              backgroundColor: "#f9f9f9",
+              height: "240px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
             <Card.Text>
               {category ? (
                 <>
@@ -62,29 +97,32 @@ const ProductCard = ({ project, product }) => {
                 "Loading category..."
               )}
             </Card.Text>
-            <Card.Title>
-              <strong>{product.product_name}</strong>{" "}
-            </Card.Title>
-            <Card.Text
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <strong>CCbuild Nr:</strong> {product.id}
-            </Card.Text>
-            <Card.Text
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <strong>Totalt antal:</strong> {product.total_amount}
-            </Card.Text>
-            <Card.Text
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <strong>Total klimatbesparing:</strong> 800 kg CO₂e
-            </Card.Text>
-            <Card.Text
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <strong>Total mängd:</strong> {product.total_weight} kg
-            </Card.Text>
+            <div>
+              <Card.Title>
+                <strong>{product.product_name}</strong>{" "}
+              </Card.Title>
+              <Card.Text
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <strong>CCbuild Nr:</strong> {product.id}
+              </Card.Text>
+              <Card.Text
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <strong>Totalt antal:</strong>
+                {itemsTotal}
+              </Card.Text>
+              <Card.Text
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <strong>Total klimatbesparing:</strong> {itemsCO2} kg CO₂e
+              </Card.Text>
+              <Card.Text
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <strong>Total mängd:</strong> {itemsWeight} kg
+              </Card.Text>
+            </div>
           </Card.Body>
         </Card>
       </Link>

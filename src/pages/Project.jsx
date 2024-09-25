@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import {
   faPencil,
+  faPlus,
   faInfo,
   faLeaf,
   faChevronRight,
@@ -92,7 +93,7 @@ const Project = () => {
 
     setShowCreateProduct(false);
   };
-
+  console.log(products);
   return (
     <Container>
       {project ? (
@@ -138,7 +139,16 @@ const Project = () => {
               </Col>
               <Col className="buttons">
                 <Link to={`/projects/${project.id}/create-project`}>
-                  <Button>Skapa Ny Produkt</Button>
+                  <Button
+                    className="createProduct"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faPlus} /> Skapa Ny Produkt
+                  </Button>
                 </Link>
               </Col>
             </Row>
@@ -168,7 +178,7 @@ const Project = () => {
                             />
                           </Col>
                         </Row>
-                      </Form>{" "}
+                      </Form>
                     </Accordion.Body>
                   </Accordion.Item>
                   <Accordion.Item eventKey="1">
