@@ -9,17 +9,15 @@ import { useState } from "react";
 
 import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 
-
 export default function CreateProject({ onClose, fetchData }) {
-  const [name, setName] = useState('');
-  const [country, setCountry] = useState('Sverige');
-  const [region, setRegion] = useState('Göteborg');
+  const [name, setName] = useState("");
+  const [country, setCountry] = useState("Sverige");
+  const [region, setRegion] = useState("Göteborg");
   const [image, setImage] = useState(null);
-  const [currency, setCurrency] = useState('false');
-  const [description, setDescription] = useState('');
-  const [project_number, setProject_Number] = useState('');
-  const [organization, setOrganization] = useState('');
-
+  const [currency, setCurrency] = useState("false");
+  const [description, setDescription] = useState("");
+  const [project_number, setProject_Number] = useState("");
+  const [organization, setOrganization] = useState("Yrgo");
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -32,33 +30,27 @@ export default function CreateProject({ onClose, fetchData }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-
-    const { data, error } = await supabase
-      .from('projects')
-      .insert([
-        {
-          name,
-          country,
-          region,
-          image_url: image ? await uploadProjectImage(image) : null,
-          currency,
-          description,
-          project_number,
-          organization,
-        },
-      ]);
+    const { data, error } = await supabase.from("projects").insert([
+      {
+        name,
+        country,
+        region,
+        image_url: image ? await uploadProjectImage(image) : null,
+        currency,
+        description,
+        project_number,
+        organization,
+      },
+    ]);
 
     if (error) {
       console.error("Error inserting project: ", error);
     } else {
-        onClose();
-        console.log('Project successfully inserted');
-        fetchData();
-
+      onClose();
+      console.log("Project successfully inserted");
+      fetchData();
     }
   };
-
-  console.log(organization);
   return (
     <div className="full-screen-form d-flex justify-content-center align-items-center">
       <Container>
@@ -172,12 +164,23 @@ export default function CreateProject({ onClose, fetchData }) {
                   </select>
                 </Col>
               </Row>
-                <Stack direction="horizontal" gap={3}>
-                    <Button type="submit" className="btn btn-primary mb-2 ml-2" onClick={handleSubmit}>Skapa</Button>
-                
-                    <Button type="button" className="btn btn-secondary mb-2 ml-2" onClick={onClose}>Stäng</Button>
-                </Stack>
+              <Stack direction="horizontal" gap={3}>
+                <Button
+                  type="submit"
+                  className="btn btn-primary mb-2 ml-2"
+                  onClick={handleSubmit}
+                >
+                  Skapa
+                </Button>
 
+                <Button
+                  type="button"
+                  className="btn btn-secondary mb-2 ml-2"
+                  onClick={onClose}
+                >
+                  Stäng
+                </Button>
+              </Stack>
             </form>
           </Col>
         </Row>
