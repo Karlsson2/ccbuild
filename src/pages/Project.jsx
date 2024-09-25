@@ -80,6 +80,7 @@ const Project = () => {
   };
 
   const handleSaveProject = (updatedProject) => {
+    updatedProject.id = projectId;
     setProject(updatedProject);
     setShowEditProject(false);
   };

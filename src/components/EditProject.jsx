@@ -36,7 +36,7 @@ export default function EditProject({ project, onClose, onSave }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-
+    console.log("project.id", project.id);
     let imageUrl = image ? await uploadProjectImage(image) : project.image_url;
 
     imageUrl = image
