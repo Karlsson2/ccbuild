@@ -5,8 +5,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal"
-import Button from "react-bootstrap/Button"
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import ProjectCard from "../components/ProjectCard";
 
@@ -43,16 +43,15 @@ const Projects = () => {
   };
 
   const handleCloseCreateProject = () => {
-    console.log('clicked close')
+    console.log("clicked close");
     setShowCreateProject(false);
     setProjects(projects);
-    
   };
 
   return (
     <>
       <Container>
-      <Container>
+        <Container>
           <Row className="mt-3">
             <Col>
               <h1>Alla Projekt</h1>
@@ -61,7 +60,11 @@ const Projects = () => {
               <Button onClick={handleOpenCreateProject}>
                 Skapa Nytt Projekt
               </Button>
-              <Modal size="xl" show={showCreateProject} onHide={handleCloseCreateProject}>
+              <Modal
+                size="xl"
+                show={showCreateProject}
+                onHide={handleCloseCreateProject}
+              >
                 <Modal.Header closeButton>
                   <Modal.Title>Skapa Nytt Projekt</Modal.Title>
                 </Modal.Header>

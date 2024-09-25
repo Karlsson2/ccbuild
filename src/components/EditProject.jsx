@@ -4,6 +4,7 @@ import { supabase } from "../utils/supabase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Container, Row, Col, Button, Stack } from "react-bootstrap";
+import { uploadProjectImage } from "../utils/handleSupabaseImage";
 
 export default function EditProject({ project, onClose, onSave }) {
   const [name, setName] = useState(project?.name || "");
