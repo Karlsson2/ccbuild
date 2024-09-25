@@ -126,7 +126,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
 
       <div className={`card-collapse ${isExpanded ? 'expanded' : ''}`}>
         <Container className="mt-3 p-4" onClick={(e) => e.stopPropagation()}>
-            <Form method="POST" onSubmit={handleSubmit}>
+            
               <Row className="mb-3">
                 <Col md={6}>
                   <Form.Group>
@@ -533,7 +533,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 <Button variant="outline-primary" className="mt-3" type="submit">
                   Spara
                 </Button>
-            </Form>
+            
         </Container>
         </div>
         </Form>

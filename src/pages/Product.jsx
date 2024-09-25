@@ -100,6 +100,10 @@ const Product = () => {
     }
   }, [product, shouldFetchProduct, productId]);
 
+  useEffect(() => {
+    console.log('produktID', productId)
+  })
+
   // Fetch project data
   useEffect(() => {
     const fetchProject = async () => {
@@ -223,30 +227,30 @@ const Product = () => {
 
   // Fetcha och CRUD Items logik \/
   const fetchItems = async () => {
-    try {
-      let { data: fetchedItems, error } = await supabase
-        .from("items")
-        .select("*");
-      if (error) {
-        console.error("Error fetching data:", error);
-      } else {
-        console.log("Fetched Items:", fetchedItems);
-        setItems(fetchedItems);
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
+    const { data: items, error: itemsError } = await supabase
+      .from("items")
+      .select("*")
+      .eq("product_id", productId);
+
+    if (itemsError) {
+      console.error("Error fetching items data:", itemsError);
+      return;
     }
+
+    setItems(items);
   };
 
   useEffect(() => {
-    fetchItems();
-  }, []);
+    if (productId) {
+      fetchItems();
+    }
+  }, [productId]);
 
   const handleCreateNewItem = async () => {
     try {
       const { data, error } = await supabase
         .from("items")
-        .insert([{ amount: 1 }]);
+        .insert([{ amount: 1, product_id: productId }]);
 
       if (error) {
         console.error("Error creating new item", error);
