@@ -7,6 +7,8 @@ import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 import { uploadProjectImage } from "../utils/handleSupabaseImage";
 
 export default function EditProject({ project, onClose, onSave }) {
+  const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
+  const bucketFolder = import.meta.env.VITE_SUPABASE_PROJECT_FOLDER;
   const [name, setName] = useState(project?.name || "");
   const [country, setCountry] = useState(project?.country || "Sverige");
   const [region, setRegion] = useState(project?.region || "Göteborg");
@@ -35,8 +37,10 @@ export default function EditProject({ project, onClose, onSave }) {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    const imageUrl = image
-      ? await uploadProjectImage(image)
+    let imageUrl = image ? await uploadProjectImage(image) : project.image_url;
+
+    imageUrl = image
+      ? `${baseUrl}${bucketFolder}${imageUrl}`
       : project.image_url;
 
     const updatedData = {

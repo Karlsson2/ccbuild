@@ -409,7 +409,7 @@ const Product = () => {
           ) : (
             <>
               <Row className="mt-3 mb-3">
-                <h2 className="generellInfoSubHeader">Generell Information</h2>
+                <h2 className="generellInfoSubHeader">Generell information</h2>
               </Row>
               <Row className="mt-3 mb-3">
                 <Col sm={3}>
@@ -439,7 +439,7 @@ const Product = () => {
                   <Row>
                     <Col>
                       {!product?.internal_id ? (
-                        <span className="interal-id-not">Ej Angivet</span>
+                        <span className="interal-id-not">Ej angivet</span>
                       ) : (
                         product?.internal_id
                       )}
@@ -458,7 +458,7 @@ const Product = () => {
                   <Row>
                     <Col>
                       {product?.description || (
-                        <span className="interal-id-not">Ej Angivet</span>
+                        <span className="interal-id-not">Ej angivet</span>
                       )}
                     </Col>
                   </Row>
