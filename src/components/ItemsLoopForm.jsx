@@ -230,6 +230,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       onChange={handleInputChange}
                     
                     >
+                      <option value="Ej angivet">Välj</option>
                       <option>Enkel att demontera/demontering krävs ej</option>
                       <option>Begränsad demonterbarhet</option>
                       <option>Går ej att demontera</option>
@@ -431,7 +432,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                         onChange={handleInputChange}
                       
                     >
-                        <option>Välj material</option>
+                        <option value="Ej angivet">Välj material</option>
                         <option>Metall</option>
                         <option>Trä</option>
                         <option>Plast</option>
@@ -451,7 +452,8 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                         onChange={handleInputChange}
                       
                     >
-                        <option>Välj finish</option>
+                        
+                        <option value="Ej angivet">Välj finish</option>
                         <option>Lackad</option>
                         <option>Oljad</option>
                         <option>Laserskuren</option>
