@@ -285,9 +285,6 @@ const Product = () => {
               <Button variant="danger" onClick={openDeleteConfirmation}>
                 Radera Produkt
               </Button>
-              <Button onClick={handleCreateNewItem}> 
-                Skapa ny produkt
-              </Button>
             </Col>
           </Row>
         </Col>
@@ -390,6 +387,9 @@ const Product = () => {
               </Row>
             </Col>
           </Row>
+          <Button variant="outline-primary" className="mb-4 mt-2" onClick={handleCreateNewItem}> 
+                Skapa ny produkt
+          </Button>
         </>
       )}
       <Row>

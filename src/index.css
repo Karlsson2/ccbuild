@@ -304,3 +304,44 @@ button.cp.cancel {
 .dropdown-list li:hover {
   background-color: #f0f0f0;
 }
+
+.hover-pointer {
+  cursor: pointer;
+}
+
+.arrow-up {
+  transition: transform 0.3s ease-in-out;
+}
+
+.arrow-up.expanded {
+  transform: rotate(180deg);
+}
+
+.card-collapse {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease-in-out;
+}
+
+.card-collapse.expanded {
+  max-height: 3000px; /* Adjust this value based on the content height */
+}
+
+select, input {
+  background-color: #717171; /* Change this to your desired background color */
+  color: #333; /* Change this to your desired text color */
+  border: 10px solid #ccc; /* Optional: Change this to your desired border color */
+  padding: 8px; /* Optional: Add padding for better appearance */
+  border-radius: 40px; /* Optional: Add border radius for rounded corners */
+}
+
+/* Optional: Add hover and focus styles for better user experience */
+select:hover, input:hover,
+select:focus, input:focus {
+  background-color: #e9e9e9; /* Change this to your desired hover/focus background color */
+  border-color: #999; /* Change this to your desired hover/focus border color */
+}
+
+form label:not(.form-check-label) {
+  font-weight: bold;
+}

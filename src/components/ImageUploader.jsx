@@ -60,7 +60,6 @@ const ImageUploader = ({ onFileUpload }) => {
           display: "inline-block",
           textAlign: "center",
 
-          color: "#555",
           fontFamily: "Inter",
           fontWeight: "bold",
           fontSize: "14px",
