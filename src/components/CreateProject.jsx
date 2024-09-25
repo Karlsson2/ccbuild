@@ -10,6 +10,7 @@ import { useState } from "react";
 import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 
 export default function CreateProject({ onClose, fetchData }) {
+
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PROJECT_FOLDER;
   const [name, setName] = useState("");
@@ -66,6 +67,7 @@ export default function CreateProject({ onClose, fetchData }) {
                 <Col>
                   <label>Projektnamn</label>
                   <input
+                    required
                     type="text"
                     className="form-control mb-3"
                     id="name"
@@ -135,6 +137,7 @@ export default function CreateProject({ onClose, fetchData }) {
                 <Col>
                   <label>Projektbeskrivning</label>
                   <textarea
+                    required
                     className="form-control"
                     placeholder="Beskrivning..."
                     style={{ height: "100px" }}
@@ -148,32 +151,33 @@ export default function CreateProject({ onClose, fetchData }) {
               <Row>
                 <Col>
                   <label>Eget projektnummer</label>
+
                   <input
-                    className="form-select mb-5"
+                    type="text"
+                    placeholder="varför inte 42?"
+                    className="form-control mb-5"
                     id="project_number"
                     value={project_number}
                     onChange={(e) => setProject_Number(e.target.value)}
-                  ></input>
+                    required
+                  />
                 </Col>
                 <Col>
                   <label>Organisation</label>
                   <select
                     className="form-select mb-3"
                     id="organization"
-                    value={organization} // Controlled by state
-                    onChange={(e) => setOrganization(e.target.value)} // Updates state
+                    value={organization}
+                    onChange={(e) => setOrganization(e.target.value)}
                   >
                     <option value="Yrgo">Utbildningskonto - Yrgo</option>
                     <option value="Annat">annat</option>
                   </select>
                 </Col>
               </Row>
+
               <Stack direction="horizontal" gap={3}>
-                <Button
-                  type="submit"
-                  className="btn btn-primary mb-2 ml-2"
-                  onClick={handleSubmit}
-                >
+                <Button type="submit" className="btn btn-primary mb-2 ml-2">
                   Skapa
                 </Button>
 
