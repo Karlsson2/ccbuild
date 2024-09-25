@@ -340,7 +340,6 @@ function Categories({
           justifyContent: "flex-start",
           alignItems: "flex-start",
           alignContent: "flex-start",
-          marginBottom: "54px",
         }}
       >
         {/* If categoryStep = 0, then display */}
