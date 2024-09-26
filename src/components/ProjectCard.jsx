@@ -8,7 +8,7 @@ function ProjectCard({ project }) {
       "https://cpqsrfnheiohlhnpxpgo.supabase.co/storage/v1/object/public/ccbuild/public/ingenbild.jpeg";
   }
   return (
-    <Col className="col-lg-4 col-md-6 col-sm-6 project-container">
+    <Col className="col-lg-4 col-md-6 col-sm-12 project-container">
       <Link to={`/projects/${project.id}`} state={{ project }} key={project.id}>
         <Card
           style={{ width: "100%", minHeight: "240px" }}

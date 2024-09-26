@@ -123,7 +123,7 @@ const Project = () => {
               </Button>
             </div>
             <Row className="projectsdetails-info">
-              <Col className="content">
+              <Col className="content mt-5">
                 <Row>
                   <h1>{project.name}</h1>
                 </Row>
@@ -131,8 +131,15 @@ const Project = () => {
                   <Col>{project.organization}</Col>
                 </Row>
               </Col>
-              <Col className="buttons" sm={7}>
-                <Link to={`/projects/${project.id}/create-product`}>
+              <Col
+                className="align-content-flex-end mt-5 buttons d-flex align-items-center gap-2 flex-column flex-lg-row flex-wrap"
+                md={7}
+                style={{ fontSize: "12px" }}
+              >
+                <Link
+                  to={`/projects/${project.id}/create-product`}
+                  style={{ wordWrap: "no-wrap" }}
+                >
                   <Button
                     className="createProduct"
                     style={{
@@ -190,7 +197,7 @@ const Project = () => {
 
           <Container>
             <Row className="mt-4">
-              <Col className="col-lg-3 col-md-12">
+              <Col className="col-lg-3 col-md-12 " sm={12}>
                 <Col>
                   <h3>Filter</h3>
                 </Col>
@@ -252,7 +259,7 @@ const Project = () => {
                   </Accordion.Item>
                 </Accordion>
               </Col>
-              <Col>
+              <Col className="col-lg-9 col-md-12" sm={12} lg={9}>
                 <Row className="mt-4">
                   {products ? (
                     products.length > 0 ? (

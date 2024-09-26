@@ -464,12 +464,7 @@ form label:not(.form-check-label) {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
-.projectsdetails-info .buttons {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 10px;
-}
+
 .projectsdetails-info .buttons button:hover {
   background-color: #488ac6;
   color: white;
@@ -563,4 +558,21 @@ form label:not(.form-check-label) {
   font-weight: 600;
   padding: 12px 24px;
   cursor: pointer;
+}
+@media screen and (max-width: 991px) {
+  .buttons > * {
+    width: 100%;
+    justify-content: center;
+  }
+  .buttons a button {
+    width: 100%;
+    justify-content: center;
+  }
+  .project-container {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .upperHeader {
+    display: none !important;
+  }
 }

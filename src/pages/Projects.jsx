@@ -151,7 +151,7 @@ const Projects = () => {
                 </Accordion.Item>
               </Accordion>
             </Col>
-            <Col>
+            <Col xs={12} md={12} lg={9}>
               <Row>
                 {projects ? (
                   projects.length > 0 ? (

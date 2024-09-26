@@ -21,7 +21,7 @@ function Header() {
             />
           </Navbar.Brand>
         </Container>
-        <Container>
+        <Container className="upperHeader">
           <Nav.Link href="#">CCBUILD</Nav.Link>
           <Nav.Link href="#">TJÄNSTER</Nav.Link>
           <NavDropdown title="Marknadsplatsen" id="navbarScrollingDropdown">
