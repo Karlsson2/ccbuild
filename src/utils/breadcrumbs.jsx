@@ -47,31 +47,39 @@ const Breadcrumbs = () => {
   }, [location.pathname]);
 
   return (
-    <Container>
-      <Row>
-        <Col
-          className="breadcrumbs mt-3"
-          style={{ display: "flex", gap: "10px" }}
-        >
-          {capPathnames.map((pathname, index) => {
-            const routeTo = `/${capPathnames.slice(0, index + 1).join("/")}`;
-            const displayName = names[pathname] || pathname;
-            return (
-              <div key={pathname} style={{ display: "inline" }}>
-                <Link className="breadcrumb-link" to={routeTo}>
-                  {displayName}
-                </Link>
-                {index < capPathnames.length - 1 && (
-                  <span className="breadcrumb-chevron">
-                    <FontAwesomeIcon icon={faChevronRight} />
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {capPathnames.length > 1 && (
+        <Container>
+          <Row>
+            <Col
+              className="breadcrumbs mt-3"
+              style={{ display: "flex", gap: "10px" }}
+            >
+              {capPathnames.map((pathname, index) => {
+                const routeTo = `/${capPathnames
+                  .slice(0, index + 1)
+                  .join("/")}`;
+                const displayName = names[pathname] || pathname;
+                return (
+                  <div key={pathname} style={{ display: "inline" }}>
+                    <Link className="breadcrumb-link" to={routeTo}>
+                      {displayName === "Projects"
+                        ? "Alla projekt"
+                        : displayName}
+                    </Link>
+                    {index < capPathnames.length - 1 && (
+                      <span className="breadcrumb-chevron">
+                        <FontAwesomeIcon icon={faChevronRight} />
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </Col>
+          </Row>
+        </Container>
+      )}
+    </>
   );
 };
 
