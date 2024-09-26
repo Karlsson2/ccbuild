@@ -360,7 +360,7 @@ const Product = () => {
                     className={"editProduct"}
                     onClick={handleEditToggle}
                   >
-                    <FontAwesomeIcon icon={faPencil} /> Ändra generell Info
+                    <FontAwesomeIcon icon={faPencil} /> Ändra generell info
                   </Button>
                   <Button
                     variant="danger"
@@ -484,7 +484,7 @@ const Product = () => {
                         src={
                           product?.image_url1 ? product?.image_url1 : noImageUrl
                         }
-                        alt={product?.product_name}
+                        alt={"Huvudbild"}
                         onClick={() =>
                           handleImageClick(
                             product?.image_url1
@@ -504,7 +504,7 @@ const Product = () => {
                         src={
                           product?.image_url2 ? product?.image_url2 : noImageUrl
                         }
-                        alt={product?.product_name}
+                        alt={"Bild 2"}
                         onClick={() =>
                           handleImageClick(
                             product?.image_url2
@@ -524,7 +524,7 @@ const Product = () => {
                         src={
                           product?.image_url3 ? product?.image_url3 : noImageUrl
                         }
-                        alt={product?.product_name}
+                        alt={"Bild 3"}
                         onClick={() =>
                           handleImageClick(
                             product?.image_url3
