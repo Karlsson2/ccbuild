@@ -10,11 +10,16 @@ const Breadcrumbs = () => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
   const [names, setNames] = useState({});
+  const capPathnames = pathnames.map((item) =>
+    typeof item === "string"
+      ? item.charAt(0).toUpperCase() + item.slice(1)
+      : item
+  );
 
   useEffect(() => {
     const fetchNames = async () => {
       const newNames = {};
-      for (const pathname of pathnames) {
+      for (const pathname of capPathnames) {
         if (!isNaN(pathname)) {
           const { data: project, error: projectError } = await supabase
             .from("projects")
@@ -48,16 +53,15 @@ const Breadcrumbs = () => {
           className="breadcrumbs mt-3"
           style={{ display: "flex", gap: "10px" }}
         >
-          {pathnames.map((pathname, index) => {
-            const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
-            const displayName = names[pathname] || pathname
+          {capPathnames.map((pathname, index) => {
+            const routeTo = `/${capPathnames.slice(0, index + 1).join("/")}`;
+            const displayName = names[pathname] || pathname;
             return (
               <div key={pathname} style={{ display: "inline" }}>
                 <Link className="breadcrumb-link" to={routeTo}>
-                {displayName}
-                 
+                  {displayName}
                 </Link>
-                {index < pathnames.length - 1 && (
+                {index < capPathnames.length - 1 && (
                   <span className="breadcrumb-chevron">
                     <FontAwesomeIcon icon={faChevronRight} />
                   </span>
