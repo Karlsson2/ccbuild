@@ -59,7 +59,7 @@ const Projects = () => {
             </Col>
             <Col className="px-4 d-flex justify-content-end">
               <Button variant="outline-primary" onClick={handleOpenCreateProject}>
-                Skapa Nytt Projekt
+                Skapa nytt projekt
               </Button>
               <Modal
                 size="xl"
@@ -67,7 +67,7 @@ const Projects = () => {
                 onHide={handleCloseCreateProject}
               >
                 <Modal.Header closeButton>
-                  <Modal.Title>Skapa Nytt Projekt</Modal.Title>
+                  <Modal.Title>Skapa nytt projekt</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <CreateProject fetchData={fetchData} onClose={handleCloseCreateProject} />
