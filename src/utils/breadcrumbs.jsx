@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { supabase } from "./supabase";
-
 const Breadcrumbs = () => {
   const location = useLocation();
-  const pathnames = location.pathname.split("/").filter((x) => x);
+  // Split the pathname and add "Start" as the first element
+  let pathnames = ["Start", ...location.pathname.split("/").filter((x) => x)];
   const [names, setNames] = useState({});
 
   useEffect(() => {
@@ -16,11 +16,9 @@ const Breadcrumbs = () => {
       const newNames = {};
 
       for (const pathname of pathnames) {
-        const index = pathnames.indexOf(pathname); // Get the index once
-
+        const index = pathnames.indexOf(pathname);
         if (!isNaN(pathname)) {
-          if (index === 2) {
-            console.log(index);
+          if (index === 3) {
             const { data: product, error: productError } = await supabase
               .from("products")
               .select("product_name")
@@ -29,8 +27,7 @@ const Breadcrumbs = () => {
             if (product) {
               newNames[pathname] = product.product_name;
             }
-          } else if (index === 1) {
-            console.log(index);
+          } else if (index === 2) {
             const { data: project, error: projectError } = await supabase
               .from("projects")
               .select("name")
@@ -51,35 +48,35 @@ const Breadcrumbs = () => {
 
   return (
     <>
-      {pathnames.length > 1 && (
-        <Container>
-          <Row>
-            <Col
-              className="breadcrumbs mt-3"
-              style={{ display: "flex", gap: "10px" }}
-            >
-              {pathnames.map((pathname, index) => {
-                const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
-                const displayName = names[pathname] || pathname;
-                return (
-                  <div key={pathname} style={{ display: "inline" }}>
-                    <Link className="breadcrumb-link" to={routeTo}>
-                      {displayName === "projects"
-                        ? "Alla projekt"
-                        : displayName}
-                    </Link>
-                    {index < pathnames.length - 1 && (
-                      <span className="breadcrumb-chevron">
-                        <FontAwesomeIcon icon={faChevronRight} />
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </Col>
-          </Row>
-        </Container>
-      )}
+      <Container>
+        <Row>
+          <Col
+            className="breadcrumbs mt-3"
+            style={{ display: "flex", gap: "10px" }}
+          >
+            {/* Render breadcrumbs */}
+            {pathnames.map((pathname, index) => {
+              const routeTo =
+                pathname === "Start"
+                  ? "/"
+                  : `/${pathnames.slice(1, index + 1).join("/")}`; // Adjust the slicing to skip "Start"
+              const displayName = names[pathname] || pathname;
+              return (
+                <div key={pathname} style={{ display: "inline" }}>
+                  <Link className="breadcrumb-link" to={routeTo}>
+                    {displayName === "projects" ? "Alla projekt" : displayName}
+                  </Link>
+                  {index < pathnames.length - 1 && (
+                    <span className="breadcrumb-chevron">
+                      <FontAwesomeIcon icon={faChevronRight} />
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };
