@@ -14,16 +14,13 @@ const Breadcrumbs = () => {
   useEffect(() => {
     const fetchNames = async () => {
       const newNames = {};
+
       for (const pathname of pathnames) {
-        if (!isNaN(pathname) && pathnames.indexOf(pathname) === 1) {
-          const { data: project, error: projectError } = await supabase
-            .from("projects")
-            .select("name")
-            .eq("id", pathname)
-            .single();
-          if (project) {
-            newNames[pathname] = project.name;
-          } else {
+        const index = pathnames.indexOf(pathname); // Get the index once
+
+        if (!isNaN(pathname)) {
+          if (index === 2) {
+            console.log(index);
             const { data: product, error: productError } = await supabase
               .from("products")
               .select("product_name")
@@ -32,9 +29,20 @@ const Breadcrumbs = () => {
             if (product) {
               newNames[pathname] = product.product_name;
             }
+          } else if (index === 1) {
+            console.log(index);
+            const { data: project, error: projectError } = await supabase
+              .from("projects")
+              .select("name")
+              .eq("id", pathname)
+              .single();
+            if (project) {
+              newNames[pathname] = project.name;
+            }
           }
         }
       }
+
       setNames(newNames);
     };
 
