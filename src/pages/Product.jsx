@@ -549,7 +549,7 @@ const Product = () => {
             </>
           )}
           <Row>
-            <Col>
+            <Col className="mb-3 ">
               <ItemsLoop items={items} handleDeleteItem={handleDeleteItem} />
             </Col>
           </Row>

@@ -131,7 +131,7 @@ const Project = () => {
                   <Col>{project.organization}</Col>
                 </Row>
               </Col>
-              <Col className="buttons">
+              <Col className="buttons" sm={7}>
                 <Link to={`/projects/${project.id}/create-product`}>
                   <Button
                     className="createProduct"
@@ -144,6 +144,46 @@ const Project = () => {
                     <FontAwesomeIcon icon={faPlus} /> Skapa ny produkt
                   </Button>
                 </Link>
+                <Button
+                  className="createProduct"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  Duplicera
+                </Button>
+                <Button
+                  className="createProduct"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  Importera
+                </Button>
+                <Button
+                  className="createProduct"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  Visa rapport
+                </Button>
+                <Button
+                  className="createProduct"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  Projekt aktivt
+                </Button>
               </Col>
             </Row>
           </div>
