@@ -17,6 +17,9 @@ const Breadcrumbs = () => {
 
       for (const pathname of pathnames) {
         const index = pathnames.indexOf(pathname);
+        if (pathname === "create-product") {
+          newNames[pathname] = "Skapa ny produkt";
+        }
         if (!isNaN(pathname)) {
           if (index === 3) {
             const { data: product, error: productError } = await supabase
@@ -24,6 +27,7 @@ const Breadcrumbs = () => {
               .select("product_name")
               .eq("id", pathname)
               .single();
+
             if (product) {
               newNames[pathname] = product.product_name;
             }
