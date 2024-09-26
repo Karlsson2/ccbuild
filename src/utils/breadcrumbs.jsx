@@ -18,7 +18,7 @@ const Breadcrumbs = () => {
       for (const pathname of pathnames) {
         const index = pathnames.indexOf(pathname);
         if (pathname === "create-product") {
-          newNames[pathname] = "Skapa ny produkt";
+          newNames[pathname] = "Lägg till ny produkt";
         }
         if (!isNaN(pathname)) {
           if (index === 3) {
