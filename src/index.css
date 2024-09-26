@@ -467,6 +467,13 @@ form label:not(.form-check-label) {
 .projectsdetails-info .buttons {
   display: flex;
   align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
+.projectsdetails-info .buttons button:hover {
+  background-color: #488ac6;
+  color: white;
+  border: 1px solid #488ac6;
 }
 .projectsdetails-actions {
   position: absolute;
@@ -539,6 +546,3 @@ form label:not(.form-check-label) {
   font-weight: 600;
   margin-left: 10px;
 }
-
-
-
