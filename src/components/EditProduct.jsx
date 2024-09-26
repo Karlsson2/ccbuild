@@ -64,7 +64,7 @@ const EditProduct = ({ product, noImageUrl, onSave, onCancel }) => {
         </Col>
         <Col sm={3}>
           <Form.Group controlId="internalId">
-            <Form.Label>Eget Id-nummer</Form.Label>
+            <Form.Label>Eget id-nummer</Form.Label>
             <Form.Control
               type="text"
               value={internalId}

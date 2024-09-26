@@ -14,24 +14,23 @@ const Projects = () => {
   const [projects, setProjects] = useState(null);
   const [showCreateProject, setShowCreateProject] = useState(false);
 
-
-    const fetchData = async () => {
-      try {
-        let { data: projects, error } = await supabase
-          .from("projects")
-          .select("*");
-        if (error) {
-          console.error("Error fetching data:", error);
-        } else {
-          console.log("Fetched Projects:", projects);
-          setProjects(projects);
-        }
-      } catch (error) {
-        console.error("Unexpected error:", error);
+  const fetchData = async () => {
+    try {
+      let { data: projects, error } = await supabase
+        .from("projects")
+        .select("*");
+      if (error) {
+        console.error("Error fetching data:", error);
+      } else {
+        console.log("Fetched Projects:", projects);
+        setProjects(projects);
       }
-    };
-    
-    useEffect(() => {
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -55,10 +54,13 @@ const Projects = () => {
         <Container>
           <Row className="mt-3">
             <Col>
-              <h1>Alla Projekt</h1>
+              <h1>Alla projekt</h1>
             </Col>
             <Col className="px-4 d-flex justify-content-end">
-              <Button variant="outline-primary" onClick={handleOpenCreateProject}>
+              <Button
+                variant="outline-primary"
+                onClick={handleOpenCreateProject}
+              >
                 Skapa nytt projekt
               </Button>
               <Modal
@@ -70,7 +72,10 @@ const Projects = () => {
                   <Modal.Title>Skapa nytt projekt</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <CreateProject fetchData={fetchData} onClose={handleCloseCreateProject} />
+                  <CreateProject
+                    fetchData={fetchData}
+                    onClose={handleCloseCreateProject}
+                  />
                 </Modal.Body>
               </Modal>
             </Col>
@@ -120,7 +125,7 @@ const Projects = () => {
                   <Accordion.Body>
                     {" "}
                     <Form.Select aria-label="Default select example">
-                      <option>Välj Region</option>
+                      <option>Välj region</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
                       <option value="3">Three</option>
@@ -132,7 +137,7 @@ const Projects = () => {
                   <Accordion.Body>
                     {" "}
                     <Form.Select aria-label="Default select example">
-                      <option>Välj Organisation</option>
+                      <option>Välj organisation</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
                       <option value="3">Three</option>
