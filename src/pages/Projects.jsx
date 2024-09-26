@@ -78,7 +78,7 @@ const Projects = () => {
         <hr className="allproduct-border"></hr>
         <Container>
           <Row>
-            <Col className="col-lg-3 col-md-12">
+            <Col className="col-lg-3 col-md-12 mt-1">
               <Col>
                 <h3>Filter</h3>
               </Col>
