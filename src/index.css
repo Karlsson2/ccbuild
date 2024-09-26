@@ -546,3 +546,21 @@ form label:not(.form-check-label) {
   font-weight: 600;
   margin-left: 10px;
 }
+.newProjectButton {
+  background: #488ac6;
+  border-radius: 100px;
+  border: none;
+  color: white;
+  border: 1px solid white;
+  font-weight: 600;
+  padding: 12px 24px;
+}
+.newProjectButton:hover {
+  background: white;
+  border-radius: 100px;
+  border: 1px solid #488ac6;
+  color: #488ac6;
+  font-weight: 600;
+  padding: 12px 24px;
+  cursor: pointer;
+}
