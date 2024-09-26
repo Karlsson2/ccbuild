@@ -283,7 +283,7 @@ const Product = () => {
         </Container>
       ) : (
         <Container>
-          <Row className="productHeader mt-5 mb-5">
+          <Row className="productHeader mt-3 mb-5">
             <Col md={4}>
               <Image
                 fluid
