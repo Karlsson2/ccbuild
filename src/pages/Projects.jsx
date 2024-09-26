@@ -22,7 +22,6 @@ const Projects = () => {
       if (error) {
         console.error("Error fetching data:", error);
       } else {
-        console.log("Fetched Projects:", projects);
         setProjects(projects);
       }
     } catch (error) {
@@ -34,16 +33,11 @@ const Projects = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log("Products state:", projects);
-  }, [projects]);
-
   const handleOpenCreateProject = () => {
     setShowCreateProject(true);
   };
 
   const handleCloseCreateProject = () => {
-    console.log("clicked close");
     setShowCreateProject(false);
     setProjects(projects);
   };

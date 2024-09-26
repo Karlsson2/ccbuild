@@ -65,7 +65,6 @@ const Project = () => {
 
     if (!error) {
       navigate("/projects");
-      console.log("Deleted project:", project.name, "with id:", projectId);
     } else {
       console.error("Error deleting project: ", projectId, error);
     }

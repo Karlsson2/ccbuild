@@ -10,7 +10,6 @@ import { useState } from "react";
 import { Container, Row, Col, Button, Stack } from "react-bootstrap";
 
 export default function CreateProject({ onClose, fetchData }) {
-
   const baseUrl = import.meta.env.VITE_SUPABASE_BUCKET_URL;
   const bucketFolder = import.meta.env.VITE_SUPABASE_PROJECT_FOLDER;
   const [name, setName] = useState("");
@@ -52,7 +51,6 @@ export default function CreateProject({ onClose, fetchData }) {
       console.error("Error inserting project: ", error);
     } else {
       onClose();
-      console.log("Project successfully inserted");
       fetchData();
     }
   };

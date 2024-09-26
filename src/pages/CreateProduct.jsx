@@ -36,7 +36,6 @@ const CreateProduct = () => {
         if (error) {
           console.error("Error fetching data:", error);
         }
-        console.log("Fetched projects:", projects);
         const currentProjects = projects.map((project) => {
           return { id: project.id, name: project.name };
         });
@@ -72,15 +71,6 @@ const CreateProduct = () => {
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
     setIsCategoryIdMissing(false);
-    //Console log what we will try to save
-    console.log("Saving product with the following data:");
-    console.log("Project ID:", projectId);
-    console.log("Product name:", productName);
-    console.log("Image path 1:", imagePaths[0]);
-    console.log("Image path 2:", imagePaths[1]);
-    console.log("Image path 3:", imagePaths[2]);
-    console.log("Category ID:", selectedCategoryId);
-    console.log("Description:", productDescription);
 
     if (selectedCategoryId === null || selectedCategoryId === "") {
       console.error("Category ID is missing");
@@ -119,11 +109,8 @@ const CreateProduct = () => {
     if (error) {
       console.error("Error saving product to the database: ", error);
     } else {
-      console.log("Returned data:", data); // Log the entire data object
-
       if (Array.isArray(data) && data.length > 0) {
         const newProductId = data[0].id; // Assuming 'id' is the column name for the primary key
-        console.log("New product ID:", newProductId);
 
         navigate(`/projects/${projectId}/${newProductId}`);
       } else {

@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Form, Modal, Button, Card, Container, Tooltip, OverlayTrigger, } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Form,
+  Modal,
+  Button,
+  Card,
+  Container,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
 import { supabase } from "../utils/supabase";
 import ItemsLoopFormDropdown from "./ItemsLoopFormDropdown";
-import arrowUp from "../assets/arrow-up.svg"
-import bin from "../assets/recycle-bin.png"
-import { faPencil, faInfo, faLeaf, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import arrowUp from "../assets/arrow-up.svg";
+import bin from "../assets/recycle-bin.png";
+import {
+  faPencil,
+  faInfo,
+  faLeaf,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-
-export default function ItemsLoopForm({ items: initialItems, handleDeleteItem }) {
+export default function ItemsLoopForm({
+  items: initialItems,
+  handleDeleteItem,
+}) {
   const [formData, setFormData] = useState(initialItems || {});
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -21,8 +38,15 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
-    const newValue = type === "checkbox" ? checked : value === "true" ? true : value === "false" ? false : value;
-    
+    const newValue =
+      type === "checkbox"
+        ? checked
+        : value === "true"
+        ? true
+        : value === "false"
+        ? false
+        : value;
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: newValue,
@@ -31,21 +55,16 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted');
     try {
-      const { data, error } = await supabase
-        .from('items')
-        .upsert([formData]);
-      
-      if (error) {
-        console.error('Error upserting data: ', error);
-      } else {
-        console.log('Data upserted successfully:', data);
-        toggleExpansion();
+      const { data, error } = await supabase.from("items").upsert([formData]);
 
+      if (error) {
+        console.error("Error upserting data: ", error);
+      } else {
+        toggleExpansion();
       }
     } catch (err) {
-      console.error('An error occurred during submission:', err);
+      console.error("An error occurred during submission:", err);
     }
   };
 
@@ -55,13 +74,22 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
 
   return (
     <Container className="mb-3 ">
-      <div className="d-flex align-items-center hover-pointer border rounded p-3 cursor-pointer" onClick={toggleExpansion}>
-        <Form method="POST" id="form1" onSubmit={handleSubmit} className="w-100">
+      <div
+        className="d-flex align-items-center hover-pointer border rounded p-3 cursor-pointer"
+        onClick={toggleExpansion}
+      >
+        <Form
+          method="POST"
+          id="form1"
+          onSubmit={handleSubmit}
+          className="w-100"
+        >
           <Row className="align-items-center justify-content-between w-100 p-1">
             <Col xs="auto">
-              <Form.Check 
-              type="checkbox"
-              onClick={(e) => e.stopPropagation()} />
+              <Form.Check
+                type="checkbox"
+                onClick={(e) => e.stopPropagation()}
+              />
             </Col>
             <Col xs={1}>
               <Form.Control
@@ -71,7 +99,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 min={1}
                 onChange={handleInputChange}
                 onClick={(e) => e.stopPropagation()}
-                
               />
             </Col>
             <Col xs={3}>
@@ -80,7 +107,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 value={formData.status}
                 onChange={handleInputChange}
                 onClick={(e) => e.stopPropagation()}
-              
               >
                 <option>Välj status</option>
                 <option>Ej publicerad</option>
@@ -98,7 +124,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 value={formData.market_place}
                 onChange={handleInputChange}
                 onClick={(e) => e.stopPropagation()}
-              
               >
                 <option>Välj marknadsplatsstatus</option>
                 <option>Inventerad</option>
@@ -116,13 +141,24 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 <option>Avfallshanterad</option>
               </Form.Select>
             </Col>
-            <Col xs="auto" style={{ border: "1px solid green", borderRadius: "700px", padding: "2px 12px"  }}>
-              <span className="text-success">
-                400 kg CO2e
-              </span>
+            <Col
+              xs="auto"
+              style={{
+                border: "1px solid green",
+                borderRadius: "700px",
+                padding: "2px 12px",
+              }}
+            >
+              <span className="text-success">400 kg CO2e</span>
             </Col>
             <Col xs="auto">
-              <div className="hover-pointer" onClick={(e) => {handleShow(); e.stopPropagation();}}>
+              <div
+                className="hover-pointer"
+                onClick={(e) => {
+                  handleShow();
+                  e.stopPropagation();
+                }}
+              >
                 <img className="mb-1" src={bin} width={18} alt="H" />
                 <i className="bi bi-trash"></i> Ta bort
               </div>
@@ -132,30 +168,45 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                 </Modal.Header>
                 <Modal.Body>Vill du verkligen radera detta item</Modal.Body>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={(e) => {handleClose(); e.stopPropagation();}}>
+                  <Button
+                    variant="secondary"
+                    onClick={(e) => {
+                      handleClose();
+                      e.stopPropagation();
+                    }}
+                  >
                     Stäng
                   </Button>
-                  <Button variant="primary" onClick={() => { handleDeleteItem(initialItems.id); handleClose(); }}>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      handleDeleteItem(initialItems.id);
+                      handleClose();
+                    }}
+                  >
                     Ja
                   </Button>
                 </Modal.Footer>
               </Modal>
-              </Col>
-              <Col xs="auto">
-              <img 
+            </Col>
+            <Col xs="auto">
+              <img
                 src={arrowUp}
                 alt="Arrow Up"
                 width={25}
-                className={`d-flex justify-content-end arrow-up ${isExpanded ? 'expanded' : ''}`}
-                onClick={() => setIsExpanded(!isExpanded)} 
-               />
+                className={`d-flex justify-content-end arrow-up ${
+                  isExpanded ? "expanded" : ""
+                }`}
+                onClick={() => setIsExpanded(!isExpanded)}
+              />
             </Col>
           </Row>
-        
 
-      <div className={`card-collapse ${isExpanded ? 'expanded' : ''}`}>
-        <Container className="mt-3 p-4" onClick={(e) => e.stopPropagation()}>
-            
+          <div className={`card-collapse ${isExpanded ? "expanded" : ""}`}>
+            <Container
+              className="mt-3 p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Row className="mb-3">
                 <Col md={6}>
                   <Form.Group>
@@ -164,7 +215,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       name="aesthetic"
                       value={formData.aesthetic}
                       onChange={handleInputChange}
-                    
                     >
                       <option value="">Välj estetiskt skick</option>
                       <option>1</option>
@@ -182,7 +232,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       name="functionality"
                       value={formData.functionality}
                       onChange={handleInputChange}
-                    
                     >
                       <option value="">Välj funktionellt skick</option>
                       <option>1</option>
@@ -203,7 +252,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       name="date_available"
                       value={formData.date_available}
                       onChange={handleInputChange}
-                    
                     />
                   </Form.Group>
                 </Col>
@@ -215,7 +263,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       name="date_delivery"
                       value={formData.date_delivery}
                       onChange={handleInputChange}
-                    
                     />
                   </Form.Group>
                 </Col>
@@ -228,7 +275,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       name="demountability"
                       value={formData.demountability}
                       onChange={handleInputChange}
-                    
                     >
                       <option value="Ej angivet">Välj</option>
                       <option>Enkel att demontera/demontering krävs ej</option>
@@ -244,7 +290,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.demountability_comment}
                       onChange={handleInputChange}
                       placeholder="Skriv kommentar här"
-                    
                     />
                   </Form.Group>
                 </Col>
@@ -255,7 +300,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       name="accessibility"
                       value={formData.accessibility}
                       onChange={handleInputChange}
-                    
                     >
                       <option>Välj</option>
                       <option>Dålig</option>
@@ -271,44 +315,41 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.accessibility_comment}
                       onChange={handleInputChange}
                       placeholder="Skriv kommentar här"
-                    
                     />
                   </Form.Group>
                 </Col>
               </Row>
               <Row className="mb-3">
                 {[1, 2, 3, 4].map((num) => (
-                    <Col key={num} md={3}>
+                  <Col key={num} md={3}>
                     <Form.Group>
-                        <Form.Label>Placering {num}</Form.Label>
-                        <Form.Control
+                      <Form.Label>Placering {num}</Form.Label>
+                      <Form.Control
                         type="text"
                         name={`location_${num}`}
                         value={formData[`location_${num}`]}
                         onChange={handleInputChange}
-                      
-                        />
+                      />
                     </Form.Group>
-                    </Col>
+                  </Col>
                 ))}
-                </Row>
+              </Row>
 
-                <Row className="mb-3">
+              <Row className="mb-3">
                 {[1, 2, 3, 4].map((num) => (
-                    <Col key={num} md={3}>
+                  <Col key={num} md={3}>
                     <Form.Group>
-                        <Form.Label>Beslutsbenämning {num}</Form.Label>
-                        <Form.Control
+                      <Form.Label>Beslutsbenämning {num}</Form.Label>
+                      <Form.Control
                         type="text"
                         name={`decision_${num}`}
                         value={formData[`decision_${num}`]}
                         onChange={handleInputChange}
-                      
-                        />
+                      />
                     </Form.Group>
-                    </Col>
+                  </Col>
                 ))}
-                </Row>
+              </Row>
               <Card.Title>Form</Card.Title>
               <Row>
                 <Col md={3}>
@@ -319,7 +360,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       name="unit_weight"
                       value={formData.unit_weight}
                       onChange={handleInputChange}
-                     
                     >
                       <option>kg</option>
                       <option>ton</option>
@@ -336,7 +376,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.weight}
                       onChange={handleInputChange}
                       placeholder="Vikt"
-                    
                     />
                   </Form.Group>
                 </Col>
@@ -364,7 +403,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.width}
                       onChange={handleInputChange}
                       placeholder="Bredd"
-                    
                     />
                   </Form.Group>
                 </Col>
@@ -377,7 +415,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.length}
                       onChange={handleInputChange}
                       placeholder="Längd"
-                    
                     />
                   </Form.Group>
                 </Col>
@@ -390,9 +427,8 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.height}
                       onChange={handleInputChange}
                       placeholder="Höjd"
-                    
                     />
-                    </Form.Group>
+                  </Form.Group>
                 </Col>
                 <Col md={2}>
                   <Form.Group className="mb-3">
@@ -403,7 +439,6 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.depth}
                       onChange={handleInputChange}
                       placeholder="Djup"
-                    
                     />
                   </Form.Group>
                 </Col>
@@ -416,62 +451,58 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                       value={formData.diameter}
                       onChange={handleInputChange}
                       placeholder="Diameter"
-                    
                     />
                   </Form.Group>
                 </Col>
               </Row>
               <Card.Title className="mt-4">Material och Yta</Card.Title>
-                <Row>
+              <Row>
                 <Col md={6}>
-                    <Form.Group className="mb-3">
+                  <Form.Group className="mb-3">
                     <Form.Label>Material</Form.Label>
                     <Form.Select
-                        name="material"
-                        value={formData.material}
-                        onChange={handleInputChange}
-                      
+                      name="material"
+                      value={formData.material}
+                      onChange={handleInputChange}
                     >
-                        <option value="Ej angivet">Välj material</option>
-                        <option>Metall</option>
-                        <option>Trä</option>
-                        <option>Plast</option>
-                        <option>Glas</option>
-                        <option>Textil</option>
-                        <option>Elektronik</option>
-                        <option>Övrigt</option>
+                      <option value="Ej angivet">Välj material</option>
+                      <option>Metall</option>
+                      <option>Trä</option>
+                      <option>Plast</option>
+                      <option>Glas</option>
+                      <option>Textil</option>
+                      <option>Elektronik</option>
+                      <option>Övrigt</option>
                     </Form.Select>
-                    </Form.Group>
+                  </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group className="mb-3">
+                  <Form.Group className="mb-3">
                     <Form.Label>Yta</Form.Label>
                     <Form.Select
-                        name="color"
-                        value={formData.color}
-                        onChange={handleInputChange}
-                      
+                      name="color"
+                      value={formData.color}
+                      onChange={handleInputChange}
                     >
-                        
-                        <option value="Ej angivet">Välj finish</option>
-                        <option>Lackad</option>
-                        <option>Oljad</option>
-                        <option>Laserskuren</option>
-                        <option>Graverad</option>
-                        <option>Tryckt</option>
-                        <option>Övrigt</option>
+                      <option value="Ej angivet">Välj finish</option>
+                      <option>Lackad</option>
+                      <option>Oljad</option>
+                      <option>Laserskuren</option>
+                      <option>Graverad</option>
+                      <option>Tryckt</option>
+                      <option>Övrigt</option>
                     </Form.Select>
-                    </Form.Group>
+                  </Form.Group>
                 </Col>
-                </Row>
+              </Row>
               <Card.Title className="mt-4">Certifieringar</Card.Title>
-                <Row>
+              <Row>
                 <Col md={2}>
-                    <Form.Group className="mb-3">
+                  <Form.Group className="mb-3">
                     <Form.Label>CE-märkning</Form.Label>
                     <Row>
-                    <Col>
-                    <Form.Check
+                      <Col>
+                        <Form.Check
                           inline
                           type="radio"
                           label="Nej"
@@ -479,10 +510,10 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                           value={false}
                           checked={formData.ce_mark === false}
                           onChange={handleInputChange}
-                      />
-                  </Col>
-                  <Col>
-                      <Form.Check
+                        />
+                      </Col>
+                      <Col>
+                        <Form.Check
                           inline
                           type="radio"
                           label="Ja"
@@ -490,67 +521,88 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                           value={true}
                           checked={formData.ce_mark === true}
                           onChange={handleInputChange}
-                      />
-                  </Col>
+                        />
+                      </Col>
                     </Row>
-                    </Form.Group>
+                  </Form.Group>
                 </Col>
-                </Row>
+              </Row>
 
-                <Col md={9}>
-                    <Form.Group className="mb-3">
-                    <Form.Label>Ljuskälla</Form.Label>
-                    <Row>
-                        {["Ej angivet", "LED", "Halogen", "Fluorescerande", "Glödlampa", "Övrigt"].map((option, index) => (
-                        <Col key={index}>
-                            <Form.Check
-                            inline
-                            type="radio"
-                            label={option}
-                            name="light_source"
-                            value={option}
-                            checked={formData.light_source === option}
-                            onChange={handleInputChange}
-                          
-                            />
-                        </Col>
-                        ))}
-                    </Row>
-                    </Form.Group>
-                </Col>
+              <Col md={9}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Ljuskälla</Form.Label>
+                  <Row>
+                    {[
+                      "Ej angivet",
+                      "LED",
+                      "Halogen",
+                      "Fluorescerande",
+                      "Glödlampa",
+                      "Övrigt",
+                    ].map((option, index) => (
+                      <Col key={index}>
+                        <Form.Check
+                          inline
+                          type="radio"
+                          label={option}
+                          name="light_source"
+                          value={option}
+                          checked={formData.light_source === option}
+                          onChange={handleInputChange}
+                        />
+                      </Col>
+                    ))}
+                  </Row>
+                </Form.Group>
+              </Col>
 
-                
-                  <Col md={12}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Färgtemperatur</Form.Label>
-                     
-                      <div className="d-flex flex-wrap">
-                        {['Ej angivet', '2700K', '3000K', '3500K', '4100K', '5000K', '6500K'].map((temp, index) => (
-                          <div key={index} className="me-2 mb-2">
-                            <Form.Check
-                              inline
-                              type="radio"
-                              label={`${temp}`}
-                              name="color_temp"
-                              value={`${temp}`}
-                              checked={formData.color_temp === `${temp}`}
-                              onChange={handleInputChange}
-                            />
-                          </div>
-                        ))}
+              <Col md={12}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Färgtemperatur</Form.Label>
+
+                  <div className="d-flex flex-wrap">
+                    {[
+                      "Ej angivet",
+                      "2700K",
+                      "3000K",
+                      "3500K",
+                      "4100K",
+                      "5000K",
+                      "6500K",
+                    ].map((temp, index) => (
+                      <div key={index} className="me-2 mb-2">
+                        <Form.Check
+                          inline
+                          type="radio"
+                          label={`${temp}`}
+                          name="color_temp"
+                          value={`${temp}`}
+                          checked={formData.color_temp === `${temp}`}
+                          onChange={handleInputChange}
+                        />
                       </div>
-                    </Form.Group>
-                  </Col>
-                
+                    ))}
+                  </div>
+                </Form.Group>
+              </Col>
 
-                <Row>
+              <Row>
                 <Col md={12}>
-                    <Form.Group className="mb-3">
+                  <Form.Group className="mb-3">
                     <Form.Label>IP-klassning</Form.Label>
                     <Row>
-                        {['Ej angivet', 'IP20', 'IP23', 'IP43/44/45', 'IP54/55', 'IP66', 'IP67', 'IP68'].map((ip_class, index) => (
-                        <Col key={index}  >
-                            <Form.Check
+                      {[
+                        "Ej angivet",
+                        "IP20",
+                        "IP23",
+                        "IP43/44/45",
+                        "IP54/55",
+                        "IP66",
+                        "IP67",
+                        "IP68",
+                      ].map((ip_class, index) => (
+                        <Col key={index}>
+                          <Form.Check
                             inline
                             type="radio"
                             label={`${ip_class}`}
@@ -558,24 +610,24 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                             value={`${ip_class}`}
                             checked={formData.ip_class === `${ip_class}`}
                             onChange={handleInputChange}
-                          
-                            />
+                          />
                         </Col>
-                        ))}
+                      ))}
                     </Row>
-                    </Form.Group>
+                  </Form.Group>
                 </Col>
-                </Row>
-                <ItemsLoopFormDropdown formData={formData} setFormData={setFormData} />
-                <Button variant="outline-primary" className="mt-3" type="submit">
-                  Spara
-                </Button>
-            
-        </Container>
-        </div>
+              </Row>
+              <ItemsLoopFormDropdown
+                formData={formData}
+                setFormData={setFormData}
+              />
+              <Button variant="outline-primary" className="mt-3" type="submit">
+                Spara
+              </Button>
+            </Container>
+          </div>
         </Form>
       </div>
     </Container>
-    
   );
 }
