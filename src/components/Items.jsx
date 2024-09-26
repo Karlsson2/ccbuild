@@ -88,8 +88,6 @@ function Items({ itemId, productId, setShowItems }) {
       setItemDesignation2(data[0].designation_2);
       setItemDesignation3(data[0].designation_3);
       setItemDesignation4(data[0].designation_4);
-    } else {
-      console.log("No item data found");
     }
   };
 
@@ -124,7 +122,6 @@ function Items({ itemId, productId, setShowItems }) {
         },
       ]);
       if (error) console.log("error", error);
-      else console.log("Item created successfully");
     } else {
       const { data, error } = await supabase
         .from("items")
@@ -149,7 +146,6 @@ function Items({ itemId, productId, setShowItems }) {
         })
         .eq("id", itemId);
       if (error) console.log("error", error);
-      else console.log("Item updated successfully");
     }
     setShowItems(null);
   };

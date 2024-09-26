@@ -19,8 +19,6 @@ export const uploadProjectImage = async (file) => {
 
   const fileUrl = `${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/ccbuild/${timestamp}${file.name}`; // Skapa url att hämta bild från
 
-  console.log("File uploaded successfully", fileUrl);
-
   // Return the file name
   return `${timestamp}${file.name}`;
 };
@@ -41,8 +39,6 @@ export const uploadProductImagWithReturn = async (file) => {
     import.meta.env.VITE_SUPABASE_URL
   }/storage/v1/object/public/ccbuild/product_image/${file.name}${timestamp}`;
 
-  console.log("File uploaded successfully", fileUrl);
-
   return fileUrl; // Return the URL for further use
 };
 
@@ -58,8 +54,6 @@ export const uploadProductImage = async (file) => {
 
   const fileUrl = `${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/ccbuild/${file.name}`; // Skapa url att hämta bild från
 
-  console.log("File uploaded successfully", fileUrl);
-
   await saveImgPathToDb(fileUrl);
 };
 
@@ -70,8 +64,6 @@ export const saveImgPathToDb = async (fileUrl) => {
 
   if (error) {
     console.error("Error inserting image into database: ", error);
-  } else {
-    console.log("Image has successfully been inserted into DB");
   }
 };
 
@@ -84,7 +76,6 @@ export const fetchImage = async () => {
     console.error("Error fetching image: ", error);
     return;
   } else {
-    console.log("Images successfully fetched", images);
     return images;
   }
 };
@@ -101,7 +92,6 @@ export const uploadNewProductImage = async (file) => {
   }
 
   const fileUrl = `${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/ccbuild/${timestamp}${file.name}`;
-  console.log("Product image uploaded successfully", fileUrl);
 
   // Return the file name
   return `${timestamp}${file.name}`;

@@ -36,7 +36,6 @@ export default function EditProject({ project, onClose, onSave }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    console.log("project.id", project.id);
     let imageUrl = image ? await uploadProjectImage(image) : project.image_url;
 
     imageUrl = image
@@ -70,7 +69,6 @@ export default function EditProject({ project, onClose, onSave }) {
     if (error) {
       console.error("Error updating project:", error);
     } else {
-      console.log("Project updated successfully");
       onSave(updatedData);
       onClose();
     }

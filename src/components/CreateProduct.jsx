@@ -125,7 +125,6 @@ export default function CreateProduct({
     if (error) {
       console.error("Error inserting project: ", error);
     } else {
-      console.log("Project successfully inserted");
       handleCloseCreateProduct();
     }
   };

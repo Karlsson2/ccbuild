@@ -32,7 +32,6 @@ function Categories({
         if (error) {
           console.error("Error fetching data:", error);
         } else {
-          console.log("Fetched categories:", categories);
           const nestedArrays = createCategoriesArray(categories);
           setCategoriesArr(nestedArrays);
         }
@@ -49,7 +48,6 @@ function Categories({
     // If the search input is longer than 3 characters, search for categories
     if (event.target.value.length > 3) {
       const searchResult = searchCategories(categoriesArr, event.target.value);
-      //console.log("searchResult:", searchResult);
       setSearchResult(searchResult); // Save the search results
       setShowDropdown(true); // Show the dropdown when results are available
     } else {
@@ -93,21 +91,18 @@ function Categories({
       } else {
         // Check if there is a third level of category
         if (category[0].category_3 !== "") {
-          console.log("Fetched category:", category);
           setSelectedCategory1(category[0].category_1);
           setSelectedCategory2(category[0].category_2);
           setSelectedCategory3(category[0].category_3);
           setProductName(category[0].category_3);
           setCategoryStep(3);
         } else if (category[0].category_2 !== "") {
-          console.log("Fetched category:", category);
           setSelectedCategory1(category[0].category_1);
           setSelectedCategory2(category[0].category_2);
           setSelectedCategory3(null);
           setProductName(category[0].category_2);
           setCategoryStep(2);
         }
-        console.log("Will set selected category ID:", categoryId);
         setSelectedCategoryId(categoryId);
       }
     } catch (error) {
@@ -171,15 +166,10 @@ function Categories({
           category[3].map((subcategory) => {
             if (subcategory[0] === selectedCategory2) {
               if (subcategory[1][0][0] === "") {
-                console.log(
-                  "Only one subcategory, setting selected category ID, line 144",
-                  subcategory[1][0][1]
-                );
                 setSelectedCategoryId(subcategory[1][0][1]);
               }
               return subcategory[1].map((subsubcategory) => {
                 if (subsubcategory[0] === selectedCategory3) {
-                  console.log("Setting selected category ID, line 149");
                   setSelectedCategoryId(subsubcategory[1]);
                 }
                 return null;
@@ -198,7 +188,6 @@ function Categories({
             if (subcategory[0] === selectedCategory2) {
               subcategory[1].map((subsubcategory) => {
                 if (subsubcategory[0] === selectedCategory3) {
-                  console.log("Setting selected category ID, line 168");
                   setSelectedCategoryId(subsubcategory[1]);
                 }
                 return null;

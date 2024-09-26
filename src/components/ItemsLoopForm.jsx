@@ -55,14 +55,12 @@ export default function ItemsLoopForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
     try {
       const { data, error } = await supabase.from("items").upsert([formData]);
 
       if (error) {
         console.error("Error upserting data: ", error);
       } else {
-        console.log("Data upserted successfully:", data);
         toggleExpansion();
       }
     } catch (err) {
@@ -75,6 +73,7 @@ export default function ItemsLoopForm({
   };
 
   return (
+    
     <div
       className="d-flex align-items-center hover-pointer border rounded p-3 cursor-pointer"
       onClick={toggleExpansion}

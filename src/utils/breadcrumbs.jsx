@@ -15,7 +15,7 @@ const Breadcrumbs = () => {
     const fetchNames = async () => {
       const newNames = {};
       for (const pathname of pathnames) {
-        if (!isNaN(pathname)) {
+        if (!isNaN(pathname) && pathnames.indexOf(pathname) === 1) {
           const { data: project, error: projectError } = await supabase
             .from("projects")
             .select("name")

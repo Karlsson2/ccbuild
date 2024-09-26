@@ -35,11 +35,6 @@ const Product = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(location.state?.product || null);
   const [shouldFetchProduct, setShouldFetchProduct] = useState(false);
-  console.log("product", product);
-  console.log("location state", location.state);
-  if (product == null) {
-    console.log("reeeee!");
-  }
 
   const noImageUrl = import.meta.env.VITE_SUPABASE_NO_IMAGE_URL;
   const [project, setProject] = useState(location.state?.project || null);
@@ -58,17 +53,13 @@ const Product = () => {
 
   // Use effect to check if product is available in location.state
   useEffect(() => {
-    console.log("First useEffect Product:", product);
     if (!product) {
-      console.log("Product not available in location state. Fetching...");
       setShouldFetchProduct(true);
     }
   }, []);
 
   // Fetch product data if not available in location.state
   useEffect(() => {
-    console.log("Fetching product with id:", productId);
-
     const fetchProduct = async () => {
       setLoading(true);
       try {
@@ -81,7 +72,6 @@ const Product = () => {
           console.error("Error fetching product:", error);
         } else {
           const fetchedProduct = productData?.[0];
-          console.log("Fetched product:", fetchedProduct); // Log fetched product
           setProduct(fetchedProduct);
           if (fetchedProduct?.category_id) {
             setCategoryId(fetchedProduct.category_id);
@@ -99,10 +89,6 @@ const Product = () => {
       setShouldFetchProduct(false); // Reset the flag after fetching
     }
   }, [product, shouldFetchProduct, productId]);
-
-  useEffect(() => {
-    console.log("produktID", productId);
-  });
 
   // Fetch project data
   useEffect(() => {
@@ -211,7 +197,6 @@ const Product = () => {
   };
 
   const handleSaveChanges = async (updatedProduct) => {
-    console.log("Saving updated product:", updatedProduct);
     const { error } = await supabase
       .from("products")
       .update(updatedProduct)
@@ -255,7 +240,6 @@ const Product = () => {
       if (error) {
         console.error("Error creating new item", error);
       } else {
-        console.log("New item created", data);
         fetchItems();
       }
     } catch (err) {
@@ -273,7 +257,6 @@ const Product = () => {
       if (error) {
         console.error("Error deleting:", error);
       } else {
-        console.log("Deleted item with id:", itemId);
         fetchItems();
       }
     } catch (err) {
@@ -281,7 +264,6 @@ const Product = () => {
     }
   };
 
-  console.log("Product:" + product);
   return (
     <div>
       {loading ? (
