@@ -94,7 +94,7 @@ const Project = () => {
           >
             <div className="projectsdetails-actions">
               <Button onClick={handleOpenEditProject} className="editProduct">
-                <FontAwesomeIcon icon={faPencil} /> Edit
+                <FontAwesomeIcon icon={faPencil} /> Redigera
               </Button>
               {showEditProject && (
                 <Modal

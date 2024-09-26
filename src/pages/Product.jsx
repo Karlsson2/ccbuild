@@ -425,7 +425,7 @@ const Product = () => {
                           {project.name}
                         </Link>
                       ) : (
-                        "Loading project..."
+                        "Laddar projekt..."
                       )}
                     </Col>
                   </Row>

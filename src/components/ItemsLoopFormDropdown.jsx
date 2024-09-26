@@ -24,7 +24,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
 
     return (
         <>
-            <Container className="bg-gray br-8 hover-pointer p-4"
+            <Container className="bg-gray br-8 hover-pointer p-4 mt-4 mb-4"
             onClick={toggleExpansion}>
               <Row className="d-flex justify-content-center">
                 <Col>
@@ -44,7 +44,7 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                </Row>
             </Container>
             {isExpanded && (
-                <Container md={8} className="mt-4">
+                <Container md={8} className="bg-gray br-8 p-4">
                   <Form.Group>
                     <Form.Label>Välj marknadsplats status</Form.Label>
                     <Form.Select
@@ -69,10 +69,6 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
               </Form.Select>
                   </Form.Group>
           
-                  <Form.Text className="text-muted">
-                    Alla priser ska anges exklusive moms
-                  </Form.Text>
-          
                   <Form.Group className="mt-4">
                     <Form.Label>Nypris / st</Form.Label>
                     <Row>
@@ -89,6 +85,9 @@ export default function ItemsLoopFormDropdown ({ formData, setFormData }) {
                       </Col>
                     </Row>
                   </Form.Group>
+                  <Form.Text className="text-muted">
+                    Alla priser ska anges exklusive moms
+                  </Form.Text>
           
                   <Row md={3} className="mt-4">
                     <Col>
