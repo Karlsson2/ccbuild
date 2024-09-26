@@ -48,10 +48,11 @@ const Projects = () => {
         <Container>
           <Row className="mt-3">
             <Col>
-              <h1>Alla projekt</h1>
+              <h1 className="generellInfoHeader">Alla projekt</h1>
             </Col>
-            <Col className="px-4 d-flex justify-content-end">
+            <Col className="px-4 d-flex justify-content-end align-items-center">
               <Button
+                className="newProjectButton"
                 variant="outline-primary"
                 onClick={handleOpenCreateProject}
               >
