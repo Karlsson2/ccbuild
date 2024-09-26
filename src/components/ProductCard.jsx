@@ -97,7 +97,7 @@ const ProductCard = ({ project, product }) => {
                   {category.category_3 && <span>{category.category_3}</span>}
                 </>
               ) : (
-                "Loading category..."
+                "Laddar kategori..."
               )}
             </Card.Text>
             <div>

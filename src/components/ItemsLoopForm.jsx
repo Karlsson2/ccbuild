@@ -355,7 +355,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                <Col md={1}>
+                <Col md={2}>
                   <Form.Group className="mb-3">
                     <Form.Label>Bredd</Form.Label>
                     <Form.Control
@@ -368,7 +368,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     />
                   </Form.Group>
                 </Col>
-                <Col md={1}>
+                <Col md={2}>
                   <Form.Group className="mb-3">
                     <Form.Label>Längd</Form.Label>
                     <Form.Control
@@ -381,7 +381,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     />
                   </Form.Group>
                 </Col>
-                <Col md={1}>
+                <Col md={2}>
                   <Form.Group className="mb-3">
                     <Form.Label>Höjd</Form.Label>
                     <Form.Control
@@ -394,7 +394,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     />
                     </Form.Group>
                 </Col>
-                <Col md={1}>
+                <Col md={2}>
                   <Form.Group className="mb-3">
                     <Form.Label>Djup</Form.Label>
                     <Form.Control
@@ -407,8 +407,8 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     />
                   </Form.Group>
                 </Col>
-                <Col md={1}>
-                  <Form.Group className="mb-3">
+                <Col md={2}>
+                  <Form.Group className="mb-4">
                     <Form.Label>Diameter</Form.Label>
                     <Form.Control
                       type="number"
@@ -421,7 +421,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                   </Form.Group>
                 </Col>
               </Row>
-              <Card.Title>Material och Yta</Card.Title>
+              <Card.Title className="mt-4">Material och Yta</Card.Title>
                 <Row>
                 <Col md={6}>
                     <Form.Group className="mb-3">
@@ -464,7 +464,7 @@ export default function ItemsLoopForm({ items: initialItems, handleDeleteItem })
                     </Form.Group>
                 </Col>
                 </Row>
-              <Card.Title>Certifieringar</Card.Title>
+              <Card.Title className="mt-4">Certifieringar</Card.Title>
                 <Row>
                 <Col md={2}>
                     <Form.Group className="mb-3">

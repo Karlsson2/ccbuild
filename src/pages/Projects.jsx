@@ -164,10 +164,10 @@ const Projects = () => {
                       ))}
                     </>
                   ) : (
-                    <p>No data found in the Projects table.</p>
+                    <p>Inga projekt hittades</p>
                   )
                 ) : (
-                  <p>Loading...</p>
+                  <p>Laddar...</p>
                 )}
               </Row>
             </Col>
