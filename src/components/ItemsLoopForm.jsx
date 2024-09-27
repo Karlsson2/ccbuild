@@ -207,11 +207,11 @@ export default function ItemsLoopForm({
                     onChange={handleInputChange}
                   >
                     <option value="">Välj estetiskt skick</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <option>Skada går ej att åtgärda</option>
+                    <option>Skada är svår att åtgärda</option>
+                    <option>Skada går att åtgärda av proffs</option>
+                    <option>Skada går att åtgärda av lekman</option>
+                    <option>Inga skador</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -224,11 +224,11 @@ export default function ItemsLoopForm({
                     onChange={handleInputChange}
                   >
                     <option value="">Välj funktionellt skick</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <option>Funktion går ej att åtgärda</option>
+                    <option>Funktion är svår att åtgärda</option>
+                    <option>Funktion går att åtgärda av proffs</option>
+                    <option>Funktion går att åtgärda av lekman</option>
+                    <option>Inga brister</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
