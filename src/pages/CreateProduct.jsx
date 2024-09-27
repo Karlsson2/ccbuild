@@ -201,7 +201,7 @@ const CreateProduct = () => {
             style={{
               fontSize: "36px",
               fontWeight: "bold",
-              margin: "20px 0",
+              margin: "40px 0px 20px 0px",
             }}
           >
             Generell information
