@@ -196,23 +196,7 @@ const CreateProduct = () => {
           >
             Lägg till ny produkt
           </h1>
-          <div
-            style={{
-              width: "100%",
-              height: "4px",
-              backgroundColor: "var(--hr-gray)",
-              display: "flex",
-              justifyContent: "flex-start",
-            }}
-          >
-            <div
-              style={{
-                width: "220px",
-                height: "4px",
-                backgroundColor: "var(--hr-yellow)",
-              }}
-            ></div>
-          </div>
+
           <h2
             style={{
               fontSize: "36px",
