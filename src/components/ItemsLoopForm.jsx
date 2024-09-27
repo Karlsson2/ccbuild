@@ -101,23 +101,6 @@ export default function ItemsLoopForm({
               onClick={(e) => e.stopPropagation()}
             >
               <option>Välj status</option>
-              <option>Ej publicerad</option>
-              <option>Publicerad som intern annons</option>
-              <option>Publicerad som extern annons</option>
-              <option>Reserverad</option>
-              <option>Såld</option>
-              <option>Avpublicerad</option>
-              <option>Automatiskt avpublicerad</option>
-            </Form.Select>
-          </Col>
-          <Col xs={4}>
-            <Form.Select
-              name="market_place"
-              value={formData.market_place}
-              onChange={handleInputChange}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <option>Välj marknadsplatsstatus</option>
               <option>Inventerad</option>
               <option>Inventerad - i lager/förråd</option>
               <option>Inventerad i byggnad</option>
@@ -131,6 +114,24 @@ export default function ItemsLoopForm({
               <option>Återbrukad inom organisationen</option>
               <option>Återbrukad av externt av annan aktör</option>
               <option>Avfallshanterad</option>
+            </Form.Select>
+          </Col>
+          <Col xs={4}>
+            <Form.Select
+              name="market_place"
+              value={formData.market_place}
+              onChange={handleInputChange}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <option>Välj marknadsplatsstatus</option>
+              <option>Ej publicerad</option>
+              <option>Publicerad som intern annons</option>
+              <option>Publicerad som extern annons</option>
+              <option>Reserverad</option>
+              <option>Såld</option>
+              <option>Avpublicerad</option>
+              <option>Automatiskt avpublicerad</option>
+              
             </Form.Select>
           </Col>
           <Col
