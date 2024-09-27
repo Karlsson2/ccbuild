@@ -9,7 +9,7 @@ const ProductCard = ({ project, product }) => {
   const [items, setItems] = useState(null);
   const itemsWeight = items?.reduce((acc, item) => acc + item.weight, 0);
   const itemsTotal = items?.reduce((acc, item) => acc + item.amount, 0);
-  const itemsCO2 = itemsWeight * 0.8;
+  const itemsCO2 = Number((itemsWeight * 0.8).toPrecision(2));
   const noImageUrl =
     "https://cpqsrfnheiohlhnpxpgo.supabase.co/storage/v1/object/public/ccbuild/public/ingenbild.jpeg";
 
